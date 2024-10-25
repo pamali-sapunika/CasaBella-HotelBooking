@@ -1,4 +1,4 @@
-//Modified frontend - Hotel model
+//Modified again frontend - Hotel model
 export interface Hotel {
     hotelId: number; 
     hotelName: string;

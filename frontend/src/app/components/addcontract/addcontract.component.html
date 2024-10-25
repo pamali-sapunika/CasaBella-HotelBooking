@@ -1,0 +1,51 @@
+<div>
+    <div class="container">
+        <h2>Add New Contract</h2>
+        <p>Fetched hotel ID: {{ hotelId }}</p>
+        <form [formGroup]="contractForm" (ngSubmit)="onSubmit()">
+      
+          <mat-form-field appearance="fill">
+            <mat-label>Start Date</mat-label>
+            <input matInput formControlName="startDate" type="date" required />
+          </mat-form-field>
+      
+          <mat-form-field appearance="fill">
+            <mat-label>End Date</mat-label>
+            <input matInput formControlName="endDate" type="date" required />
+          </mat-form-field>
+      
+          <mat-form-field appearance="fill">
+            <mat-label>Cancellation Deadline (Days)</mat-label>
+            <input matInput formControlName="cancellationDeadlineDays" type="number" required />
+          </mat-form-field>
+      
+          <mat-form-field appearance="fill">
+            <mat-label>Cancellation Description</mat-label>
+            <textarea matInput formControlName="cancellationDescription"></textarea>
+          </mat-form-field>
+      
+          <mat-form-field appearance="fill">
+            <mat-label>Cancellation Fee (%)</mat-label>
+            <input matInput formControlName="cancellationFeePercentage" type="number" required />
+          </mat-form-field>
+      
+          <mat-form-field appearance="fill">
+            <mat-label>Prepayment Fee (%)</mat-label>
+            <input matInput formControlName="prepaymentFeePercenatage" type="number" required />
+          </mat-form-field>
+      
+          <mat-form-field appearance="fill">
+            <mat-label>Balanced Payment Days</mat-label>
+            <input matInput formControlName="balancedPaymentDays" type="number" required />
+          </mat-form-field>
+      
+          <mat-form-field appearance="fill">
+            <mat-label>Balanced Payment Percentage (%)</mat-label>
+            <input matInput formControlName="balancedPaymentPercentage" type="number" required />
+          </mat-form-field>
+      
+          <button mat-raised-button color="primary" type="submit">Add Contract</button>
+        </form>
+      </div>
+      
+</div>

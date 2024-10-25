@@ -1,0 +1,98 @@
+.container {
+    padding: 20px;
+  }
+  
+  .logo-container {
+    position: relative;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    width: 100%; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  .welcometo{
+    font-family: "Julius Sans One", sans-serif;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .casabella{
+    font-family: "Julius Sans One", sans-serif;
+    font-size: 50px;
+  }
+
+  .discover {
+    font-family: "Julius Sans One", sans-serif;
+    font-size: 10px;
+    position: absolute; 
+    margin-top: 75px;
+    text-align: center; 
+}
+
+.subdiscover{
+    font-family: "Julius Sans One", sans-serif;
+    text-align: center;
+    margin-top: 15px;
+}
+  
+  
+  .text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white; /* Change color as needed */
+    z-index: 1; /* Ensure text is above the image */
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  p {
+    margin: 0;
+  }
+  
+  mat-card {
+    margin-bottom: 20px;
+  }
+  
+  .card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-text {
+    flex: 1;
+  }
+  
+  .card-image {
+    width: 150px; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-left: 20px; /* Space between text and image */
+  }
+
+.line-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.line {
+    width: 300px;
+    height: 1px;
+    background-color: #FFBA1A; /* Change the color as needed */
+    margin: 0 10px; /* Adjust the margin as needed */
+}
+
+.icon {
+    width: 24px; /* Adjust the icon size as needed */
+    height: 24px;
+}
+
+  

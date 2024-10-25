@@ -1,0 +1,72 @@
+
+<div>
+    <p>hotel-contracts works!</p>
+    <mat-card class="contract-list-card">
+        <mat-card-header>
+          <mat-card-title>Contracts for Hotel ID: {{ hotelId }}</mat-card-title>
+          <mat-card-subtitle>View all contracts related to this hotel</mat-card-subtitle>
+        </mat-card-header>
+      
+        <mat-card-content>
+          <div class="table-container">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      
+              <!-- Contract ID Column -->
+              <ng-container matColumnDef="contractId">
+                <th mat-header-cell *matHeaderCellDef>Contract Id</th>
+                <td mat-cell *matCellDef="let contract"> {{ contract.contractId }} </td>
+              </ng-container>
+
+              <!-- Start Date Column -->
+              <ng-container matColumnDef="startDate">
+                <th mat-header-cell *matHeaderCellDef> Start Date </th>
+                <td mat-cell *matCellDef="let contract"> {{ contract.startDate }} </td>
+              </ng-container>
+      
+              <!-- End Date Column -->
+              <ng-container matColumnDef="endDate">
+                <th mat-header-cell *matHeaderCellDef> End Date </th>
+                <td mat-cell *matCellDef="let contract"> {{ contract.endDate }} </td>
+              </ng-container>
+      
+              <!-- Cancellation Description Column -->
+              <ng-container matColumnDef="cancellationDescription">
+                <th mat-header-cell *matHeaderCellDef> Cancellation Policy </th>
+                <td mat-cell *matCellDef="let contract"> {{ contract.cancellationDescription }} </td>
+              </ng-container>
+      
+              <!-- Cancellation Fee Percentage Column -->
+              <ng-container matColumnDef="cancellationFeePercentage">
+                <th mat-header-cell *matHeaderCellDef> Cancellation Fee % </th>
+                <td mat-cell *matCellDef="let contract"> {{ contract.cancellationFeePercentage }}% </td>
+              </ng-container>
+      
+              <!-- Prepayment Fee Percentage Column -->
+              <ng-container matColumnDef="prepaymentFeePercenatage">
+                <th mat-header-cell *matHeaderCellDef> Prepayment Fee % </th>
+                <td mat-cell *matCellDef="let contract"> {{ contract.prepaymentFeePercenatage }}% </td>
+              </ng-container>
+      
+              <!-- Balanced Payment Days Column -->
+              <ng-container matColumnDef="balancedPaymentDays">
+                <th mat-header-cell *matHeaderCellDef> Balanced Payment Days </th>
+                <td mat-cell *matCellDef="let contract"> {{ contract.balancedPaymentDays }} days </td>
+              </ng-container>
+      
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let contract">
+                  <!-- <button mat-button color="primary" (click)="editContract(contract.id)">Edit</button>
+                  <button mat-button color="warn" (click)="deleteContract(contract.id)">Delete</button> -->
+                </td>
+              </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      
+</div>

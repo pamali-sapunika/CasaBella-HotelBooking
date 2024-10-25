@@ -1,0 +1,39 @@
+http client - sneding http request to springboot
+
+json to java objects vice versa -> jackson, Gson
+
+---------------------------------------
+angular crud -> 
+
+CORS 
+ENABLING GLOBALLY ->
+@Crossorigin(origins ="https://localhost:4200 in secureCOnfig")
+
+httpinterceptor - angular store jwt and store locallly or in sessions 
+-------------------------token is included in header using httpinterceptor
+
+should create service layers using HttpClient
+-> all booking APIs in one booking service class angular
+
+service.ts file eke stores a baseURL like https://localhost:8080/v1/hotels
+all other endpoints are defined in one service -> one APIs
+
+
+@Injectable({provideIn: 'root'})
+export class BookingService {
+    private apiUrl = 'https://localhost:8080/v1/bookings';
+
+    constructor(private http: HtttpClient) { }
+
+    getBookings(): Observable<Booking[]> {
+        return this.http.get<Booking[]>(this.apiUrl);
+    }
+}
+
+
+ng build --prod 
+spring-boot-maven-plugin ---> to merge backend frontend
+
+@ControllerAdvice
+@ExceptionHandler - handle error messages which angular knpws how to handle
+

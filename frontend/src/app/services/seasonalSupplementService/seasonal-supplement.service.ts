@@ -1,0 +1,26 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { SeasonalSupplement } from '../../model/seasonalSupplement.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SeasonalSupplementService {
+
+  private baseUrl = 'http://localhost:8080/v1/seasonalsupplements';
+
+  constructor(private http: HttpClient) { }
+
+  addSupplementToSeason(supplementId: number, seasonId: number, supplementData: { pricePerUnit: number }): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${supplementId}/seasons/${seasonId}`, supplementData);
+  }
+
+  getSeasonalSupplements(): Observable<SeasonalSupplement[]> {
+    return this.http.get<SeasonalSupplement[]>(`${this.baseUrl}/`);
+  }
+
+  getSeasonalSupplementById(seasonalSupplementId: number): Observable<SeasonalSupplement> {
+    return this.http.get<SeasonalSupplement>(`${this.baseUrl}/${seasonalSupplementId}`);
+  }
+}

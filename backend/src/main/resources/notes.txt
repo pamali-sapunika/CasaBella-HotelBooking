@@ -1,0 +1,95 @@
+@Autowired - Good for constructors Dependancy injection
+Applying autowired to final variables can lead to complexities
+inject nessecery beans 
+-> DI in spring 
+
+@Transactional - database opertaions flows transcational like if updates everything updates, if not none will
+
+@Lombok hmwelema set wenne nh ai constructors hide krnw eya
+
+@RestCOntroller - Controller + requestbody
+
+@EventListener -> mr=ethod to listen to spring events
+
+@Bean - spring not springboot
+beans are managed by IOD container in spring
+
+---------CORS - Cross-Origin Resource Sharing -> angular part
+meka thm angular or any other ports wlin inna urls wlt access denne
+backend  8080
+angular 4200
+@CrossOrigin allows 4200 url to access resources in server 8080
+
+passwordEncoder
+
+angular -> Httpinterceptor, Route guards
+springboot -> Authentication manager, SecurityFilterChain
+
+WebSecurityConfigurerAdapter -> no extends --> SecurityFilterChain @Bean
+WebAuthenticationFilter  -> no extends --> OncePerRequestFilter
+
+Authentication
+angular -> sending username password thriught a post
+            receive JWT token
+soringboot -> Auth controller handles and authenticate
+                JWt utils genetaetoken generates the token
+
+Authorization
+angular -> stores the JWT like previous
+            send JWT attached to reach user request
+springboot -> jwt utils token validation -> JwtRequestFilter
+                permissions and acess with security config
+
+@PreAuthorize("hasRole('ADMIN)") -> checks before Authorization
+
+
+
+
+
+
+
+
+
+#total no of rooms for that hotel
+select sum(sr.noof_rooms), s.season_id
+from seasonal_roomtype sr
+join season s on sr.season_id = s.season_id
+group by sr.season_id;
+#group by sr.seasonal_roomtype_id
+
+
+#meka hri
+#noof booked rooms in each season roomtype id to display free roomtypes
+select brt.no_of_rooms , rt.roomtype_name
+FROM booking_roomtypes brt
+JOIN seasonal_roomtype sr ON brt.seasonal_roomtype_id = sr.seasonal_roomtype_id
+JOIN roomtype rt ON rt.roomtype_id = sr.roomtype_id
+WHERE brt.b_checkin_date < '2024-10-21' #usercheckout
+AND brt.b_checkout_date > '2024-10-24'; #usercheckin
+
+SELECT h.hotel_id
+FROM hotel h
+JOIN seasonal_roomtype sr ON h.hotel_id = sr.hotel_id
+JOIN roomtype rt ON rt.roomtype_id = sr.roomtype_id
+GROUP BY h.hotel_id
+HAVING SUM((sr.noof_rooms - COALESCE((
+		   SELECT SUM(brt.no_of_rooms)
+		   FROM booking_roomtypes brt
+		   WHERE brt.seasonal_roomtype_id = sr.seasonal_roomtype_id
+		   AND brt.b_checkin_date < '2024-10-21'
+		   AND brt.b_checkout_date > '2024-10-24'
+	   ), 0)) * sr.max_adults ) >= 4;
+
+--------------------------------------------------------------------------
+
+with CheckinCover1 as (SELECT 1 as 'ifcheckindate_in_season'
+FROM season s
+WHERE s.start_date <= '2024-10-21' AND s.end_date >= '2024-10-21'
+)
+select * from CheckinCover;
+
+with CheckoutCover as (SELECT 1 as 'ifcheckoutdate_in_season'
+FROM season s
+WHERE s.start_date <= '2024-10-24' AND s.end_date >= '2024-10-24'
+)
+select * from CheckoutCover;

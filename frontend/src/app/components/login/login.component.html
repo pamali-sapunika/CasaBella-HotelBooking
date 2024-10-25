@@ -1,0 +1,42 @@
+<div class="form-container">
+  <mat-card class="form-card">
+    <form>
+      <div class="login-title">Login</div>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="username" name="username" >
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="password" name="password" type="password" >
+        <mat-icon matSuffix>lock</mat-icon>
+      </mat-form-field>
+  
+      <div>
+        <button mat-raised-button color="primary" (click)="onSubmit()" >Login</button>
+        
+      </div>
+    </form>
+    <div>
+      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+    </div>
+  </mat-card>
+
+  <!-- <div >  
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="username">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput [(ngModel)]="password">
+    </mat-form-field>
+    <button mat-raised-button (click)="onSubmit()">Login</button>
+  </div> -->
+      
+</div>
+
+

@@ -1,0 +1,63 @@
+<div class="container">
+  <h2>Add New Hotel</h2>
+  <form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Hotel Name</mat-label>
+      <input matInput formControlName="hotelName" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="hotelEmail" type="email" required />
+      <mat-error *ngIf="hotelForm.get('hotelEmail')?.hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="hotelForm.get('hotelEmail')?.hasError('email')">
+        Please enter a valid email address
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>City</mat-label>
+      <input matInput formControlName="city" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>State</mat-label>
+      <input matInput formControlName="state" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Country</mat-label>
+      <input matInput formControlName="country" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Location</mat-label>
+      <input matInput formControlName="location" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Contact Number</mat-label>
+      <input matInput formControlName="hotelContact" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Hotel Contact Person</mat-label>
+      <input matInput formControlName="hotelPerson" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Star Rating (1-5)</mat-label>
+      <input matInput type="number" formControlName="starRating" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Add Hotel</button>
+  </form>
+</div>

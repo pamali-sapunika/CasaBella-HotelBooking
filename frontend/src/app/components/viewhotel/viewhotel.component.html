@@ -1,0 +1,23 @@
+<div>
+    <mat-card *ngIf="hotel">
+        <mat-card-header>
+          <mat-card-title>{{ hotel.hotelName }}</mat-card-title>
+          <mat-card-subtitle>{{ hotel.city }}, {{ hotel.country }}</mat-card-subtitle>
+        </mat-card-header>
+      
+        <mat-card-content>
+          <p><strong>Email:</strong> {{ hotel.hotelEmail }}</p>
+          <p><strong>Contact:</strong> {{ hotel.hotelContact }}</p>
+          <p><strong>Description:</strong> {{ hotel.description }}</p>
+          <p><strong>Star Rating:</strong> {{ hotel.starRating }}</p>
+          <p><strong>Location:</strong> {{ hotel.location }}</p>
+        </mat-card-content>
+        
+        <mat-card-actions>
+          <button mat-button (click)="editHotel()">Edit Hotel</button>
+          <button mat-button (click)="deleteHotel()">Delete Hotel</button>
+          <button mat-button (click)="viewContracts(hotel.hotelId)">Contracts</button>
+          <button mat-button (click)="navigateToAddContract(hotel.hotelId)">Create Contract</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -35,7 +36,7 @@ export class AddseasonalroomsComponent implements OnInit{
   roomtypes: Roomtype[] = [];
   seasonalRoomForm!: FormGroup;
 
-  constructor( private seasonService: SeasonService, private roomService: RoomService, private fb: FormBuilder) {}
+  constructor( private seasonService: SeasonService, private roomService: RoomService, private seasonalRoomsService: SeasonalRoomsService, private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
     console.log('Received contractId in AddseasonalroomsComponent:', this.contractId);
@@ -73,7 +74,6 @@ export class AddseasonalroomsComponent implements OnInit{
 
   initializeForm(): void {
     this.seasonalRoomForm = this.fb.group({
-      seasonalRoomtypeId: [null, Validators.required],
       seasonId: [null, Validators.required],
       roomtypeId: [null, Validators.required],
       hotelId: [null, Validators.required],
@@ -86,8 +86,33 @@ export class AddseasonalroomsComponent implements OnInit{
 
   onSubmit(): void {
     if (this.seasonalRoomForm.valid) {
-      const seasonalRoomData = this.seasonalRoomForm.value;
-      console.log('Form submitted with:', seasonalRoomData);
+      const formValues = this.seasonalRoomForm.value;
+      const { seasonId, roomtypeId, hotelId, price, noofRooms, maxAdults, noofReservedRooms } = formValues;
+  
+      const requestBody = {
+        price: parseFloat(formValues.price.toString()), 
+        noofRooms: parseInt(formValues.noofRooms.toString(), 10), 
+        maxAdults: parseInt(formValues.maxAdults.toString(), 10), 
+        noofReservedRooms: parseInt(formValues.noofReservedRooms.toString(), 10) 
+      };
+  
+      this.seasonalRoomsService.addRoomtypeToSeason(roomtypeId, seasonId, requestBody).subscribe({
+        next: (response) => {
+          console.log('Seasonal room type added successfully');
+  
+          this.seasonalRoomsService.assignHotelToSeasonalRoomtype(response.seasonalRoomtypeId, hotelId).subscribe({
+            next: () => {
+              console.log('Hotel assigned to seasonalroom type successfully!');
+            },
+            error: (error) => {
+              console.error('Error assigning hotel to seasonal room type:', error);
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Error adding seasonal room type:', error);
+        }
+      });
     } else {
       console.error('Form is invalid');
     }
@@ -109,46 +134,82 @@ export class AddseasonalroomsComponent implements OnInit{
     });
   }
 
-  // onSelectRoomtypeName(roomtype: Roomtype): void {
-  //   console.log("Room type selected:", roomtype); 
-  //   this.seasonalRoomForm.patchValue({
-  //     roomtypeId: roomtype.roomtypeId
-  //   });
-  // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // seasonalRoomForm: FormGroup;
-
-  // constructor(
-  //   private fb: FormBuilder,
-  //   private route: ActivatedRoute, 
-  //   private seasonService: SeasonService,
-  //   private roomService: RoomService 
-  // ) {
-  //   this.seasonalRoomForm = this.fb.group({
-  //     roomType: ['', Validators.required],
-  //     // Other form fields as needed
-  //   });
-  // }
-
-  // ngOnInit(): void {
-  //   this.route.params.subscribe(params => {
-  //     this.contractId = +params['contractId'];
-  //     console.log('Captured contractId in AddseasonalroomsComponent:', this.contractId);
-  //   });
-  // }
-
+ 
 
 }
+
+
+
+ // @Input() contractId!: number;
+  // seasonalRoomForm!: FormGroup;
+
+  // constructor( private seasonalRoomsService: SeasonalRoomsService, private fb: FormBuilder, private router: Router) {}
+
+  // ngOnInit(): void {
+  //   console.log('Received contractId in AddseasonalroomsComponent:', this.contractId);
+  //   this.initializeForm();
+  // }
+
+
+  // initializeForm(): void {
+  //   this.seasonalRoomForm = this.fb.group({
+  //     seasonId: [null, Validators.required],
+  //     roomtypeId: [null, Validators.required],
+  //     hotelId: [null, Validators.required],
+  //     price: [0, [Validators.required, Validators.min(0)]],
+  //     noofRooms: [0, [Validators.required, Validators.min(0)]],
+  //     maxAdults: [0, [Validators.required, Validators.min(0)]],
+  //     noofReservedRooms: [0, [Validators.required, Validators.min(0)]]
+  //   });
+  // }
+
+  // onSubmit(): void {
+  //   if (this.seasonalRoomForm.valid) {
+  //     const formData = this.seasonalRoomForm.value;
+
+  //     const requestBody = {
+  //       price: parseFloat(formData.price.toString()), // Ensure price is a double
+  //       noofRooms: parseInt(formData.noofRooms.toString(), 10), // Ensure noofRooms is an int
+  //       maxAdults: parseInt(formData.maxAdults.toString(), 10), // Ensure maxAdults is an int
+  //       noofReservedRooms: parseInt(formData.noofReservedRooms.toString(), 10) // Ensure noofReservedRooms is an int
+  //     };
+
+  //     this.seasonalRoomsService.addRoomtypeToSeason(formData.roomtypeId, formData.seasonId, requestBody).subscribe({
+  //       next: () => {
+  //         console.log('Seasonal room type added successfully');
+  //       },
+  //       error: (error) => {
+  //         console.error('Error adding seasonal room type:', error);
+  //       }
+  //     });
+  //   }
+  // }
+
+
+
+  // onSubmit(): void {
+  //   if (this.seasonalRoomForm.valid) {
+
+  //     const formValues = this.seasonalRoomForm.value;
+  //     const { seasonId, roomtypeId, price, noofRooms, maxAdults, noofReservedRooms } = formValues;
+
+  //     const requestBody = {
+  //       price: parseFloat(formValues.price.toString()), // Ensure price is a double
+  //       noofRooms: parseInt(formValues.noofRooms.toString(), 10), 
+  //       maxAdults: parseInt(formValues.maxAdults.toString(), 10), 
+  //       noofReservedRooms: parseInt(formValues.noofReservedRooms.toString(), 10) 
+  //     };
+
+  //     this.seasonalRoomsService.addRoomtypeToSeason(roomtypeId, seasonId, requestBody).subscribe({
+  //       next: () => {
+  //         console.log('Seasonal room type added successfully');
+  //       },
+  //       error: (error) => {
+  //         console.error('Error adding seasonal room type:', error);
+  //       }
+  //     });
+  //   } else {
+  //     console.error('Form is invalid');
+  //   }
+  // }
+

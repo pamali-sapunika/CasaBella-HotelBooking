@@ -16,23 +16,6 @@
   </div>
 
   <div>
-      <!-- <mat-form-field appearance="fill">
-        <mat-label>Season</mat-label>
-        <mat-select formControlName="seasonId" required>
-          <mat-option *ngFor="let season of seasons" [value]="season.seasonId">
-            {{ season.seasonName }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    
-      <mat-form-field appearance="fill">
-        <mat-label>Room Type</mat-label>
-        <mat-select formControlName="roomtypeId" required>
-          <mat-option *ngFor="let roomtype of roomtypes" [value]="roomtype.roomtypeId">
-            {{ roomtype.roomtypeName }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>  -->
 
       <form [formGroup]="seasonalRoomForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="fill">
@@ -43,8 +26,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-      
-        <!-- Other Fields -->
+
         <mat-form-field appearance="fill">
           <mat-label>Season ID</mat-label>
           <input matInput formControlName="seasonId" type="number" required />
@@ -58,8 +40,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        
-        <!-- Room Type ID Input Field -->
+
         <mat-form-field appearance="fill">
           <mat-label>Room Type ID</mat-label>
           <input matInput formControlName="roomtypeId" type="number" required />

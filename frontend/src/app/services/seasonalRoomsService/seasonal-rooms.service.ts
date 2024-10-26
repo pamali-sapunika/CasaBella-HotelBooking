@@ -19,9 +19,9 @@ export class SeasonalRoomsService {
       price: number, 
       noofRooms: number, 
       maxAdults: number, 
-      noofReservedRooms: number }): Observable<void> {
+      noofReservedRooms: number }): Observable<SeasonalRooms> {
         
-    return this.http.post<void>(`${this.baseUrl}/${roomtypeId}/seasons/${seasonId}`, roomtypeData);
+    return this.http.post<SeasonalRooms>(`${this.baseUrl}/${roomtypeId}/seasons/${seasonId}`, roomtypeData);
   }
 
   getSeasonalRoomtypes(): Observable<SeasonalRooms[]> {

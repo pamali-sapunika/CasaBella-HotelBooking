@@ -1,40 +1,58 @@
-<div class="seasonal-supplement-form-container">
-  <h4>Add Seasonal Supplement for Contract ID: {{ contractId }}</h4>
+<div class="season-cards-container">
+  <h4>Seasons for Contract ID: {{ contractId }}</h4>
+  <div class="season-card" *ngFor="let season of seasons">
+    <h3>{{ season.seasonName }}</h3>
+    <p>Start Date: {{ season.startDate | date }}</p>
+    <p>End Date: {{ season.endDate | date }}</p>
+  </div>
 
-  <form [formGroup]="seasonalSupplementForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill">
-      <mat-label>Select Season</mat-label>
-      <mat-select (selectionChange)="onSelectSeason($event.value)" required>
-        <mat-option *ngFor="let season of seasons" [value]="season">
-          {{ season.seasonName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div *ngIf="supplements.length > 0">
+    <h4>Available Suppleemnts</h4>
+    <ul>
+      <li *ngFor="let supplement of supplements">
+        {{ supplement.supplementName }} - {{supplement.supplementId}}
+      </li>
+    </ul>
+  </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Season ID</mat-label>
-      <input matInput formControlName="seasonId" type="number" readonly />
-    </mat-form-field>
+  <div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Select Supplement</mat-label>
-      <mat-select (selectionChange)="onSelectSupplement($event.value)" required>
-        <mat-option *ngFor="let supplement of supplements" [value]="supplement">
-          {{ supplement.supplementName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <form [formGroup]="seasonalSupplementForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+          <mat-label>Select Season Name</mat-label>
+          <mat-select (selectionChange)="onSelectSeasonName($event.value)">
+            <mat-option *ngFor="let season of seasons" [value]="season">
+              {{ season.seasonName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Supplement ID</mat-label>
-      <input matInput formControlName="supplementId" type="number" readonly />
-    </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Season ID</mat-label>
+          <input matInput formControlName="seasonId" type="number" required />
+        </mat-form-field>
+      
+        <mat-form-field appearance="fill">
+          <mat-label>Select Supplement Name</mat-label>
+          <mat-select (selectionChange)="onSelectSupplementName($event.value)">
+            <mat-option *ngFor="let supplement of supplements" [value]="supplement">
+              {{ supplement.supplementName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Price Per Unit</mat-label>
-      <input matInput formControlName="pricePerUnit" type="number" required />
-    </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Supplement ID</mat-label>
+          <input matInput formControlName="supplementId" type="number" required />
+        </mat-form-field>        
+      
+        <mat-form-field appearance="fill">
+          <mat-label>Unit Price</mat-label>
+          <input matInput formControlName="pricePerUnit" type="number" required />
+        </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Submit</button>
-  </form>
+        <button mat-raised-button color="primary" type="submit" >Submit</button>
+      </form>      
+  </div>
 </div>
+

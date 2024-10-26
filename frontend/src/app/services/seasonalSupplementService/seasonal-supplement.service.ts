@@ -12,8 +12,11 @@ export class SeasonalSupplementService {
 
   constructor(private http: HttpClient) { }
 
-  addSupplementToSeason(supplementId: number, seasonId: number, supplementData: { pricePerUnit: number }): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/${supplementId}/seasons/${seasonId}`, supplementData);
+  addSupplementToSeason(supplementId: number, seasonId: number, 
+    supplementData: { 
+      pricePerUnit: number 
+    }): Observable<SeasonalSupplement> {
+    return this.http.post<SeasonalSupplement>(`${this.baseUrl}/${supplementId}/seasons/${seasonId}`, supplementData);
   }
 
   getSeasonalSupplements(): Observable<SeasonalSupplement[]> {

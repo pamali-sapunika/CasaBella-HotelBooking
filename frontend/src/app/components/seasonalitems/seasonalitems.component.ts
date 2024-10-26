@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { AddseasonalroomsComponent } from '../addseasonalrooms/addseasonalrooms.component';
 import { AddseasonalsuppleComponent } from '../addseasonalsupple/addseasonalsupple.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-seasonalitems',
@@ -32,6 +33,7 @@ export class SeasonalitemsComponent implements OnInit{
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute, 
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +41,10 @@ export class SeasonalitemsComponent implements OnInit{
       this.contractId = +params['contractId'];
       console.log('Captured contractId in AddseasonalroomsComponent:', this.contractId);
     });
+  }
+
+  navigateToAddDiscount(): void{
+    this.router.navigate(['addDiscounts', this.contractId]);
   }
 
 }

@@ -36,18 +36,18 @@ public class SeasonalRoomtypeController {
 
     //Add Roomtype to Season
     @PostMapping("/{roomtypeId}/seasons/{seasonId}")
-    public ResponseEntity<Void> addRoomtypeToSeason(
+    public ResponseEntity<SeasonalRoomtype> addRoomtypeToSeason(
         @PathVariable Long seasonId,
         @PathVariable Long roomtypeId,
         @RequestBody Map<String, Object> requestBody
     ){
-        double price = (double) requestBody.get("price");
-        int noofRooms = (int) requestBody.get("noofRooms");
-        int maxAdults = (int) requestBody.get("maxAdults");
-        int noofReservedRooms = (int) requestBody.get("noofReservedRooms");
+        double price = ((Number) requestBody.get("price")).doubleValue();
+        int noofRooms = ((Number) requestBody.get("noofRooms")).intValue();
+        int maxAdults = ((Number) requestBody.get("maxAdults")).intValue();
+        int noofReservedRooms = ((Number) requestBody.get("noofReservedRooms")).intValue();
 
-        seasonalRoomtypeService.addRoomtypeToSeason(price, noofRooms, maxAdults, noofReservedRooms, seasonId, roomtypeId);
-        return ResponseEntity.ok().build();
+        SeasonalRoomtype createdSeasonalRoomtype = seasonalRoomtypeService.addRoomtypeToSeason(price, noofRooms, maxAdults, noofReservedRooms, seasonId, roomtypeId);
+        return ResponseEntity.ok(createdSeasonalRoomtype);
     }
 
 

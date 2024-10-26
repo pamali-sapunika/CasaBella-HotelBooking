@@ -27,14 +27,14 @@ public class SeasonalSupplementService {
     }
 
     //Add supplement to season
-    public void addSupplementToSeason(double pricePerUnit, Long seasonId, Long supplementId){
+    public SeasonalSupplement addSupplementToSeason(double pricePerUnit, Long seasonId, Long supplementId){
         Supplement supplement = supplementRepo.findById(supplementId)
             .orElseThrow(() -> new IllegalStateException("Supplement with id" + supplementId + " not found"));
         Season season = seasonRepo.findById(seasonId)
             .orElseThrow(() -> new IllegalStateException("Season with id" + seasonId + " not found"));
 
         SeasonalSupplement seasonalSupplement = new SeasonalSupplement(pricePerUnit, season, supplement);
-        seasonalSupplementRepo.save(seasonalSupplement);
+        return seasonalSupplementRepo.save(seasonalSupplement);
     }
 
     //Get Seasonal Roomtype List

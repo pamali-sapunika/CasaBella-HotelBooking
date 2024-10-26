@@ -11,6 +11,7 @@ import { SeasonalSupplement } from '../../model/seasonalSupplement.model';
 import { SeasonalSupplementService } from '../../services/seasonalSupplementService/seasonal-supplement.service';
 import { Supplement } from '../../model/supplement.model';
 import { SupplementService } from '../../services/supplementService/supplement.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addseasonalsupple',
@@ -33,24 +34,22 @@ export class AddseasonalsuppleComponent implements OnInit{
   supplements: Supplement[] = [];
   seasonalSupplementForm!: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private seasonService: SeasonService,
-    private supplementService: SupplementService
-  ) {}
+  constructor( private seasonService: SeasonService, private supplementService: SupplementService, private seasonalSupplementService: SeasonalSupplementService, private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
-    console.log('Received contractId in AddSeasonalSupplementComponent:', this.contractId);
+    console.log('Received contractId in AddseasonalroomsComponent:', this.contractId);
     this.fetchSeasons();
     this.fetchSupplements();
     this.initializeForm();
   }
 
+
   fetchSeasons(): void {
+    console.log("Method called");
     this.seasonService.getSeasonsByContractId(this.contractId).subscribe({
       next: (seasons) => {
         this.seasons = seasons;
-        console.log('Seasons fetched:', this.seasons);
+        console.log('Seasons fetched Pamali:', this.seasons);
       },
       error: (error) => {
         console.error('Error fetching seasons:', error);
@@ -62,7 +61,7 @@ export class AddseasonalsuppleComponent implements OnInit{
     this.supplementService.getSupplements().subscribe({
       next: (supplements) => {
         this.supplements = supplements;
-        console.log('Supplements fetched:', this.supplements);
+        console.log('supplements fetched:', this.supplements);
       },
       error: (error) => {
         console.error('Error fetching supplements:', error);
@@ -70,38 +69,53 @@ export class AddseasonalsuppleComponent implements OnInit{
     });
   }
 
+
   initializeForm(): void {
     this.seasonalSupplementForm = this.fb.group({
-      seasonalSupplementId: [null],
       seasonId: [null, Validators.required],
       supplementId: [null, Validators.required],
-      pricePerUnit: [0, [Validators.required, Validators.min(0)]]
+      pricePerUnit: [0, [Validators.required, Validators.min(0)]],
     });
   }
 
   onSubmit(): void {
     if (this.seasonalSupplementForm.valid) {
-      const seasonalSupplementData: SeasonalSupplement = this.seasonalSupplementForm.value;
-      console.log('Form submitted with:', seasonalSupplementData);
-      // Add logic to send data to the server
+
+      const formValues = this.seasonalSupplementForm.value;
+      const { seasonId, supplementId, pricePerUnit } = formValues;
+
+      const requestBody = {
+        pricePerUnit: parseFloat(formValues.pricePerUnit.toString())
+      };
+
+      this.seasonalSupplementService.addSupplementToSeason(supplementId, seasonId, requestBody).subscribe({
+        next: () => {
+          console.log('Seasonal Suppleemnt added successfully');
+        },
+        error: (error) => {
+          console.error('Error adding seasonal suppelement:', error);
+        }
+      });
     } else {
       console.error('Form is invalid');
     }
   }
 
-  onSelectSeason(season: Season): void {
-    console.log("Selected season", season);
+
+  onSelectSeasonName(season: Season): void {
+    console.log("Season selected", season);
     this.seasonalSupplementForm.patchValue({
+      seasonName: season.seasonName,
       seasonId: season.seasonId
     });
   }
 
-  onSelectSupplement(supplement: Supplement): void {
-    console.log("Selected supplement", supplement);
+  onSelectSupplementName(supplement: Supplement): void {
+    console.log("Supplement selected", supplement);
     this.seasonalSupplementForm.patchValue({
+      supplementName: supplement.supplementName,
       supplementId: supplement.supplementId
     });
   }
-
 
 }

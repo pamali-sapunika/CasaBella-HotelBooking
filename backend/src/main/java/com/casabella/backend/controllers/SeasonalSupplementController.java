@@ -26,15 +26,16 @@ public class SeasonalSupplementController {
 
     //Add supplements to Season
     @PostMapping("/{supplementId}/seasons/{seasonId}")
-    public ResponseEntity<Void> addSupplementToSeason(
+    public ResponseEntity<SeasonalSupplement> addSupplementToSeason(
         @PathVariable Long supplementId,
         @PathVariable Long seasonId,
         @RequestBody Map<String, Object> requestBody
     ){
-        double pricePerUnit = (double) requestBody.get("pricePerUnit");
+        double pricePerUnit = ((Number) requestBody.get("pricePerUnit")).doubleValue();
+        
 
-        seasonalSupplementService.addSupplementToSeason(pricePerUnit, seasonId, supplementId );
-        return ResponseEntity.ok().build();
+        SeasonalSupplement createdSeasonalSupplement = seasonalSupplementService.addSupplementToSeason(pricePerUnit, seasonId, supplementId );
+        return ResponseEntity.ok(createdSeasonalSupplement);
     }
 
     @GetMapping

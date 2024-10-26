@@ -1,0 +1,37 @@
+<div class="container">
+    <h2>Add New Discount</h2>
+    <p>Captured Contract ID: {{ contractId }}</p>
+    
+    <form [formGroup]="discountForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-row">
+        <mat-form-field appearance="fill">
+          <mat-label>Discount Type</mat-label>
+          <input matInput formControlName="discountType" required />
+        </mat-form-field>
+    
+        <mat-form-field appearance="fill">
+          <mat-label>Days Prior to Arrival</mat-label>
+          <input matInput formControlName="daysPriorToArrival" type="number" required />
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Discount Percentage (%)</mat-label>
+          <input matInput formControlName="discountPercentage" type="number" required />
+        </mat-form-field>
+      </div>
+    
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" required></textarea>
+      </mat-form-field>
+      
+    </form>
+
+    <button mat-raised-button color="primary" (click)="onSubmit()">Add Discount</button>
+  
+    <div class="backBtn">
+      <button mat-raised-button color="primary" (click)="navigateBack()">Back</button>
+    </div>
+  </div>
+  

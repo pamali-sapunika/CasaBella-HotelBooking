@@ -25,16 +25,14 @@ public class SeasonalRoomtypeService {
     }
 
     //Add Roomtype to Season
-    public void addRoomtypeToSeason(double price, int noofRooms, int maxAdults, int noofReservedRooms, Long seasonId, Long roomtypeId  ){
+    public SeasonalRoomtype addRoomtypeToSeason(double price, int noofRooms, int maxAdults, int noofReservedRooms, Long seasonId, Long roomtypeId  ){
         Season season = seasonRepo.findById(seasonId)
             .orElseThrow(() -> new IllegalStateException("Season with id " + seasonId + " not found"));
         Roomtype roomtype = roomtypeRepo.findById(roomtypeId)
             .orElseThrow(() -> new IllegalStateException("Roomtype with id " + roomtypeId + " not found"));
 
-        
-
         SeasonalRoomtype seasonalRoomtype = new SeasonalRoomtype(price, noofRooms, maxAdults, noofReservedRooms, season, roomtype);
-        seasonalRoomtypeRepo.save(seasonalRoomtype);
+        return seasonalRoomtypeRepo.save(seasonalRoomtype);
     }
 
     //Get seasonal roomtypes

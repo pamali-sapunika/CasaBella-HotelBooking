@@ -32,6 +32,8 @@ public class BookingSupplements {
 
 
     //Setters Getters
+
+    
     public BookingSupplements() {
     }
     public BookingSupplements(int quantity, Double pricePerUnit, Booking booking,

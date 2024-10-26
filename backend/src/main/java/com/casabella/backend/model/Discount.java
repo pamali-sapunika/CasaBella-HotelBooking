@@ -44,6 +44,14 @@ public class Discount {
        this.contract = contract2;
     }
 
+    public Long getDiscountId() {
+        return discountId;
+    }
+
+    public void setDiscountId(Long discountId) {
+        this.discountId = discountId;
+    }
+
     public String getDiscountType() {
         return discountType;
     }
@@ -111,13 +119,5 @@ public class Discount {
 
     public Discount() {
     }
-
-    
-
-    
-    
-
-
-
 
 }

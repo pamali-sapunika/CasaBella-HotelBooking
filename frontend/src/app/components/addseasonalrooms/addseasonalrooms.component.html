@@ -1,46 +1,97 @@
-<div class="container">
-    <p>Contract ID: {{ contractId }}</p>
-    <!-- <h3>Add Seasonal Room Type</h3>
-    <form [formGroup]="seasonalRoomsForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill">
-        <mat-label>Select Season</mat-label>
+<div class="season-cards-container">
+  <h4>Seasons for Contract ID: {{ contractId }}</h4>
+  <div class="season-card" *ngFor="let season of seasons">
+    <h3>{{ season.seasonName }}</h3>
+    <p>Start Date: {{ season.startDate | date }}</p>
+    <p>End Date: {{ season.endDate | date }}</p>
+  </div>
+
+  <div *ngIf="roomtypes.length > 0">
+    <h4>Available Room Types</h4>
+    <ul>
+      <li *ngFor="let roomtype of roomtypes">
+        {{ roomtype.roomtypeName }} - {{roomtype.roomtypeId}}
+      </li>
+    </ul>
+  </div>
+
+  <div>
+      <!-- <mat-form-field appearance="fill">
+        <mat-label>Season</mat-label>
         <mat-select formControlName="seasonId" required>
           <mat-option *ngFor="let season of seasons" [value]="season.seasonId">
             {{ season.seasonName }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-  
+    
       <mat-form-field appearance="fill">
-        <mat-label>Select Room Type</mat-label>
+        <mat-label>Room Type</mat-label>
         <mat-select formControlName="roomtypeId" required>
           <mat-option *ngFor="let roomtype of roomtypes" [value]="roomtype.roomtypeId">
-            {{ roomtype.roomtypeName }} 
+            {{ roomtype.roomtypeName }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Price</mat-label>
-        <input matInput formControlName="price" type="number" required />
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Number of Rooms</mat-label>
-        <input matInput formControlName="noofRooms" type="number" required />
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Max Adults</mat-label>
-        <input matInput formControlName="maxAdults" type="number" required />
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Number of Reserved Rooms</mat-label>
-        <input matInput formControlName="noofReservedRooms" type="number" required />
-      </mat-form-field>
-  
-      <button mat-raised-button color="primary" type="submit">Add Seasonal Room Type</button>
-    </form> -->
+      </mat-form-field>  -->
+
+      <form [formGroup]="seasonalRoomForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+          <mat-label>Select Season Name</mat-label>
+          <mat-select (selectionChange)="onSelectSeasonName($event.value)">
+            <mat-option *ngFor="let season of seasons" [value]="season">
+              {{ season.seasonName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      
+        <!-- Other Fields -->
+        <mat-form-field appearance="fill">
+          <mat-label>Season ID</mat-label>
+          <input matInput formControlName="seasonId" type="number" required />
+        </mat-form-field>
+      
+        <mat-form-field appearance="fill">
+          <mat-label>Select Room Type Name</mat-label>
+          <mat-select (selectionChange)="onSelectRoomtypeName($event.value)">
+            <mat-option *ngFor="let roomtype of roomtypes" [value]="roomtype">
+              {{ roomtype.roomtypeName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <!-- Room Type ID Input Field -->
+        <mat-form-field appearance="fill">
+          <mat-label>Room Type ID</mat-label>
+          <input matInput formControlName="roomtypeId" type="number" required />
+        </mat-form-field>        
+
+        <mat-form-field appearance="fill">
+          <mat-label>Hotel ID</mat-label>
+          <input matInput formControlName="hotelId" type="number" required />
+        </mat-form-field>
+      
+        <mat-form-field appearance="fill">
+          <mat-label>Price</mat-label>
+          <input matInput formControlName="price" type="number" required />
+        </mat-form-field>
+      
+        <mat-form-field appearance="fill">
+          <mat-label>Number of Rooms</mat-label>
+          <input matInput formControlName="noofRooms" type="number" required />
+        </mat-form-field>
+      
+        <mat-form-field appearance="fill">
+          <mat-label>Max Adults</mat-label>
+          <input matInput formControlName="maxAdults" type="number" required />
+        </mat-form-field>
+      
+        <mat-form-field appearance="fill">
+          <mat-label>Number of Reserved Rooms</mat-label>
+          <input matInput formControlName="noofReservedRooms" type="number" required />
+        </mat-form-field>
+      
+        <button mat-raised-button color="primary" type="submit" >Submit</button>
+      </form>      
   </div>
-  
+</div>
+

@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.casabella.backend.model.Contract;
-import com.casabella.backend.model.Hotel;
 import com.casabella.backend.model.Season;
 import com.casabella.backend.repository.ContractRepository;
 import com.casabella.backend.repository.SeasonRepository;

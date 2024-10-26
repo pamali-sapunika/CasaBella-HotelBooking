@@ -26,7 +26,16 @@ public class Supplement {
     @OneToMany(mappedBy = "supplement", cascade = CascadeType.ALL)
     private Set<SeasonalSupplement> seasonalSupplement = new HashSet<>();
     
+
     //Setters and Getters
+    public Long getSupplementId() {
+        return supplementId;
+    }
+
+    public void setSupplementId(Long supplementId) {
+        this.supplementId = supplementId;
+    }
+    
     public String getSupplementName() {
         return supplementName;
     }
@@ -56,6 +65,8 @@ public class Supplement {
 
     public Supplement() {
     }
+
+    
 
     
 

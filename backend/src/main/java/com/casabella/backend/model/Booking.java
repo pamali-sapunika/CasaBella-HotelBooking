@@ -90,6 +90,22 @@ public class Booking {
         this.passenger = passenger2;
     }
 
+    public Long getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(Long bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public Passenger getPassenger() {
+        return passenger;
+    }
+
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
+    }
+
     public Date getCheckinDate() {
         return checkinDate;
     }

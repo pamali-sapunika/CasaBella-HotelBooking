@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy} from '@angular/core';
 import { Season } from '../../model/season.model';
 import { SeasonService } from '../../services/seasonService/season.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,17 +9,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute} from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
 
 @Component({
   selector: 'app-add-seasons',
   standalone: true,
+  providers: [provideNativeDateAdapter()],
   imports: [
     MatFormFieldModule, 
     MatInputModule, 
     MatCardModule, 
     MatButtonModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    MatDatepickerModule
   ],
   templateUrl: './add-seasons.component.html',
   styleUrl: './add-seasons.component.css'
@@ -61,6 +65,7 @@ export class AddSeasonsComponent {
         next: (response) => {
           this.seasonService.assignContractToSeason(response.seasonId, this.contractId).subscribe(() =>{
             console.log('Season added');
+            alert("Season added!");
           })
         },
         error: (error) => {
@@ -71,7 +76,7 @@ export class AddSeasonsComponent {
   }
 
   navigateToAddSeasonalRooms(): void {
-    this.router.navigate(['addSeasonalRooms', this.contractId]);
+    this.router.navigate(['seasonalItems', this.contractId]);
     console.log('Navigating to Add Seasonal Rooms with contractId:', this.contractId);
   }
 

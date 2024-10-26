@@ -55,6 +55,12 @@ public class BookingRoomtypes {
     public void setPrice(Double price) {
         this.price = price;
     }
+    public int getGuestCount() {
+        return guestCount;
+    }
+    public void setGuestCount(int guestCount) {
+        this.guestCount = guestCount;
+    }
     public Date getbCheckinDate() {
         return bCheckinDate;
     }
@@ -104,6 +110,7 @@ public class BookingRoomtypes {
     }
     public BookingRoomtypes() {
     }
+    
     
     
 

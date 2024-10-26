@@ -22,6 +22,12 @@ public class BookingItem {
 
 
     //Setters Getters
+    public Long getBookingItemsId() {
+        return BookingItemsId;
+    }
+    public void setBookingItemsId(Long bookingItemsId) {
+        BookingItemsId = bookingItemsId;
+    }
     public String getItemName() {
         return ItemName;
     }
@@ -54,7 +60,7 @@ public class BookingItem {
     }
     public BookingItem() {
     }
-
+    
     
 
 

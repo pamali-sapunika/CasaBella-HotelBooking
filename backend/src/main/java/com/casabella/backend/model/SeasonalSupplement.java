@@ -40,6 +40,13 @@ public class SeasonalSupplement {
 
 
     //Setters Getters
+    public long getSeasonalSupplementId() {
+        return seasonalSupplementId;
+    }
+
+    public void setSeasonalSupplementId(long seasonalSupplementId) {
+        this.seasonalSupplementId = seasonalSupplementId;
+    }
     public double getPricePerUnit() {
         return pricePerUnit;
     }
@@ -88,6 +95,8 @@ public class SeasonalSupplement {
         this.season = season;
         this.supplement = supplement;
     }
+
+    
 
     
 

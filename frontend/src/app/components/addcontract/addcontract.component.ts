@@ -1,4 +1,4 @@
-import { Component, OnInit, importProvidersFrom } from '@angular/core';
+import { Component, OnInit, importProvidersFrom, ChangeDetectionStrategy } from '@angular/core';
 import { Contract } from '../../model/contract.model';
 import { ContractService } from '../../services/contractService/contract.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,17 +9,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute} from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
 
 @Component({
   selector: 'app-addcontract',
   standalone: true,
+  providers: [provideNativeDateAdapter()],
   imports: [
     MatFormFieldModule, 
     MatInputModule, 
     MatCardModule, 
     MatButtonModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    MatDatepickerModule,
   ],
   templateUrl: './addcontract.component.html',
   styleUrl: './addcontract.component.css'
@@ -67,6 +71,7 @@ export class AddcontractComponent implements OnInit {
             // Navigate to addSeasons page with contractId as route parameter
             this.router.navigate(['/addSeasons', response.contractId]);
             console.log('Got contract id');
+            alert("Basic contract details added");
           });
         },
         error: (error) => {

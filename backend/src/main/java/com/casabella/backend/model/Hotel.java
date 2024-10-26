@@ -137,6 +137,14 @@ public class Hotel {
         this.contracts = contracts;
     }
 
+    public Set<SeasonalRoomtype> getHotelSeasonalRooms() {
+        return hotelSeasonalRooms;
+    }
+
+    public void setHotelSeasonalRooms(Set<SeasonalRoomtype> hotelSeasonalRooms) {
+        this.hotelSeasonalRooms = hotelSeasonalRooms;
+    }
+
     public Hotel(@NotBlank(message = "Name is mandatory") String hotelName, String city, String state, String country,
             String location, @Email String hotelEmail, String hotelContact, String description, String hotelPerson,
             Integer starRating, Set<Contract> contracts) {
@@ -174,6 +182,8 @@ public class Hotel {
     public Set<Contract> getContracts(){
         return contracts;
     }
+
+    
 
 
     // public void setContract(Contract contract){

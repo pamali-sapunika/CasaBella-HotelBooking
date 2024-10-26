@@ -28,7 +28,15 @@ public class Roomtype {
     private Set<SeasonalRoomtype> seasonalRoomtype = new HashSet<>();
 
 
-    //etters Getters
+    //Setters Getters
+    public Long getRoomtypeId() {
+        return roomtypeId;
+    }
+
+    public void setRoomtypeId(Long roomtypeId) {
+        this.roomtypeId = roomtypeId;
+    }
+
     public String getRoomtypeName() {
         return roomtypeName;
     }
@@ -64,6 +72,7 @@ public class Roomtype {
     //     return seasons;
     // }
 
+    
     
     
 }

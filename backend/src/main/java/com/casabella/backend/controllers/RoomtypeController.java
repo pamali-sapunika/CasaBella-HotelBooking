@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.casabella.backend.model.Roomtype;
-import com.casabella.backend.model.Season;
 import com.casabella.backend.services.RoomtypeService;
 
 import jakarta.persistence.EntityNotFoundException;

@@ -24,11 +24,11 @@ export class HotelsService {
   }
 
   // Search hotels based on guest count, dates, and optional location
-  searchHotels(guestCount: number, checkInDate: string, checkOutDate: string, location: string): Observable<Hotel[]> {
+  searchHotels(guestCount: number, checkinDate: string, checkoutDate: string): Observable<Hotel[]> {
     let params = new HttpParams()
       .set('guestCount', guestCount.toString())
-      .set('checkInDate', checkInDate)
-      .set('checkOutDate', checkOutDate)
+      .set('checkinDate', checkinDate)
+      .set('checkoutDate', checkoutDate)
 
     console.log('hotelService/search : params: '+params)
 

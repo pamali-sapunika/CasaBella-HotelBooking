@@ -1,9 +1,12 @@
 package com.casabella.backend.services;
 
+import java.util.Date;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
+import com.casabella.backend.dto.AvailabilityDTO;
+import com.casabella.backend.dto.AvailabilityProjection;
 import com.casabella.backend.model.Roomtype;
 import com.casabella.backend.model.Season;
 import com.casabella.backend.model.SeasonalRoomtype;
@@ -34,6 +37,15 @@ public class SeasonalRoomtypeService {
         SeasonalRoomtype seasonalRoomtype = new SeasonalRoomtype(price, noofRooms, maxAdults, noofReservedRooms, season, roomtype);
         return seasonalRoomtypeRepo.save(seasonalRoomtype);
     }
+
+    //Display Availabilty
+    public List<AvailabilityDTO> findAvailableSeasonalRoomtypes(Long hotelId, int guestCount, Date checkinDate, Date checkoutDate){
+        List<AvailabilityProjection> projections = seasonalRoomtypeRepo.findAvailableSeasonalRoomtypes(hotelId, guestCount, checkinDate, checkoutDate);
+        return projections.stream()
+            .map(p -> new AvailabilityDTO(p.getSeasonalRoomtypeId(),p.getRoomtypeId(), p.getRoomtypeName(), p.getNoofRooms(), p.getPrice(), p.getMaxAdults(), p.getNoofReservedRooms(), p.getSeasonId(), p.getMarkupPercentage(), p.getHotelId(), p.getContractId()))
+            .collect(Collectors.toList());
+    }
+    
 
     //Get seasonal roomtypes
     public List<SeasonalRoomtype> getSeasonalRoomtype(){

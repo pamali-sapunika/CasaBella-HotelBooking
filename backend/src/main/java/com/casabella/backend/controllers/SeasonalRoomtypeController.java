@@ -3,6 +3,7 @@ package com.casabella.backend.controllers;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.casabella.backend.dto.AvailabilityDTO;
 import com.casabella.backend.model.Hotel;
 import com.casabella.backend.model.SeasonalRoomtype;
 import com.casabella.backend.repository.HotelRepository;
@@ -50,7 +54,18 @@ public class SeasonalRoomtypeController {
         return ResponseEntity.ok(createdSeasonalRoomtype);
     }
 
+    //Display Availabilty
+    @GetMapping("/availability")
+    public List<AvailabilityDTO> showRoomtypes(
+        @RequestParam Long hotelId,
+        @RequestParam int guestCount,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkinDate,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkoutDate
+    ){
+        return seasonalRoomtypeService.findAvailableSeasonalRoomtypes(hotelId, guestCount, checkinDate, checkoutDate);
+    }
 
+    
     @GetMapping
     public List<SeasonalRoomtype> getSeasonalRoomtypes(){
         return seasonalRoomtypeService.getSeasonalRoomtype();

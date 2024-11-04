@@ -128,6 +128,19 @@ public class User {
         this.role = role;
     }
 
+    public User(Long userId, String name, String email, String nic, String address, String contactNo, String username,
+            String password, String role) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.nic = nic;
+        this.address = address;
+        this.contactNo = contactNo;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
     public User() {
     }
 

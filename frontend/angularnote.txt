@@ -5,6 +5,15 @@ json to java objects vice versa -> jackson, Gson
 ---------------------------------------
 angular crud -> 
 
+Between parent compoenets - route or query
+Between parent and child compoenet - @Input @Output
+Between 2 child compoenets - Pass to parent compoenet so other child componenets can use Input
+
+Route parameters -> Route parameters are part of the URL path itself. 
+They are typically used to identify a specific resource or a unique item within a page or route.
+Query parameters -> Query parameters are appended to the end of a URL and start with a ?. 
+They are often used for filtering, searching, or providing additional information to the page.
+
 CORS 
 ENABLING GLOBALLY ->
 @Crossorigin(origins ="https://localhost:4200 in secureCOnfig")

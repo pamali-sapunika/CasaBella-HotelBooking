@@ -58,13 +58,25 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.getAllBookings());
     }
 
-
-    //Get one Booking
+    //Get one Booking by bookingID
     @GetMapping("/{id}")
     public ResponseEntity<?> getBookingById(@PathVariable Long id){
         Booking booking = bookingService.getBookingById(id);
         if(booking == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(booking);
+    }
+
+    //Get one booking by UserID
+    @GetMapping("/userBookings/{userId}")
+    public ResponseEntity<List<Booking>> getBookingByUserId(@PathVariable Long userId){
+        List<Booking> bookings = bookingService.getBookingByUserId(userId);
+        return bookings.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(bookings);
+
+        // if (bookings.isEmpty()) {
+        //     return ResponseEntity.noContent().build();
+        // } else {
+        //     return ResponseEntity.ok(bookings);
+        // }
     }
 
 

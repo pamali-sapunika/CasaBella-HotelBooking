@@ -23,9 +23,14 @@ public class BookingService {
         return bookingRepo.findAll();
     }
 
-    //Get Booking by ID
+    //Get Booking by booking ID
     public Booking getBookingById(Long id){
         return bookingRepo.findById(id).orElse(null);
+    }
+
+    //Get bookings by user Id
+    public List<Booking> getBookingByUserId(Long userId){
+        return bookingRepo.findByUserId(userId);
     }
 
     //Update Booking

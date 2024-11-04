@@ -9,6 +9,8 @@ inject nessecery beans
 
 @RestCOntroller - Controller + requestbody
 
+@ControllerAdvice -  for better error handling 
+
 @EventListener -> mr=ethod to listen to spring events
 
 @Bean - spring not springboot

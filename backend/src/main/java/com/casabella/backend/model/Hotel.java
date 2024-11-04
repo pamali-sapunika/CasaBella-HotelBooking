@@ -2,6 +2,7 @@ package com.casabella.backend.model;
 
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -39,6 +40,7 @@ public class Hotel {
     private Set<Contract> contracts = new HashSet<>();
 
     //Hotel - SeasonalROomtypes
+    @JsonIgnore
     @OneToMany(mappedBy = "hotel")
     private Set<SeasonalRoomtype> hotelSeasonalRooms = new HashSet<>();
 

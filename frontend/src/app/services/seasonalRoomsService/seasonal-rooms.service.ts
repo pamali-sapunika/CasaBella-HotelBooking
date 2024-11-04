@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SeasonalRooms } from '../../model/seasonalRoom.model';
+import { AvailabilityDTO } from '../../model/availability.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,19 @@ export class SeasonalRoomsService {
       noofReservedRooms: number }): Observable<SeasonalRooms> {
         
     return this.http.post<SeasonalRooms>(`${this.baseUrl}/${roomtypeId}/seasons/${seasonId}`, roomtypeData);
+  }
+
+  //Get availability DTO API
+  getAvailability(hotelId: number, guestCount: number, checkinDate: string, checkoutDate: string): Observable<AvailabilityDTO[]> {
+    let params = new HttpParams()
+      .set('hotelId', hotelId)
+      .set('guestCount', guestCount.toString())
+      .set('checkinDate', checkinDate)
+      .set('checkoutDate', checkoutDate);
+    
+    console.log('availability/search : params' + params);
+
+    return this.http.get<AvailabilityDTO[]>(`${this.baseUrl}/availability`, { params })
   }
 
   getSeasonalRoomtypes(): Observable<SeasonalRooms[]> {

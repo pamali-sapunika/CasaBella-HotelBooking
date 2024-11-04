@@ -20,6 +20,56 @@
 
   <div class="sub-container">
     <p>hotel description</p>
+    <p>hotel ID: {{ hotelId }}</p>
+    <p>guest count : {{ guestCount }} checkin date : {{ checkinDate }} checkout date: {{checkoutDate}}</p>
+
+    <div>
+      <app-searchagain
+        [guestCount]="guestCount"
+        [checkinDate]="checkinDate"
+        [checkoutDate]="checkoutDate"
+        (searchParametersUpdated)="onSearchParametersUpdated($event)">
+      </app-searchagain>
+    </div>
+
+    <div>
+      <div *ngIf="availabilityList.length > 0">
+        <h2>Available Room Types</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Room Type ID</th>
+              <th>Room Type Name</th>
+              <th>No. of Rooms</th>
+              <th>Price</th>
+              <th>Max Adults</th>
+              <th>No. of Reserved Rooms</th>
+              <th>Season ID</th>
+              <th>Markup Percentage</th>
+              <th>Hotel ID</th>
+              <th>Contract ID</th>
+              <th>No of Booked Rooms</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let availability of availabilityList">
+              <td>{{ availability.roomtypeId }}</td>
+              <td>{{ availability.roomtypeName }}</td>
+              <td>{{ availability.noofRooms }}</td>
+              <td>{{ availability.price}}</td>
+              <td>{{ availability.maxAdults }}</td>
+              <td>{{ availability.noofReservedRooms }}</td>
+              <td>{{ availability.seasonId }}</td>
+              <td>{{ availability.markupPercentage }}%</td>
+              <td>{{ availability.hotelId }}</td>
+              <td>{{ availability.contractId }}</td>
+              <td>{{ availability.bookedRooms }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>    
+    </div>
+    <!-- availability ends -->
   </div>
 
 </div>

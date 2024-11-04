@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -23,7 +23,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     CommonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCardModule
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
@@ -43,7 +42,7 @@ export class SearchComponent{
 
   private formatDate(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
@@ -64,8 +63,21 @@ export class SearchComponent{
     });
   }
 
-  viewDetails(hotelId: number): void{
-    this.router.navigate(['availableHotel', hotelId])
+  viewHotelDetails(hotelId: number): void{
+    const { guestCount, checkinDate, checkoutDate } = this.searchForm.value;
+
+    const formattedCheckinDate = this.formatDate(checkinDate);
+    const formattedCheckoutDate = this.formatDate(checkoutDate);
+
+    this.router.navigate(['availableHotel', hotelId], {
+      queryParams: {
+        guestCount,
+        checkinDate: formattedCheckinDate,
+        checkoutDate: formattedCheckoutDate
+      }
+    });
+
+    console.log("Navigated successfully to availability page with parameters",  { hotelId, guestCount, formattedCheckinDate, formattedCheckoutDate });
   }
   
 

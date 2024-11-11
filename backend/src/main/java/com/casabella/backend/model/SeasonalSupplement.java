@@ -14,8 +14,6 @@ import jakarta.persistence.OneToMany;
 
 
 @Entity
-// @Data
-// @Table(name = "seasonal_supplement")
 public class SeasonalSupplement {
 
     @Id

@@ -32,6 +32,16 @@
       </app-searchagain>
     </div>
 
+    <div *ngIf="seasonalSupplements.length > 0">
+      <h3>Seasonal Supplements:</h3>
+      <div *ngFor="let supplement of seasonalSupplements">
+        <mat-card>
+          <p>{{ supplement.supplementName }}</p>
+          <p>Price per unit: {{ supplement.pricePerUnit }}</p>
+        </mat-card>
+      </div>
+    </div>
+    
     <div>
       <div *ngIf="availabilityList.length > 0">
         <h2>Available Room Types</h2>

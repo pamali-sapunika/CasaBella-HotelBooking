@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.casabella.backend.dto.SeasonalSupplementDTO;
+import com.casabella.backend.dto.SeasonalSupplementProjection;
 import com.casabella.backend.model.SeasonalSupplement;
 import com.casabella.backend.services.SeasonalSupplementService;
 
@@ -41,6 +43,13 @@ public class SeasonalSupplementController {
     @GetMapping
     public List<SeasonalSupplement> getSeasonalSupplements(){
         return seasonalSupplementService.getSeasonalSupplements();
+    }
+
+    //show seasonal supplement name 
+    @GetMapping("/setSupplementName/{seasonId}")
+    public ResponseEntity<List<SeasonalSupplementProjection>> getSeasonalSupplementsWithNames(@PathVariable Long seasonId) {
+        List<SeasonalSupplementProjection> supplements = seasonalSupplementService.showAllWithSupplementName(seasonId);
+        return ResponseEntity.ok(supplements);
     }
 
     @GetMapping("/{seasonalSupplementId}")

@@ -52,19 +52,19 @@ public class Supplement {
         this.seasonalSupplement = seasonalSupplement;
     }
 
-
-    public Supplement(String supplementName, Set<SeasonalSupplement> seasonalSupplement,
-            Set<BookingSupplements> bookingSupplements) {
-        this.supplementName = supplementName;
-        this.seasonalSupplement = seasonalSupplement;
-    }
-
     public Supplement(String supplementName) {
         this.supplementName = supplementName;
     }
 
     public Supplement() {
     }
+
+    public Supplement(String supplementName, Set<SeasonalSupplement> seasonalSupplement) {
+        this.supplementName = supplementName;
+        this.seasonalSupplement = seasonalSupplement;
+    }
+
+    
 
     
 

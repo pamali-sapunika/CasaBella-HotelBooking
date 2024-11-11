@@ -6,7 +6,10 @@ import { HotelsService } from '../../services/hotelService/hotels.service';
 import { SeasonalRoomsService } from '../../services/seasonalRoomsService/seasonal-rooms.service';
 import { AvailabilityDTO } from '../../model/availability.dto';
 import { CommonModule } from '@angular/common';
+import { SeasonalSupplementService } from '../../services/seasonalSupplementService/seasonal-supplement.service';
 import { SearchagainComponent } from '../searchagain/searchagain.component';
+import { SeasonalSupplement } from '../../model/seasonalSupplement.model';
+import { AvaialbilitySupplements } from '../../model/availabilitySupple.dto';
 
 @Component({
   selector: 'app-availability',
@@ -23,6 +26,7 @@ import { SearchagainComponent } from '../searchagain/searchagain.component';
 export class AvailabilityComponent implements OnInit{
 
   availabilityList: AvailabilityDTO[] = [];
+  seasonalSupplements: AvaialbilitySupplements[] = []; 
   hotelId!: number; 
   guestCount!: number; 
   checkinDate!: string;
@@ -32,7 +36,8 @@ export class AvailabilityComponent implements OnInit{
     private router: Router, 
     private route: ActivatedRoute, 
     private hotelService: HotelsService, 
-    private seasonalRoomsService: SeasonalRoomsService
+    private seasonalRoomsService: SeasonalRoomsService,
+    private seasonalSupplementService: SeasonalSupplementService
   ){ }
 
   ngOnInit(): void {
@@ -53,6 +58,10 @@ export class AvailabilityComponent implements OnInit{
         next: (data) => {
           this.availabilityList = data;
           console.log('Availability fetched successfullly');
+          if (data.length > 0) {
+            const seasonId = data[0].seasonId; 
+            this.fetchSeasonalSupplements(seasonId);
+          }
         },
         error: (e) => {
           console.error('Error fetching availabilty', e);
@@ -61,8 +70,21 @@ export class AvailabilityComponent implements OnInit{
     }
   }
 
+  fetchSeasonalSupplements(seasonId: number): void {
+    this.seasonalSupplementService.getSeasonalSupplementsWithNames(seasonId).subscribe({
+      next: (supplements) => {
+        this.seasonalSupplements = supplements;
+        console.log('P Seasonal supplements fetched successfully', this.seasonalSupplements);
+      },
+      error: (e) => {
+        console.error('pP Error fetching seasonal supplements', e);
+      }
+    });
+  }
 
-  //For loading existing parameters from real search to search again
+
+
+  //For loading existing parameters from real search to search-again
   onSearchParametersUpdated(criteria: { guestCount: number, checkinDate: string, checkoutDate: string }) {
 
     const formattedCheckinDate = this.formatDate(criteria.checkinDate);

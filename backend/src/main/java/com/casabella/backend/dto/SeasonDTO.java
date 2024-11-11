@@ -11,7 +11,7 @@ public class SeasonDTO {
 
     private Set<RoomtypeDTO> roomtypes = new HashSet<>();
 
-    private Set<SupplementDTO> supplements = new HashSet<>();
+    private Set<SeasonalSupplementDTO> supplements = new HashSet<>();
 
     //Helping Methos
     public String getSeason_name() {
@@ -54,11 +54,11 @@ public class SeasonDTO {
         this.roomtypes = roomtypes;
     }
 
-    public Set<SupplementDTO> getSupplements() {
+    public Set<SeasonalSupplementDTO> getSupplements() {
         return supplements;
     }
 
-    public void setSupplements(Set<SupplementDTO> supplements) {
+    public void setSupplements(Set<SeasonalSupplementDTO> supplements) {
         this.supplements = supplements;
     }
 

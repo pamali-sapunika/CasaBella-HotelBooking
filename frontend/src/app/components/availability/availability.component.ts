@@ -8,7 +8,6 @@ import { AvailabilityDTO } from '../../model/availability.dto';
 import { CommonModule } from '@angular/common';
 import { SeasonalSupplementService } from '../../services/seasonalSupplementService/seasonal-supplement.service';
 import { SearchagainComponent } from '../searchagain/searchagain.component';
-import { SeasonalSupplement } from '../../model/seasonalSupplement.model';
 import { AvaialbilitySupplements } from '../../model/availabilitySupple.dto';
 import { BookingroomsService } from '../../services/bookingRoomtypeService/bookingrooms.service';
 import { BookingsupplementsService } from '../../services/bookingSupplementService/bookingsupplements.service';
@@ -29,14 +28,13 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   templateUrl: './availability.component.html',
-  styleUrl: './availability.component.css'
+  styleUrls: ['./availability.component.css']
 })
-export class AvailabilityComponent implements OnInit{
+export class AvailabilityComponent implements OnInit {
 
   availabilityList: AvailabilityDTO[] = [];
-  seasonalSupplements: AvaialbilitySupplements[] = []; 
-  expandedRowSeasonId: number | null = null;
-  supplementCache: { [seasonId: number]: AvaialbilitySupplements[] } = {}; 
+  supplementCache: { [seasonId: number]: AvaialbilitySupplements[] } = {};
+  seasonalSupplements: AvaialbilitySupplements[] = [];
 
   hotelId!: number; 
   guestCount!: number; 
@@ -54,7 +52,7 @@ export class AvailabilityComponent implements OnInit{
     private bookingRoomsService: BookingroomsService,
     private bookingSupplementService: BookingsupplementsService,
     private bookingService: BookingService
-  ){ }
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -69,17 +67,35 @@ export class AvailabilityComponent implements OnInit{
   }
 
   loadAvailability(): void {
-    if (this.hotelId && this.guestCount && this.checkinDate && this.checkoutDate) {
+    if (this.hotelId && this.guestCount && this.checkinDate && this.checkoutDate !== undefined) {
       this.seasonalRoomsService.getAvailability(this.hotelId, this.guestCount, this.checkinDate, this.checkoutDate).subscribe({
         next: (data) => {
           this.availabilityList = data;
           console.log('Availability fetched successfully');
+          this.fetchSupplements();
         },
         error: (e) => {
           console.error('Error fetching availability', e);
         }
       });
     }
+  }
+
+  fetchSupplements(): void {
+    this.availabilityList.forEach(availability => {
+      const seasonId = availability.seasonId;
+      if (!this.supplementCache[seasonId]) {
+        this.seasonalSupplementService.getSeasonalSupplementsWithNames(seasonId).subscribe({
+          next: (data) => {
+            this.supplementCache[seasonId] = data;
+            console.log(`Supplements fetched for season ID ${seasonId}`, data);
+          },
+          error: (e) => {
+            console.error(`Error fetching supplements for season ID ${seasonId}`, e);
+          }
+        });
+      }
+    });
   }
 
   onSubmit(): void {
@@ -119,59 +135,18 @@ export class AvailabilityComponent implements OnInit{
     }
   }
 
-  // addBookingRoomtype(bookingId: number, seasonalRoomtypeId: number): void {
-  //   const bookingRoomtype: BookingRoomtypes = {
-  //     bookingRoomtypeId: 0,
-  //     bookingId: bookingId,
-  //     seasonalRoomtypeId: seasonalRoomtypeId,
-  //     noOfRooms: 0,
-  //     price: 0, 
-  //     bCheckinDate: '',
-  //     bCheckoutDate: '',
-  //     guestCount: 0 
-  //   };
-
-  //   this.bookingRoomsService.addRoomtypeToBooking(bookingId, seasonalRoomtypeId, bookingRoomtype).subscribe({
-  //     next: (response) => {
-  //       console.log('BookingRoomtype added successfully:', response);
-  //     },
-  //     error: (e) => {
-  //       console.error('Error adding BookingRoomtype:', e);
-  //     }
-  //   });
-  // }
-
-  // addBookingSupplement(bookingId: number, seasonalSupplementId: number): void {
-  //   const bookingSupplement: BookingSupplements = {
-  //     bookingSupplementId: 0,
-  //     bookingId: bookingId,
-  //     seasonalSupplementId: seasonalSupplementId,
-  //     quantity: 0, 
-  //     pricePerUnit: 0 
-  //   };
-
-  //   this.bookingSupplementService.addSupplementToBooking(bookingId, seasonalSupplementId, bookingSupplement).subscribe({
-  //     next: (response) => {
-  //       console.log('BookingSupplement added successfully:', response);
-  //     },
-  //     error: (e) => {
-  //       console.error('Error adding BookingSupplement:', e);
-  //     }
-  //   });
-  // }
-
   addMultipleBookingRoomtypes(bookingId: number): void {
     for (const availability of this.availabilityList) {
       if (availability.selectedRooms && availability.selectedRooms > 0) {
         const bookingRoomtype: BookingRoomtypes = {
           bookingRoomtypeId: 0,
           bookingId: bookingId,
-          seasonalRoomtypeId: availability.roomtypeId, // Assuming roomtypeId is the same as seasonalRoomtypeId
+          seasonalRoomtypeId: availability.roomtypeId,
           noOfRooms: availability.selectedRooms,
           price: availability.price,
           bCheckinDate: this.checkinDate,
           bCheckoutDate: this.checkoutDate,
-          guestCount: availability.selectedGuestCount || 0 // Optional guest count input
+          guestCount: availability.selectedGuestCount || 0 
         };
   
         this.bookingRoomsService.addRoomtypeToBooking(bookingId, availability.roomtypeId, bookingRoomtype).subscribe({
@@ -186,25 +161,8 @@ export class AvailabilityComponent implements OnInit{
     }
   }
 
-
- expandRow(seasonId: number): void {
-    this.expandedRowSeasonId = this.expandedRowSeasonId === seasonId ? null : seasonId;
-
-    if (this.expandedRowSeasonId && !this.supplementCache[seasonId]) {
-      this.seasonalSupplementService.getSeasonalSupplementsWithNames(seasonId).subscribe({
-        next: (data) => {
-          this.supplementCache[seasonId] = data;
-          console.log(`Supplements loaded for seasonId ${seasonId}:`, data);
-        },
-        error: (e) => {
-          console.error('Error fetching supplements', e);
-        }
-      });
-    }
-  }
-
-  //For loading existing parameters from real search to search-again
-  onSearchParametersUpdated(criteria: { guestCount: number, checkinDate: string, checkoutDate: string }) {
+   //For loading existing parameters from real search to search-again
+   onSearchParametersUpdated(criteria: { guestCount: number, checkinDate: string, checkoutDate: string }) {
 
     const formattedCheckinDate = this.formatDate(criteria.checkinDate);
     const formattedCheckoutDate = criteria.checkoutDate;

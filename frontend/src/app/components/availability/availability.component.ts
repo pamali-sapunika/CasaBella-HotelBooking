@@ -35,6 +35,9 @@ export class AvailabilityComponent implements OnInit{
 
   availabilityList: AvailabilityDTO[] = [];
   seasonalSupplements: AvaialbilitySupplements[] = []; 
+  expandedRowSeasonId: number | null = null;
+  supplementCache: { [seasonId: number]: AvaialbilitySupplements[] } = {}; 
+
   hotelId!: number; 
   guestCount!: number; 
   checkinDate!: string;
@@ -65,19 +68,15 @@ export class AvailabilityComponent implements OnInit{
     this.loadAvailability();
   }
 
-  loadAvailability(): void{
-    if (this.hotelId  && this.guestCount && this.checkinDate && this.checkoutDate !== undefined) {
+  loadAvailability(): void {
+    if (this.hotelId && this.guestCount && this.checkinDate && this.checkoutDate) {
       this.seasonalRoomsService.getAvailability(this.hotelId, this.guestCount, this.checkinDate, this.checkoutDate).subscribe({
         next: (data) => {
           this.availabilityList = data;
-          console.log('Availability fetched successfullly');
-          if (data.length > 0) {
-            const seasonId = data[0].seasonId; 
-            this.fetchSeasonalSupplements(seasonId);
-          }
+          console.log('Availability fetched successfully');
         },
         error: (e) => {
-          console.error('Error fetching availabilty', e);
+          console.error('Error fetching availability', e);
         }
       });
     }
@@ -188,16 +187,20 @@ export class AvailabilityComponent implements OnInit{
   }
 
 
-  fetchSeasonalSupplements(seasonId: number): void {
-    this.seasonalSupplementService.getSeasonalSupplementsWithNames(seasonId).subscribe({
-      next: (supplements) => {
-        this.seasonalSupplements = supplements;
-        console.log('P Seasonal supplements fetched successfully', this.seasonalSupplements);
-      },
-      error: (e) => {
-        console.error('pP Error fetching seasonal supplements', e);
-      }
-    });
+ expandRow(seasonId: number): void {
+    this.expandedRowSeasonId = this.expandedRowSeasonId === seasonId ? null : seasonId;
+
+    if (this.expandedRowSeasonId && !this.supplementCache[seasonId]) {
+      this.seasonalSupplementService.getSeasonalSupplementsWithNames(seasonId).subscribe({
+        next: (data) => {
+          this.supplementCache[seasonId] = data;
+          console.log(`Supplements loaded for seasonId ${seasonId}:`, data);
+        },
+        error: (e) => {
+          console.error('Error fetching supplements', e);
+        }
+      });
+    }
   }
 
   //For loading existing parameters from real search to search-again

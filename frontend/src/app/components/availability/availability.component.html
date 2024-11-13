@@ -73,7 +73,15 @@
                        [max]="availability.maxAdults" 
                        required>
               </td>              
-              <td>{{ availability.seasonId }}</td>
+              <td>
+                <button (click)="expandRow(availability.seasonId)">Show Supplements</button>
+                <div *ngIf="expandedRowSeasonId === availability.seasonId">
+                  <mat-card *ngFor="let supplement of supplementCache[availability.seasonId]">
+                    <p>{{ supplement.supplementName }}</p>
+                    <p>Price per unit: {{ supplement.pricePerUnit }}</p>
+                  </mat-card>
+                </div>
+              </td>
               <td>{{ availability.markupPercentage }}%</td>
             </tr>
           </tbody>

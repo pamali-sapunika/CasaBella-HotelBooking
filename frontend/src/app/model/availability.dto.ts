@@ -11,4 +11,7 @@ export interface AvailabilityDTO{
     hotelId: number;
     contractId: number;
     bookedRooms: number;
+
+    selectedRooms?: number;        // Number of rooms selected by the user
+    selectedGuestCount?: number;  
 }

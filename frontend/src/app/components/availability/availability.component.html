@@ -48,38 +48,45 @@
         <table>
           <thead>
             <tr>
-              <th>Room Type ID</th>
-              <th>Room Type Name</th>
-              <th>No. of Rooms</th>
-              <th>Price</th>
-              <th>Max Adults</th>
-              <th>No. of Reserved Rooms</th>
-              <th>Season ID</th>
-              <th>Markup Percentage</th>
-              <th>Hotel ID</th>
-              <th>Contract ID</th>
-              <th>No of Booked Rooms</th>
+              <th>Room Type</th>
+              <th>Available no. of Rooms and Persons</th>
+              <th>No. of Rooms </th>
+              <th>Guest Count</th>
+              <th>Supplements</th>
+              <th>Total price for the Rooms</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let availability of availabilityList">
-              <td>{{ availability.roomtypeId }}</td>
-              <td>{{ availability.roomtypeName }}</td>
-              <td>{{ availability.noofRooms }}</td>
-              <td>{{ availability.price}}</td>
-              <td>{{ availability.maxAdults }}</td>
-              <td>{{ availability.noofReservedRooms }}</td>
+            <tr *ngFor="let availability of availabilityList; let i = index">
+              <td>{{ availability.roomtypeId }}<br>{{ availability.roomtypeName }}</td>
+              <td>Total rooms: {{ availability.noofRooms }}<br>Price per unit: {{ availability.price }}<br>People: {{ availability.maxAdults }}</td>
+              <td>
+                <p>Enter number of rooms </p>
+                <input type="number" [(ngModel)]="availabilityList[i].selectedRooms" placeholder="Enter No. of Rooms"><br>
+                <p>TOTAL PRICE: NOOF ROOMS * PRICE PER UNIT * NOOF NIGHTS</p>
+              </td>
+              <td>
+                <input type="number" 
+                       [(ngModel)]="availabilityList[i].selectedGuestCount" 
+                       placeholder="Enter Guest Count" 
+                       [min]="1" 
+                       [max]="availability.maxAdults" 
+                       required>
+              </td>              
               <td>{{ availability.seasonId }}</td>
               <td>{{ availability.markupPercentage }}%</td>
-              <td>{{ availability.hotelId }}</td>
-              <td>{{ availability.contractId }}</td>
-              <td>{{ availability.bookedRooms }}</td>
             </tr>
           </tbody>
         </table>
       </div>    
     </div>
-    <!-- availability ends -->
+    <div>
+      <button mat-button (click)="onSubmit()">Add to Booking</button>
+    </div>
+    
+    
   </div>
+  
+  
 
 </div>

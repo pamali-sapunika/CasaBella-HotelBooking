@@ -2,10 +2,10 @@
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
         <div class="input-group">
         <div class="input-field">
-            <label for="checkinDate">Guest Count</label>
+            <label for="guestCount">Guest Count</label>
             <mat-form-field appearance="fill">
             <mat-label>Guest Count</mat-label>
-            <input matInput formControlName="guestCount" type="number" min="1" required />
+            <input matInput id="guestCount" formControlName="guestCount" type="number" min="1" required />
             </mat-form-field>
         </div>
 
@@ -13,7 +13,7 @@
             <label for="checkinDate">Check-in Date</label>
             <mat-form-field appearance="fill">
             <mat-label>Check-in Date</mat-label>
-            <input matInput [matDatepicker]="checkinPicker" formControlName="checkinDate" required />
+            <input matInput id="checkinDate" [matDatepicker]="checkinPicker" formControlName="checkinDate" required />
             <mat-datepicker-toggle matSuffix [for]="checkinPicker"></mat-datepicker-toggle>
             <mat-datepicker #checkinPicker></mat-datepicker>
             </mat-form-field>
@@ -23,7 +23,7 @@
             <label for="checkoutDate">Check-out Date</label>
             <mat-form-field appearance="fill">
             <mat-label>Check-out Date</mat-label>
-            <input matInput [matDatepicker]="checkoutPicker" formControlName="checkoutDate" required />
+            <input matInput id="checkoutDate" [matDatepicker]="checkoutPicker" formControlName="checkoutDate" required />
             <mat-datepicker-toggle matSuffix [for]="checkoutPicker"></mat-datepicker-toggle>
             <mat-datepicker #checkoutPicker></mat-datepicker>
             </mat-form-field>

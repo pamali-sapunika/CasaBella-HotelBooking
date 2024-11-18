@@ -10,8 +10,9 @@ export interface AvailabilityDTO{
     markupPercentage: number;
     hotelId: number;
     contractId: number;
-    bookedRooms: number;
+    availableRooms: number;
 
     selectedRooms?: number;        // Number of rooms selected by the user
     selectedGuestCount?: number;  
+    seasonalSupplementIds: number[]; 
 }

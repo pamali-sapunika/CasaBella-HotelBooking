@@ -13,7 +13,7 @@ public interface AvailabilityProjection {
     double getMarkupPercentage();
     Long getHotelId();
     Long getContractId();
-    int getBookedRooms();
+    int getAvailableRooms();
    
 
     

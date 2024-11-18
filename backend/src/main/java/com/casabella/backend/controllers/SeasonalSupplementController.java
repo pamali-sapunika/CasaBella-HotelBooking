@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.casabella.backend.dto.SeasonalSupplementDTO;
 import com.casabella.backend.dto.SeasonalSupplementProjection;
 import com.casabella.backend.model.SeasonalSupplement;
 import com.casabella.backend.services.SeasonalSupplementService;

@@ -42,7 +42,7 @@ public class SeasonalRoomtypeService {
     public List<AvailabilityDTO> findAvailableSeasonalRoomtypes(Long hotelId, int guestCount, Date checkinDate, Date checkoutDate){
         List<AvailabilityProjection> projections = seasonalRoomtypeRepo.findAvailableSeasonalRoomtypes(hotelId, guestCount, checkinDate, checkoutDate);
         return projections.stream()
-            .map(p -> new AvailabilityDTO(p.getSeasonalRoomtypeId(),p.getRoomtypeId(), p.getRoomtypeName(), p.getNoofRooms(), p.getPrice(), p.getMaxAdults(), p.getNoofReservedRooms(), p.getSeasonId(), p.getMarkupPercentage(), p.getHotelId(), p.getContractId(), p.getBookedRooms()))
+            .map(p -> new AvailabilityDTO(p.getSeasonalRoomtypeId(),p.getRoomtypeId(), p.getRoomtypeName(), p.getNoofRooms(), p.getPrice(), p.getMaxAdults(), p.getNoofReservedRooms(), p.getSeasonId(), p.getMarkupPercentage(), p.getHotelId(), p.getContractId(), p.getAvailableRooms()))
             .collect(Collectors.toList());
     }
     

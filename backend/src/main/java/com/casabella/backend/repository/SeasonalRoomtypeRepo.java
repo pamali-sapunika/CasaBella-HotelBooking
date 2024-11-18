@@ -66,17 +66,18 @@ public interface SeasonalRoomtypeRepo extends JpaRepository<SeasonalRoomtype, Lo
         sr.hotel_id AS hotelId, 
         c.contract_id AS contractId,
         -- Add booked room count for the specific check-in and check-out range
-        COALESCE((SELECT SUM(brt.no_of_rooms)
+        COALESCE((SELECT sr.noof_rooms - SUM(brt.no_of_rooms)
                     FROM booking_roomtypes brt
                     WHERE brt.seasonal_roomtype_id = sr.seasonal_roomtype_id
                     AND brt.b_checkin_date < :bCheckoutDate
-                    AND brt.b_checkout_date > :bCheckinDate), 0) AS bookedRooms
+                    AND brt.b_checkout_date > :bCheckinDate), 0) AS availableRooms
     FROM hotel h
     JOIN seasonal_roomtype sr ON h.hotel_id = sr.hotel_id
     JOIN season s ON s.season_id = sr.season_id
     JOIN contract c ON c.contract_id = s.contract_id
     JOIN roomtype rt ON rt.roomtype_id = sr.roomtype_id
     WHERE h.hotel_id IN (SELECT hotel_id FROM AvailableHotels)
+    HAVING availableRooms > 0
     AND EXISTS(SELECT 1 FROM CheckinCovered)
     AND EXISTS(SELECT 1 FROM CheckoutCovered)
     AND NOT EXISTS (SELECT 1 FROM GapExists)""", nativeQuery = true)

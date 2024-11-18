@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import com.casabella.backend.dto.SeasonalSupplementProjection;
 import com.casabella.backend.model.SeasonalSupplement;
 
@@ -19,5 +18,8 @@ public interface SeasonalSupplementRepository extends JpaRepository<SeasonalSupp
                "WHERE ss.season_id = :seasonId", 
        nativeQuery = true)
     List<SeasonalSupplementProjection> showAllWithSupplementName(@Param("seasonId") Long seasonId);
+
+    // @Query("SELECT s FROM SeasonalSupplement s WHERE s.seasonId IN :seasonIds")
+    // List<SeasonalSupplementDTO> findBySeasonIdIn(@Param("seasonIds") List<Long> seasonIds);
     
 }

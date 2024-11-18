@@ -16,6 +16,7 @@ import { Booking } from '../../model/booking.model';
 import { BookingRoomtypes } from '../../model/bookingrooms.model';
 import { BookingSupplements } from '../../model/bookingsupplement.model';
 import { FormsModule } from '@angular/forms';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-availability',
@@ -25,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     MatButtonModule,
     CommonModule,
     SearchagainComponent,
-    FormsModule
+    FormsModule,
+    MatCheckboxModule
   ],
   templateUrl: './availability.component.html',
   styleUrls: ['./availability.component.css']
@@ -33,7 +35,7 @@ import { FormsModule } from '@angular/forms';
 export class AvailabilityComponent implements OnInit {
 
   availabilityList: AvailabilityDTO[] = [];
-  supplementCache: { [seasonId: number]: AvaialbilitySupplements[] } = {};
+  supplementCache: { [seasonalRoomtypeId: number]: AvaialbilitySupplements[] } = {};
   seasonalSupplements: AvaialbilitySupplements[] = [];
 
   hotelId!: number; 
@@ -42,6 +44,10 @@ export class AvailabilityComponent implements OnInit {
   checkoutDate!: string;
 
   existingBookingId: number | null = null;
+  noOfNights: number = 0;
+  guestCounts: number[] = [1, 2, 3, 4, 5];
+  unitPrice: number = 150;  // Price per room (e.g. $150)
+  maxAdults: number = 4;  
 
   constructor(
     private router: Router, 
@@ -63,6 +69,10 @@ export class AvailabilityComponent implements OnInit {
       this.checkinDate = this.formatDate(params.get('checkinDate')!);
       this.checkoutDate = this.formatDate(params.get('checkoutDate')!);
     });
+    this.guestCounts.forEach((guestCount) => {
+      const totalPrice = this.calculateRoomPrice(this.unitPrice, this.maxAdults, guestCount, this.noOfNights);
+      console.log(`Guest Count: ${guestCount}, Total Price for ${this.noOfNights} nights: $${totalPrice}`);
+    });
     this.loadAvailability();
   }
 
@@ -71,8 +81,14 @@ export class AvailabilityComponent implements OnInit {
       this.seasonalRoomsService.getAvailability(this.hotelId, this.guestCount, this.checkinDate, this.checkoutDate).subscribe({
         next: (data) => {
           this.availabilityList = data;
-          console.log('Availability fetched successfully');
+  
+          // Initialize selectedGuestCount with the guestCount value
+          this.availabilityList.forEach((availability) => {
+            availability.selectedGuestCount = this.guestCount; // Use the default guest count
+          });
+  
           this.fetchSupplements();
+          this.calculateNoofNights();
         },
         error: (e) => {
           console.error('Error fetching availability', e);
@@ -80,28 +96,67 @@ export class AvailabilityComponent implements OnInit {
       });
     }
   }
+  
+
+  calculateNoofNights(): number{
+
+    const cin = new Date(this.checkinDate);
+    const cout = new Date(this.checkoutDate);
+
+    const differanceInMs = cout.getTime() - cin.getTime();
+    console.log("DIfferance in Ms: ", differanceInMs);
+
+    this.noOfNights = differanceInMs / (1000 * 60 * 60 * 24);
+
+    return this.noOfNights;
+  }
+
+ 
+
+  // calculateRoomPrice(unitPrice: number, maxAdults: number, guestCount: number, noOfNights: number): number {
+  //   const requiredRooms = Math.ceil(guestCount / maxAdults);
+
+  //   const totalRoomPrice = requiredRooms * unitPrice * noOfNights;
+
+  //   return totalRoomPrice;
+  // }
+
+  calculateRoomPrice(unitPrice: number, noOfRooms: number, noOfNights: number, markupPercentage: number): number {
+    const basePrice = unitPrice * noOfRooms * noOfNights;
+
+    const totalPrice = basePrice * (1 + markupPercentage / 100);
+  
+    return totalPrice;
+  }
+  
+
 
   fetchSupplements(): void {
     this.availabilityList.forEach(availability => {
-      const seasonId = availability.seasonId;
-      if (!this.supplementCache[seasonId]) {
-        this.seasonalSupplementService.getSeasonalSupplementsWithNames(seasonId).subscribe({
+      const seasonalRoomtypeId = availability.seasonalRoomtypeId;
+      if (!this.supplementCache[seasonalRoomtypeId]) {
+        this.seasonalSupplementService.getSeasonalSupplementsWithNames(availability.seasonId).subscribe({
           next: (data) => {
-            this.supplementCache[seasonId] = data;
-            console.log(`Supplements fetched for season ID ${seasonId}`, data);
+            // Clone the supplements for this specific room type
+            this.supplementCache[seasonalRoomtypeId] = data.map(supplement => ({
+              ...supplement,
+              selectedQuantity: 0 // Initialize selectedQuantity
+            }));
           },
           error: (e) => {
-            console.error(`Error fetching supplements for season ID ${seasonId}`, e);
+            console.error(`Error fetching supplements for seasonalRoomtypeId ${seasonalRoomtypeId}:`, e);
           }
         });
       }
     });
   }
+  
 
   onSubmit(): void {
     if (this.existingBookingId) {
       console.log(`Using existing booking with ID: ${this.existingBookingId}`);
       this.addMultipleBookingRoomtypes(this.existingBookingId);
+      this.addSupplementsToBooking(this.existingBookingId);
     } else {
       const newBooking: Booking = {
         bookingId: 0,
@@ -125,8 +180,9 @@ export class AvailabilityComponent implements OnInit {
       this.bookingService.addBooking(newBooking).subscribe({
         next: (booking) => {
           this.existingBookingId = booking.bookingId;
-          console.log('New booking created:', booking);
+          console.log(`New booking created: ${booking.bookingId}`, booking);
           this.addMultipleBookingRoomtypes(booking.bookingId);
+          this.addSupplementsToBooking(booking.bookingId); 
         },
         error: (e) => {
           console.error('Error creating booking:', e);
@@ -134,6 +190,37 @@ export class AvailabilityComponent implements OnInit {
       });
     }
   }
+
+  addSupplementsToBooking(bookingId: number): void {
+    for (const availability of this.availabilityList) {
+      const seasonalRoomtypeId = availability.seasonalRoomtypeId;
+      const supplements = this.supplementCache[seasonalRoomtypeId];
+  
+      if (supplements) {
+        supplements.forEach(supplement => {
+          if (supplement.selectedQuantity && supplement.selectedQuantity > 0) {
+            const bookingSupplement: BookingSupplements = {
+              bookingSupplementId: 0,
+              bookingId: bookingId,
+              seasonalSupplementId: supplement.seasonalSupplementId,
+              quantity: supplement.selectedQuantity,
+              pricePerUnit: supplement.pricePerUnit
+            };
+  
+            this.bookingSupplementService.addSupplementToBooking(bookingId, supplement.seasonalSupplementId, bookingSupplement).subscribe({
+              next: (response) => {
+                console.log(`Supplement added to booking ${bookingId}:`, response);
+              },
+              error: (e) => {
+                console.error(`Error adding supplement to booking ${bookingId}:`, e);
+              }
+            });
+          }
+        });
+      }
+    }
+  }
+  
 
   addMultipleBookingRoomtypes(bookingId: number): void {
     for (const availability of this.availabilityList) {
@@ -146,12 +233,12 @@ export class AvailabilityComponent implements OnInit {
           price: availability.price,
           bCheckinDate: this.checkinDate,
           bCheckoutDate: this.checkoutDate,
-          guestCount: availability.selectedGuestCount || 0 
+          guestCount: availability.selectedGuestCount || this.guestCount
         };
   
         this.bookingRoomsService.addRoomtypeToBooking(bookingId, availability.roomtypeId, bookingRoomtype).subscribe({
           next: (response) => {
-            console.log(`BookingRoomtype added for seasonalRoomtypeId ${availability.roomtypeId}:`, response);
+            console.log(`BookingRoomtype added for seasonalRoomtypeId ${availability.roomtypeId}, bokingid - ${bookingId}:`, response);
           },
           error: (e) => {
             console.error(`Error adding BookingRoomtype for seasonalRoomtypeId ${availability.roomtypeId}:`, e);
@@ -184,3 +271,22 @@ export class AvailabilityComponent implements OnInit {
   }
 
 }
+
+ // function calculateRoomPrice(unitPrice: number, maxAdults: number, guestCount: number): number {
+  //   // Calculate the number of rooms required
+  //   const requiredRooms = Math.ceil(guestCount / maxAdults);
+  //   // Total price for the rooms
+  //   return requiredRooms * unitPrice;
+  // }
+
+  // // Example Usage
+  // const unitPrice = 150; // Price per room
+  // const maxAdults = 4; // Max adults per room
+
+  // // Simulate guest count inputs
+  // const guestCounts = [1, 2, 3, 4, 5];
+
+  // guestCounts.forEach((guestCount) => {
+  //     const totalPrice = calculateRoomPrice(unitPrice, maxAdults, guestCount);
+  //     console.log(`Guest Count: ${guestCount}, Total Price: $${totalPrice}`);
+  // });

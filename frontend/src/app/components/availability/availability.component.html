@@ -1,3 +1,4 @@
+
 <div>
   <!-- Logo and Hotel Title -->
   <div class="logo-container">
@@ -32,7 +33,7 @@
     </div>
 
     <!-- Seasonal Supplements -->
-    <div *ngIf="seasonalSupplements.length > 0">
+    <!-- <div *ngIf="seasonalSupplements.length > 0">
       <h3>Seasonal Supplements:</h3>
       <div *ngFor="let supplement of seasonalSupplements">
         <mat-card>
@@ -40,7 +41,7 @@
           <p>Price per unit: {{ supplement.pricePerUnit }}</p>
         </mat-card>
       </div>
-    </div>
+    </div> -->
 
     <!-- Available Room Types Table -->
     <div *ngIf="availabilityList.length > 0">
@@ -62,7 +63,8 @@
             <td>
               Total rooms: {{ availability.noofRooms }}<br>
               Price per unit: {{ availability.price }}<br>
-              Max Guests: {{ availability.maxAdults }}
+              Max Guests: {{ availability.maxAdults }}<br>
+              <p><b>Available noofROoms: {{availability.availableRooms}}</b></p>
             </td>
             <td>
               <p>Enter number of rooms</p>
@@ -73,26 +75,58 @@
                 min="1" 
                 max="{{ availability.noofRooms }}" 
               />
-              <p>Total Price: {{ (availability.price * (availability.selectedRooms || 0)) }}</p>
+              <p>Noof nights = {{noOfNights}}</p>
+              <!-- <p>Total Price: {{ (availability.price * (availability.selectedRooms || 0)) }}</p> -->
+              <p>
+                Total Price: 
+                {{ 
+                  calculateRoomPrice(
+                    availability.price, 
+                    availability.selectedRooms || 0, 
+                    noOfNights, 
+                    availability.markupPercentage
+                  ) }}
+              </p>
             </td>
             <td>
               <input 
                 type="number" 
                 [(ngModel)]="availabilityList[i].selectedGuestCount" 
-                placeholder="Enter Guest Count" 
+                [placeholder]="guestCount"
                 min="1" 
                 max="{{ availability.maxAdults }}" 
                 required 
               />
             </td>
+            <!-- Seasonal Supplements -->
+            <!-- <td>
+              <div *ngFor="let supplement of supplementCache[availability.seasonId]">
+                <p>{{ supplement.supplementName }} ({{ supplement.pricePerUnit }})</p>
+                <p>Season id : {{supplement.seasonId}}</p>
+                <p>Seasonal supplement id: {{supplement.seasonalSupplementId}}</p>
+                <p>Season id : {{availability.seasonId}}</p>
+              </div>
+            </td>                   -->
             <td>
-              <ul *ngIf="supplementCache[availability.seasonId]">
-                <li *ngFor="let supplement of supplementCache[availability.seasonId]">
-                  {{ supplement.supplementName }} - {{ supplement.pricePerUnit }}
-                </li>
-              </ul>
+              <div *ngFor="let supplement of supplementCache[availability.seasonalRoomtypeId]">
+                <label>
+                  {{ supplement.supplementName }} ({{ supplement.pricePerUnit }})<br>
+                  Quantity:
+                  <input 
+                    type="number" 
+                    [(ngModel)]="supplement.selectedQuantity" 
+                    placeholder="Enter quantity" 
+                    min="0"
+                  />
+                </label>
+              </div>
+              <div>
+                Markup: {{ availability.markupPercentage }}%
+              </div>
+            </td>                 
+            <td>
+              {{ availability.price * (availability.selectedRooms || 0) }}
             </td>
-            <td>{{ (availability.price * (availability.selectedRooms || 0)) | currency }}</td>
           </tr>
         </tbody>
       </table>

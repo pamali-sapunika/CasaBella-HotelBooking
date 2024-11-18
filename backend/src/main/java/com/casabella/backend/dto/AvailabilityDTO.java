@@ -12,13 +12,13 @@ public class AvailabilityDTO {
     private double markupPercentage;
     private Long hotelId;
     private Long contractId;
-    private int bookedRooms;
+    private int availableRooms;
     
     
     
     public AvailabilityDTO(Long seasonalRoomtypeId, Long roomtypeId, String roomtypeName, int noofRooms, double price,
             int maxAdults, int noofReservedRooms, Long seasonId, double markupPercentage, Long hotelId, Long contractId,
-            int bookedRooms) {
+            int availableRooms) {
         this.seasonalRoomtypeId = seasonalRoomtypeId;
         this.roomtypeId = roomtypeId;
         this.roomtypeName = roomtypeName;
@@ -30,7 +30,7 @@ public class AvailabilityDTO {
         this.markupPercentage = markupPercentage;
         this.hotelId = hotelId;
         this.contractId = contractId;
-        this.bookedRooms = bookedRooms;
+        this.availableRooms = availableRooms;
     }
     public int getNoofReservedRooms() {
         return noofReservedRooms;
@@ -98,11 +98,11 @@ public class AvailabilityDTO {
     public void setRoomtypeId(Long roomtypeId) {
         this.roomtypeId = roomtypeId;
     }
-    public int getBookedRooms() {
-        return bookedRooms;
+    public int getavailableRooms() {
+        return availableRooms;
     }
-    public void setBookedRooms(int bookedRooms) {
-        this.bookedRooms = bookedRooms;
+    public void setavailableRooms(int availableRooms) {
+        this.availableRooms = availableRooms;
     }
     
     

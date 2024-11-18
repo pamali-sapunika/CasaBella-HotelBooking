@@ -9,12 +9,6 @@ public class SeasonalSupplementDTO {
 
 
     //Getters and Setters
-    public Long getSeasonalSupplementId() {
-        return seasonalSupplementId;
-    }
-    public void setSeasonalSupplementId(Long seasonalSupplementId) {
-        this.seasonalSupplementId = seasonalSupplementId;
-    }
     public Long getSeasonId() {
         return seasonId;
     }
@@ -33,7 +27,11 @@ public class SeasonalSupplementDTO {
     public void setSupplementName(String supplementName) {
         this.supplementName = supplementName;
     }
-    public SeasonalSupplementDTO() {
+    public Long getSeasonalSupplementId() {
+        return seasonalSupplementId;
+    }
+    public void setSeasonalSupplementId(Long seasonalSupplementId) {
+        this.seasonalSupplementId = seasonalSupplementId;
     }
     public SeasonalSupplementDTO(Long seasonalSupplementId, Long seasonId, Double pricePerUnit, String supplementName) {
         this.seasonalSupplementId = seasonalSupplementId;
@@ -41,6 +39,9 @@ public class SeasonalSupplementDTO {
         this.pricePerUnit = pricePerUnit;
         this.supplementName = supplementName;
     }
+    public SeasonalSupplementDTO() {
+    }
+    
     
     
 

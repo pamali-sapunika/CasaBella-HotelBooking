@@ -5,7 +5,6 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.casabella.backend.dto.SeasonalSupplementDTO;
 import com.casabella.backend.dto.SeasonalSupplementProjection;
 import com.casabella.backend.model.Season;
 import com.casabella.backend.model.SeasonalSupplement;
@@ -47,7 +46,8 @@ public class SeasonalSupplementService {
     //Show seasonal Supplements with Supplement names
     public List<SeasonalSupplementProjection> showAllWithSupplementName(Long seasonId) {
         return seasonalSupplementRepo.showAllWithSupplementName(seasonId);
-    }    
+    } 
+
 
     //Get SeasonalSupplement by id
     public SeasonalSupplement getSeasonalSupplementById(Long seasonalSupplementId){

@@ -1,7 +1,7 @@
 package com.casabella.backend.dto;
 
 public interface SeasonalSupplementProjection {
-    Long gteSeasonalSupplementId();
+    Long getSeasonalSupplementId();
     Long getSeasonId();
     Double getPricePerUnit();
     String getSupplementName();

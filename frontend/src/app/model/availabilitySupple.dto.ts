@@ -3,4 +3,6 @@ export interface AvaialbilitySupplements{
     seasonId: number;
     pricePerUnit: number;
     supplementName: string; 
+    selected?: boolean; 
+    selectedQuantity?: number;
 }

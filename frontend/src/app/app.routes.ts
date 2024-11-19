@@ -16,6 +16,7 @@ import { AddseasonalroomsComponent } from './components/addseasonalrooms/addseas
 import { SeasonalitemsComponent } from './components/seasonalitems/seasonalitems.component';
 import { AddseasonalsuppleComponent } from './components/addseasonalsupple/addseasonalsupple.component';
 import { AdddiscountComponent } from './components/adddiscount/adddiscount.component';
+import { ShowbookingComponent } from './components/showbooking/showbooking.component';
 
 export const routes: Routes = [
 
@@ -46,7 +47,8 @@ export const routes: Routes = [
             {path: 'hotel/:hotelId',component: ViewhotelComponent, canActivate: [authGuard]},
             {path: 'hotel/hotelcontracts/:hotelId', component: HotelContractsComponent, canActivate: [authGuard]},
             {path: 'seasonalItems/:contractId', component: SeasonalitemsComponent, canActivate: [authGuard]},
-            {path: 'addDiscounts/:contractId', component: AdddiscountComponent, canActivate: [authGuard]}
+            {path: 'addDiscounts/:contractId', component: AdddiscountComponent, canActivate: [authGuard]},
+            {path: 'showBooking/:bookingId', component: ShowbookingComponent, canActivate: [authGuard]}
             
         ]
     }

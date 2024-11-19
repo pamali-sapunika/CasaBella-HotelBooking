@@ -46,8 +46,8 @@ export class AvailabilityComponent implements OnInit {
   existingBookingId: number | null = null;
   noOfNights: number = 0;
   guestCounts: number[] = [1, 2, 3, 4, 5];
-  unitPrice: number = 150;  // Price per room (e.g. $150)
-  maxAdults: number = 4;  
+  // unitPrice: number = 150;  // Price per room (e.g. $150)
+  // maxAdults: number = 4;  
 
   constructor(
     private router: Router, 
@@ -69,10 +69,10 @@ export class AvailabilityComponent implements OnInit {
       this.checkinDate = this.formatDate(params.get('checkinDate')!);
       this.checkoutDate = this.formatDate(params.get('checkoutDate')!);
     });
-    this.guestCounts.forEach((guestCount) => {
-      const totalPrice = this.calculateRoomPrice(this.unitPrice, this.maxAdults, guestCount, this.noOfNights);
-      console.log(`Guest Count: ${guestCount}, Total Price for ${this.noOfNights} nights: $${totalPrice}`);
-    });
+    // this.guestCounts.forEach((guestCount) => {
+    //   const totalPrice = this.calculateRoomPrice(this.unitPrice, this.maxAdults, guestCount, this.noOfNights);
+    //   console.log(`Guest Count: ${guestCount}, Total Price for ${this.noOfNights} nights: $${totalPrice}`);
+    // });
     this.loadAvailability();
   }
 
@@ -84,8 +84,18 @@ export class AvailabilityComponent implements OnInit {
   
           // Initialize selectedGuestCount with the guestCount value
           this.availabilityList.forEach((availability) => {
-            availability.selectedGuestCount = this.guestCount; // Use the default guest count
+            availability.selectedGuestCount = this.guestCount;
+            const totalPrice = this.calculateRoomPrice(
+              availability.price,      
+              availability.noofRooms,         
+              this.noOfNights,          
+              availability.markupPercentage   
+            );
+            console.log(`Roomtype: ${availability.roomtypeName}, Total Price for ${this.noOfNights} nights: $${totalPrice}`);
           });
+
+          // const totalSupplementsCost = this.calculateSupplementPrice();
+          // console.log(`Total Supplement Price: $${totalSupplementsCost}`);
   
           this.fetchSupplements();
           this.calculateNoofNights();
@@ -111,8 +121,6 @@ export class AvailabilityComponent implements OnInit {
     return this.noOfNights;
   }
 
- 
-
   // calculateRoomPrice(unitPrice: number, maxAdults: number, guestCount: number, noOfNights: number): number {
   //   const requiredRooms = Math.ceil(guestCount / maxAdults);
 
@@ -121,13 +129,63 @@ export class AvailabilityComponent implements OnInit {
   //   return totalRoomPrice;
   // }
 
+  // calculateRoomPrice(unitPrice: number, noOfRooms: number, noOfNights: number, markupPercentage: number): number {
+  //   const basePrice = unitPrice * noOfRooms * noOfNights;
+
+  //   const totalPrice = basePrice * (1 + markupPercentage / 100);
+  
+  //   return totalPrice;
+  // }
+
   calculateRoomPrice(unitPrice: number, noOfRooms: number, noOfNights: number, markupPercentage: number): number {
     const basePrice = unitPrice * noOfRooms * noOfNights;
-
     const totalPrice = basePrice * (1 + markupPercentage / 100);
+    return totalPrice;
+  }
+
+  calculateTotalPrice(availability: AvailabilityDTO): number {
+
+    const roomPrice = this.calculateRoomPrice(
+      availability.price,
+      availability.selectedRooms || 0,
+      this.noOfNights,
+      availability.markupPercentage
+    );
+    const supplementPrice = this.calculateSupplementPrice(availability.seasonalRoomtypeId);
+    const totalPrice = roomPrice + supplementPrice;
+    console.log(`Room Price: $${roomPrice}, Supplement Price: $${supplementPrice}, Total Price: $${totalPrice}`);
   
     return totalPrice;
   }
+  
+
+  calculateSupplementPrice(seasonalRoomtypeId: number): number {
+    const supplements = this.supplementCache[seasonalRoomtypeId];
+    if (!supplements) return 0;
+  
+    return supplements.reduce((total, supplement) => {
+      // Multiply price per unit by the selected quantity and sum the results
+      const supplementTotal = supplement.selectedQuantity ? supplement.selectedQuantity * supplement.pricePerUnit : 0;
+      return total + supplementTotal;
+    }, 0);
+  }
+  
+
+
+  // getTotalPrice(availability: AvailabilityDTO, supplementCache: any, noOfNights: number): number {
+  //   const roomPrice = this.calculateRoomPrice(availability.price, availability.selectedRooms || 0, noOfNights, availability.markupPercentage);
+    
+  //   const supplementsPrice = supplementCache[availability.seasonalRoomtypeId]?.reduce(
+  //     (sum: number, supplement: AvailabilitySupplements): number => {
+  //       return sum + (supplement.selectedQuantity || 0) * supplement.pricePerUnit;
+  //     },
+  //     0
+  //   ) || 0;
+    
+  //   return roomPrice + supplementsPrice;
+  // }
+  
+  
   
 
 
@@ -181,14 +239,31 @@ export class AvailabilityComponent implements OnInit {
         next: (booking) => {
           this.existingBookingId = booking.bookingId;
           console.log(`New booking created: ${booking.bookingId}`, booking);
-          this.addMultipleBookingRoomtypes(booking.bookingId);
-          this.addSupplementsToBooking(booking.bookingId); 
+
+          const contractId = this.getContractId();
+          this.bookingService.assignContractToBooking(booking.bookingId, contractId).subscribe({
+            next: (updatedBooking) => {
+              console.log(`Contract assigned to booking ${updatedBooking.bookingId}`, updatedBooking);
+              this.addMultipleBookingRoomtypes(updatedBooking.bookingId);
+              this.addSupplementsToBooking(updatedBooking.bookingId);
+            },
+            error: (e) => {
+              console.error(`Error assigning contract to booking ${booking.bookingId}:`, e);
+            }
+            // this.addMultipleBookingRoomtypes(booking.bookingId);
+            // this.addSupplementsToBooking(booking.bookingId); 
+
+          });
         },
         error: (e) => {
           console.error('Error creating booking:', e);
         }
       });
     }
+  }
+
+  getContractId(): number{
+    return 1;
   }
 
   addSupplementsToBooking(bookingId: number): void {
@@ -268,6 +343,11 @@ export class AvailabilityComponent implements OnInit {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
+  }
+
+  onNavigate(bookingId: number): void{
+    this.router.navigate(['/showBooking', bookingId]);
+    console.log('Booking id passed', bookingId);
   }
 
 }

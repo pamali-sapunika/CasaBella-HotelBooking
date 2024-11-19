@@ -107,10 +107,35 @@
                 <p>Season id : {{availability.seasonId}}</p>
               </div>
             </td>                   -->
+            <!-- <td>
+              <div *ngFor="let supplement of supplementCache[availability.seasonalRoomtypeId]">
+                <label>
+                  {{ supplement.supplementName }}<br>
+                  <p>Price Per supplement: {{ supplement.pricePerUnit }}</p>
+                  Quantity:
+                  <input 
+                    type="number" 
+                    [(ngModel)]="supplement.selectedQuantity" 
+                    placeholder="Enter quantity" 
+                    min="0"
+                  />
+                  <p>
+                    Total Supplement Price: 
+                    {{
+                      calculateTotalSupplementPrice(availability.seasonalRoomtypeId)
+                    }}
+                  </p>
+                </label>
+              </div>
+              <div>
+                Markup: {{ availability.markupPercentage }}%
+              </div>
+            </td>                  -->
             <td>
               <div *ngFor="let supplement of supplementCache[availability.seasonalRoomtypeId]">
                 <label>
-                  {{ supplement.supplementName }} ({{ supplement.pricePerUnit }})<br>
+                  {{ supplement.supplementName }}<br>
+                  <p>Price Per supplement: {{ supplement.pricePerUnit }}</p>
                   Quantity:
                   <input 
                     type="number" 
@@ -120,12 +145,21 @@
                   />
                 </label>
               </div>
-              <div>
-                Markup: {{ availability.markupPercentage }}%
-              </div>
-            </td>                 
+            </td>
             <td>
-              {{ availability.price * (availability.selectedRooms || 0) }}
+              <p>Total Supplement Price: 
+                {{ calculateSupplementPrice(availability.seasonalRoomtypeId) }}
+              </p>
+              <p>{{ 
+                calculateRoomPrice(
+                  availability.price, 
+                  availability.selectedRooms || 0, 
+                  noOfNights, 
+                  availability.markupPercentage
+                ) }} </p>
+                <p>Total Price: 
+                  {{ calculateTotalPrice(availability) }}
+                </p>
             </td>
           </tr>
         </tbody>
@@ -140,6 +174,12 @@
     <!-- Submit Booking Button -->
     <div>
       <button mat-button (click)="onSubmit()">Add to Booking</button>
+    </div>
+
+    <div *ngIf="existingBookingId">
+      <button mat-button (click)="onNavigate(existingBookingId)">
+        Go to Booking
+      </button>
     </div>
   </div>
 </div>

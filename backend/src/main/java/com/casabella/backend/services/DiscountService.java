@@ -24,6 +24,11 @@ public class DiscountService {
         return discountRepo.findAll();
     }
 
+    //get discount by hotel id
+    public List<Discount> getDiscountsByHotelId(Long hotelId) {
+        return discountRepo.findDiscountsByHotelId(hotelId);
+    }
+
     //Get Discounts by ID
     public Discount getDiscountById(Long id){
         return discountRepo.findById(id).orElse(null);

@@ -46,6 +46,11 @@ public class BookingSupplementService {
         return ResponseEntity.ok(bookingSupplement);
     }
 
+    // //Get Booking Supplements by booking id
+    // public List<BookingSupplements> getBookingSupplementsByBookingId(Long bookingId){
+    //     return bookingSupplementRepo.findSupplementsByBookingId(bookingId);
+    // }
+
     
     //get all bookings
     public List<BookingSupplements> getBookingSupplements(){

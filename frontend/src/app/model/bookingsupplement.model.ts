@@ -3,6 +3,7 @@ export interface BookingSupplements{
     bookingId: number;
     seasonalSupplementId: number;
     quantity: number
-    pricePerUnit: number
+    pricePerUnit: number;
+    totalPrice: number;
 
 }

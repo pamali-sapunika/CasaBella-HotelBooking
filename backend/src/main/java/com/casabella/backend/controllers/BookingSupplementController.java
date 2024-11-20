@@ -30,6 +30,12 @@ public class BookingSupplementController {
         return bookingSupplementService.getBookingSupplements();
     }
 
+    // //Get Booking Supplements by Booking id
+    // @GetMapping("/bookingSupplementsOf/{bookingId}")
+    // public List<BookingSupplements> getBookingSupplementsByBookingId(@PathVariable Long bookingId){
+    //     return bookingSupplementService.getBookingSupplementsByBookingId(bookingId);
+    // }
+
     //Add Booking supplement
     @PostMapping("/{bookingId}/seasonalSupplement/{seasonalSupplementId}")
     public ResponseEntity<BookingSupplements> addSupplementToBooking(

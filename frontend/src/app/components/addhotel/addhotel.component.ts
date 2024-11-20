@@ -55,7 +55,7 @@ export class AddhotelComponent {
       this.hotelService.addHotel(newHotel).subscribe({
         next: (response) => {
           console.log('Hotel added successfully', response);
-          this.router.navigateByUrl('hotelslist')// Redirect after successful addition
+          this.router.navigateByUrl('hotelslist')
         },
         error: (error) => {
           console.error('Error adding hotel:', error);

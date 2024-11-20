@@ -7,5 +7,6 @@ export interface BookingRoomtypes{
     bCheckinDate: string;
     bCheckoutDate: string;
     guestCount: number;
+    totalPrice: number;
 
 }

@@ -79,5 +79,97 @@
 
 .sub-container{
   padding: 35px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th,
+table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Input field styling */
+input[type="number"] {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Highlight invalid input fields */
+input:invalid {
+  border-color: red;
+}
+
+.supinput[type="number"] {
+  width: 70%;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.supinput:invalid {
+  border-color: red;
+}
+
+/* Label styling */
+label {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* Buttons */
+button {
+  padding: 10px 15px;
+  margin: 10px 0;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.discountTitle{
+  font-family: "Julius Sans One", sans-serif;
+}
+.discountName{
+  font-family: "Julius Sans One", sans-serif;
+  font-size: 17px;
+}
+.discountDes{
+  font-family: "Julius Sans One", sans-serif;
+  font-size: 14px;
 }

@@ -46,6 +46,12 @@ public class DiscountController {
         return ResponseEntity.ok(discountService.getAllDiscounts());
     }
 
+    @GetMapping("/hotelDiscounts/{hotelId}")
+    public ResponseEntity<List<Discount>> getDiscountsByHotelId(@PathVariable Long hotelId) {
+        List<Discount> discounts = discountService.getDiscountsByHotelId(hotelId);
+        return ResponseEntity.ok(discounts);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getDiscountById(@PathVariable Long id){
         Discount discount1 = discountService.getDiscountById(id);

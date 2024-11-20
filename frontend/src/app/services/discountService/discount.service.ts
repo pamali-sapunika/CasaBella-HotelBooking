@@ -20,6 +20,10 @@ export class DiscountService {
     return this.http.post<Discount>(`${this.baseUrl}/`, discount);
   }
 
+  getDiscountsByHotelId(hotelId: number): Observable<Discount[]> {
+    return this.http.get<Discount[]>(`${this.baseUrl}/hotelDiscounts/${hotelId}`);
+  }
+
   getDiscountById(id: number): Observable<Discount> {
     return this.http.get<Discount>(`${this.baseUrl}/${id}`);
   }

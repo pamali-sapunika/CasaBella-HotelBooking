@@ -32,6 +32,12 @@ public class BookingRoomtypeController {
         return bookingRoomtypeService.getBookingRoomtypes();
     }
 
+    // //get Booking roomtypes by booking id
+    // @GetMapping("/bookingRoomsOf/{bookingId}")
+    // public List<BookingRoomtypes> getBookingRoomtypesByBookingId(@PathVariable Long bookingId){
+    //     return bookingRoomtypeService.getBookingRoomtypesByBookingId(bookingId);
+    // }
+
     
     //Add Booking roomtypes
     @PostMapping("/{bookingId}/seasonalRoomtype/{seasonalRoomtypeId}")

@@ -47,6 +47,11 @@ public class BookingRoomtypeService {
     
     }
 
+    // //Get BookingROomtype by Bookingid
+    // public List<BookingRoomtypes> getBookingRoomtypesByBookingId(Long bookingId){
+    //     return bookingRoomtypeRepo.findRoomsByBookingId(bookingId);
+    // }
+
     //Get all Booking ROomtypes
     public List<BookingRoomtypes> getBookingRoomtypes(){
         return bookingRoomtypeRepo.findAll();

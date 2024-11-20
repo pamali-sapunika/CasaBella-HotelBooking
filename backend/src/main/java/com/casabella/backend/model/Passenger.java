@@ -1,6 +1,9 @@
 package com.casabella.backend.model;
 
 import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,11 +25,24 @@ public class Passenger {
 
 
     //Booking Passenger
+    @JsonIgnore
     @OneToMany(mappedBy = "passenger")
     private Set<Booking> bookings = new HashSet<>();
     
 
     //Setters Getters
+    public Long getPassengerId() {
+        return passengerId;
+    }
+    public void setPassengerId(Long passengerId) {
+        this.passengerId = passengerId;
+    }
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
+    }
     public String getPassengerName() {
         return passengerName;
     }

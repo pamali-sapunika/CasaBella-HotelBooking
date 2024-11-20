@@ -138,6 +138,7 @@
                   <p>Price Per supplement: {{ supplement.pricePerUnit }}</p>
                   Quantity:
                   <input 
+                    class="supinput"
                     type="number" 
                     [(ngModel)]="supplement.selectedQuantity" 
                     placeholder="Enter quantity" 
@@ -147,19 +148,19 @@
               </div>
             </td>
             <td>
-              <p>Total Supplement Price: 
-                {{ calculateSupplementPrice(availability.seasonalRoomtypeId) }}
+              <p>
+                {{ calculateSupplementPrice(availability.seasonalRoomtypeId) }} + 
+                {{ 
+                  calculateRoomPrice(
+                    availability.price, 
+                    availability.selectedRooms || 0, 
+                    noOfNights, 
+                    availability.markupPercentage
+                ) }} 
               </p>
-              <p>{{ 
-                calculateRoomPrice(
-                  availability.price, 
-                  availability.selectedRooms || 0, 
-                  noOfNights, 
-                  availability.markupPercentage
-                ) }} </p>
                 <p>Total Price: 
                   {{ calculateTotalPrice(availability) }}
-                </p>
+                </p>                           
             </td>
           </tr>
         </tbody>
@@ -176,10 +177,25 @@
       <button mat-button (click)="onSubmit()">Add to Booking</button>
     </div>
 
+    <div *ngIf="hotelDiscounts && hotelDiscounts.length > 0">
+      <p class="discountTitle">Discounts</p>
+      <ul>
+        <li *ngFor="let discount of hotelDiscounts">
+          <p class="discountName"> {{ discount.discountType }}</p>
+          <p class="discountDes">{{ discount.description }} - {{discount.discountPercentage}} discount for bookings made {{discount.daysPriorToArrival}} days prior to arrival</p>
+        </li>
+      </ul>
+    </div>    
+
     <div *ngIf="existingBookingId">
       <button mat-button (click)="onNavigate(existingBookingId)">
         Go to Booking
       </button>
     </div>
+
+    <div *ngIf="eligibleForEarlyBird" class="early-bird-message">
+      <p>You are eligible for an Early Bird discount!</p>
+    </div>    
+
   </div>
 </div>

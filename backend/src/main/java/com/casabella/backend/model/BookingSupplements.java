@@ -20,6 +20,7 @@ public class BookingSupplements {
 
     private int quantity;
     private Double pricePerUnit;
+    private Double totalPrice;
 
     // Booking - Supplements
     @JsonIgnore
@@ -36,16 +37,18 @@ public class BookingSupplements {
     
     public BookingSupplements() {
     }
-    public BookingSupplements(int quantity, Double pricePerUnit, Booking booking,
+    public BookingSupplements(int quantity, Double pricePerUnit, Double totalPrice, Booking booking,
             SeasonalSupplement seasonalSupplement) {
         this.quantity = quantity;
         this.pricePerUnit = pricePerUnit;
+        this.totalPrice = totalPrice;
         this.booking = booking;
         this.seasonalSupplement = seasonalSupplement;
     }
-    public BookingSupplements(int quantity, Double pricePerUnit) {
+    public BookingSupplements(int quantity, Double pricePerUnit, Double totalPrice) {
         this.quantity = quantity;
         this.pricePerUnit = pricePerUnit;
+        this.totalPrice = totalPrice;
     }
     public Long getBookingSupplementId() {
         return bookingSupplementId;
@@ -77,22 +80,12 @@ public class BookingSupplements {
     public void setSeasonalSupplement(SeasonalSupplement seasonalSupplement) {
         this.seasonalSupplement = seasonalSupplement;
     }
-    
-
-
-    
-
-    
-    
-
-    
-    
-    
-
-    
-
-
-    
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
     
 
 }

@@ -1,1 +1,106 @@
-<p>showbooking works!</p>
+<div class="container">
+  <div *ngIf="loading" class="loading-container">
+      <p>Loading booking details...</p>
+    </div>
+    
+    <div *ngIf="!loading && error" class="error-container">
+      <p>{{ error }}</p>
+    </div>
+
+    <div>
+      <div class="line-container">
+        <div class="line"></div>
+        <img src="assets/casabellalogo.png" alt="Icon" class="icon" />
+        <div class="line"></div>
+      </div>
+      <div class="subdiscover">Confirm Reservation</div>
+    </div>
+
+    <div *ngIf="loggedInUser">
+      <h2>Welcome, {{ loggedInUser.name }}!</h2>
+      <p>Email: {{ loggedInUser.email }}</p>
+      <p>Role: {{ loggedInUser.role }}</p>
+    </div>
+    
+    <div *ngIf="!loading && bookingDetails" >
+      <div class="booking-container">
+          <p class="subtopics"><b>Booking Details</b></p>
+          <p>Booking ID: {{ bookingDetails.bookingId }}</p><br>
+          <p>Check-in Date: {{ bookingDetails.checkinDate | date }}</p>
+          <p>Check-out Date: {{ bookingDetails.checkoutDate | date }}</p>
+          <p>Booking Date: {{ bookingDetails.bookingDate | date }}</p><br>
+          <p>Adult Count: {{ bookingDetails.adultCount }}</p><br><hr>
+          <!-- <p>Child Count: {{ bookingDetails.childCount }}</p> -->
+          <p class="level1">Total Amount: {{ bookingDetails.totalAmount | currency }}</p>
+          <p>Discount Amount: {{ bookingDetails.discountAmount | currency }}</p>
+          <p class="level2">Net Amount: {{ bookingDetails.netAmount | currency }}</p><br><hr>
+          <p>Prepayment Amount: {{ bookingDetails.prepaymentAmount | currency }}</p>
+          <p class="level2">Balanced Amount: {{ bookingDetails.balancedAmount | currency }}</p><br>
+          <p class="level2">Status: {{ bookingDetails.status }}</p>
+      </div>
+    
+      
+      <h4>Room Types</h4>
+      <div *ngIf="bookingDetails.bookingRoomtypes && bookingDetails.bookingRoomtypes.length > 0; else noRoomtypes">
+        <div *ngFor="let roomtype of bookingDetails.bookingRoomtypes" class="booking-container">
+          <p class="level2">Room Type: <span class="level1">{{ roomtype.seasonalRoomtype.roomtype.roomtypeName }}</span></p ><br>
+          <p>Number of Rooms: {{ roomtype.noOfRooms }}</p>
+          <p>Price per Room: {{ roomtype.price | currency }}</p>
+          <p>Guest Count: {{ roomtype.guestCount }}</p><br>
+          <p>Check-in Date: {{ roomtype.bCheckinDate | date }}</p>
+          <p>Check-out Date: {{ roomtype.bCheckoutDate | date }}</p><br>
+          <p class="level2">Total Price for Rooms: <span class="level1">{{ roomtype.totalPrice }}</span></p>
+        </div>
+      </div>
+      <ng-template #noRoomtypes>
+        <p>No room types available for this booking.</p>
+      </ng-template>
+    
+      <h4>Supplements</h4>
+      <div *ngIf="bookingDetails.bookingSupplements && bookingDetails.bookingSupplements.length > 0; else noSupplements">
+        <div *ngFor="let supplement of bookingDetails.bookingSupplements" class="booking-container">
+          <p class="level2">Supplement Name: <span class="level1">{{ supplement.seasonalSupplement.supplement.supplementName }}</span></p><br>
+          <p>Quantity: {{ supplement.quantity }}</p>
+          <p>Price per Unit: {{ supplement.pricePerUnit | currency }}</p><br>
+          <p class="level2">Total Price: <span class="level1">{{ supplement.totalPrice }}</span></p>
+        </div>
+      </div>
+      <ng-template #noSupplements>
+        <p>No supplements available for this booking.</p>
+      </ng-template>
+    </div>
+
+    <div>
+      <p class="passenger">Add the Passenger to the Booking?</p>
+      <form [formGroup]="passengerForm" (ngSubmit)="onSubmit()">
+        <!-- <p>Enter details of one passenger</p> -->
+        <div>
+          <label for="passengerName">Passenger Name</label>
+          <input id="passengerName" type="text" formControlName="passengerName" />
+          <div *ngIf="passengerForm.controls['passengerName'].invalid && passengerForm.controls['passengerName'].touched">
+            Passenger Name is required and must be at least 3 characters long.
+          </div>
+        </div>
+      
+        <div>
+          <label for="passengerEmail">Passenger Email</label>
+          <input id="passengerEmail" type="email" formControlName="passengerEmail" />
+          <div *ngIf="passengerForm.controls['passengerEmail'].invalid && passengerForm.controls['passengerEmail'].touched">
+            Please enter a valid email address.
+          </div>
+        </div>
+      
+        <div>
+          <label for="passengerNic">Passenger NIC</label>
+          <input id="passengerNic" type="text" formControlName="passengerNic" />
+          <div *ngIf="passengerForm.controls['passengerNic'].invalid && passengerForm.controls['passengerNic'].touched">
+            Passenger NIC is required and must be at least 5 characters long.
+          </div>
+        </div>
+      
+        <button type="submit" [disabled]="passengerForm.invalid">Submit</button>
+      </form>      
+    </div>
+
+    <button (click)="onConfirmBooking()">Confirm Booking</button>
+</div> 

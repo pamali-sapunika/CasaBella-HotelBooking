@@ -16,7 +16,9 @@ import { Booking } from '../../model/booking.model';
 import { BookingRoomtypes } from '../../model/bookingrooms.model';
 import { BookingSupplements } from '../../model/bookingsupplement.model';
 import { FormsModule } from '@angular/forms';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DiscountService } from '../../services/discountService/discount.service';
+import { Discount } from '../../model/discount.model';
 
 @Component({
   selector: 'app-availability',
@@ -37,6 +39,7 @@ export class AvailabilityComponent implements OnInit {
   availabilityList: AvailabilityDTO[] = [];
   supplementCache: { [seasonalRoomtypeId: number]: AvaialbilitySupplements[] } = {};
   seasonalSupplements: AvaialbilitySupplements[] = [];
+  hotelDiscounts: Discount[] = []; 
 
   hotelId!: number; 
   guestCount!: number; 
@@ -46,8 +49,7 @@ export class AvailabilityComponent implements OnInit {
   existingBookingId: number | null = null;
   noOfNights: number = 0;
   guestCounts: number[] = [1, 2, 3, 4, 5];
-  // unitPrice: number = 150;  // Price per room (e.g. $150)
-  // maxAdults: number = 4;  
+  eligibleForEarlyBird: boolean = false; 
 
   constructor(
     private router: Router, 
@@ -57,7 +59,8 @@ export class AvailabilityComponent implements OnInit {
     private seasonalSupplementService: SeasonalSupplementService,
     private bookingRoomsService: BookingroomsService,
     private bookingSupplementService: BookingsupplementsService,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private discountService: DiscountService
   ) { }
 
   ngOnInit(): void {
@@ -74,7 +77,9 @@ export class AvailabilityComponent implements OnInit {
     //   console.log(`Guest Count: ${guestCount}, Total Price for ${this.noOfNights} nights: $${totalPrice}`);
     // });
     this.loadAvailability();
+    this.fetchDiscounts();
   }
+
 
   loadAvailability(): void {
     if (this.hotelId && this.guestCount && this.checkinDate && this.checkoutDate !== undefined) {
@@ -99,12 +104,26 @@ export class AvailabilityComponent implements OnInit {
   
           this.fetchSupplements();
           this.calculateNoofNights();
+          console.log("Discounts fetching");
+          
         },
         error: (e) => {
           console.error('Error fetching availability', e);
         }
       });
     }
+  }
+
+  fetchDiscounts(): void {
+    this.discountService.getDiscountsByHotelId(this.hotelId).subscribe({
+      next: (response) => {
+        this.hotelDiscounts = response;
+        console.log("Discounts fetched:", this.hotelDiscounts);
+      },
+      error: (e) => {
+        console.error("Error Fetching Discounts", e);
+      }
+    });
   }
   
 
@@ -143,6 +162,21 @@ export class AvailabilityComponent implements OnInit {
     return totalPrice;
   }
 
+  // calculateTotalPrice(availability: AvailabilityDTO): number {
+
+  //   const roomPrice = this.calculateRoomPrice(
+  //     availability.price,
+  //     availability.selectedRooms || 0,
+  //     this.noOfNights,
+  //     availability.markupPercentage
+  //   );
+  //   const supplementPrice = this.calculateSupplementPrice(availability.seasonalRoomtypeId);
+  //   const totalPrice = roomPrice + supplementPrice;
+  //   // console.log(`Room Price: $${roomPrice}, Supplement Price: $${supplementPrice}, Total Price: $${totalPrice}`);
+  
+  //   return totalPrice;
+  // }
+
   calculateTotalPrice(availability: AvailabilityDTO): number {
 
     const roomPrice = this.calculateRoomPrice(
@@ -153,11 +187,10 @@ export class AvailabilityComponent implements OnInit {
     );
     const supplementPrice = this.calculateSupplementPrice(availability.seasonalRoomtypeId);
     const totalPrice = roomPrice + supplementPrice;
-    console.log(`Room Price: $${roomPrice}, Supplement Price: $${supplementPrice}, Total Price: $${totalPrice}`);
   
+    // Return both total price and the original total price (before discount)
     return totalPrice;
   }
-  
 
   calculateSupplementPrice(seasonalRoomtypeId: number): number {
     const supplements = this.supplementCache[seasonalRoomtypeId];
@@ -185,8 +218,20 @@ export class AvailabilityComponent implements OnInit {
   //   return roomPrice + supplementsPrice;
   // }
   
+  private calculateDateDifference(date1: Date, date2: Date): number {
+    const timeDifference = date2.getTime() - date1.getTime();
+    return timeDifference / (1000 * 3600 * 24); 
+  }
   
-  
+  // Check if discount is eligible
+  private checkEarlyBirdDiscount(differenceInDays: number): boolean {
+    for (const discount of this.hotelDiscounts) {
+      if (differenceInDays >= discount.daysPriorToArrival) {
+        return true;  
+      }
+    }
+    return false;  
+  }
 
 
   fetchSupplements(): void {
@@ -240,20 +285,32 @@ export class AvailabilityComponent implements OnInit {
           this.existingBookingId = booking.bookingId;
           console.log(`New booking created: ${booking.bookingId}`, booking);
 
-          const contractId = this.getContractId();
-          this.bookingService.assignContractToBooking(booking.bookingId, contractId).subscribe({
-            next: (updatedBooking) => {
-              console.log(`Contract assigned to booking ${updatedBooking.bookingId}`, updatedBooking);
-              this.addMultipleBookingRoomtypes(updatedBooking.bookingId);
-              this.addSupplementsToBooking(updatedBooking.bookingId);
-            },
-            error: (e) => {
-              console.error(`Error assigning contract to booking ${booking.bookingId}:`, e);
-            }
-            // this.addMultipleBookingRoomtypes(booking.bookingId);
-            // this.addSupplementsToBooking(booking.bookingId); 
+          // const contractId = this.getContractId();
+          // this.bookingService.assignContractToBooking(booking.bookingId, contractId).subscribe({
+          //   next: (updatedBooking) => {
+          //     console.log(`Contract assigned to booking ${updatedBooking.bookingId}`, updatedBooking);
+          //     this.addMultipleBookingRoomtypes(updatedBooking.bookingId);
+          //     this.addSupplementsToBooking(updatedBooking.bookingId);
+          //   },
+          //   error: (e) => {
+          //     console.error(`Error assigning contract to booking ${booking.bookingId}:`, e);
+          //   }
+          // });
 
-          });
+          const bookingDate = new Date(booking.bookingDate);
+          const checkinDate = new Date(this.checkinDate);
+          const differenceInDays = this.calculateDateDifference(bookingDate, checkinDate);
+
+          // Check if early bird discount applies
+          const eligibleForEarlyBird = this.checkEarlyBirdDiscount(differenceInDays);
+
+          // Pass the eligibility flag to the next page using router
+          // this.router.navigate(['/nextPage'], { queryParams: { eligibleForEarlyBird: eligibleForEarlyBird } });
+
+          console.log(`Early Bird Discount Eligibility: ${eligibleForEarlyBird}`);
+
+          this.addMultipleBookingRoomtypes(booking.bookingId);
+          this.addSupplementsToBooking(booking.bookingId); 
         },
         error: (e) => {
           console.error('Error creating booking:', e);
@@ -262,9 +319,9 @@ export class AvailabilityComponent implements OnInit {
     }
   }
 
-  getContractId(): number{
-    return 1;
-  }
+  // getContractId(): number{
+  //   return 1;
+  // }
 
   addSupplementsToBooking(bookingId: number): void {
     for (const availability of this.availabilityList) {
@@ -274,12 +331,16 @@ export class AvailabilityComponent implements OnInit {
       if (supplements) {
         supplements.forEach(supplement => {
           if (supplement.selectedQuantity && supplement.selectedQuantity > 0) {
+
+            const totalPrice = supplement.selectedQuantity * supplement.pricePerUnit;
+
             const bookingSupplement: BookingSupplements = {
               bookingSupplementId: 0,
               bookingId: bookingId,
               seasonalSupplementId: supplement.seasonalSupplementId,
               quantity: supplement.selectedQuantity,
-              pricePerUnit: supplement.pricePerUnit
+              pricePerUnit: supplement.pricePerUnit,
+              totalPrice: totalPrice
             };
   
             this.bookingSupplementService.addSupplementToBooking(bookingId, supplement.seasonalSupplementId, bookingSupplement).subscribe({
@@ -300,6 +361,14 @@ export class AvailabilityComponent implements OnInit {
   addMultipleBookingRoomtypes(bookingId: number): void {
     for (const availability of this.availabilityList) {
       if (availability.selectedRooms && availability.selectedRooms > 0) {
+
+        const totalPrice = this.calculateRoomPrice(
+          availability.price,
+          availability.selectedRooms,
+          this.noOfNights,
+          availability.markupPercentage
+        );
+        
         const bookingRoomtype: BookingRoomtypes = {
           bookingRoomtypeId: 0,
           bookingId: bookingId,
@@ -308,7 +377,8 @@ export class AvailabilityComponent implements OnInit {
           price: availability.price,
           bCheckinDate: this.checkinDate,
           bCheckoutDate: this.checkoutDate,
-          guestCount: availability.selectedGuestCount || this.guestCount
+          guestCount: availability.selectedGuestCount || this.guestCount,
+          totalPrice: totalPrice
         };
   
         this.bookingRoomsService.addRoomtypeToBooking(bookingId, availability.roomtypeId, bookingRoomtype).subscribe({

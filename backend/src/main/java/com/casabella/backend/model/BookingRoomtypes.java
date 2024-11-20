@@ -24,6 +24,7 @@ public class BookingRoomtypes {
     private Date bCheckinDate;
     private Date bCheckoutDate;
     private int guestCount;
+    private Double totalPrice;
 
 
     //Booking - Roomtypes
@@ -91,24 +92,32 @@ public class BookingRoomtypes {
     public void setSeasonalRoomtype(SeasonalRoomtype seasonalRoomtype) {
         this.seasonalRoomtype = seasonalRoomtype;
     }
-    public BookingRoomtypes(int noOfRooms, Double price, Date bCheckinDate, Date bCheckoutDate, int guestCount) {
+    public BookingRoomtypes(int noOfRooms, Double price, Date bCheckinDate, Date bCheckoutDate, int guestCount,Double totalPrice) {
         this.noOfRooms = noOfRooms;
         this.price = price;
         this.bCheckinDate = bCheckinDate;
         this.bCheckoutDate = bCheckoutDate;
         this.guestCount = guestCount;
+        this.totalPrice = totalPrice;
     }
-    public BookingRoomtypes(int noOfRooms, Double price, Date bCheckinDate, Date bCheckoutDate, int guestCount,
+    public BookingRoomtypes(int noOfRooms, Double price, Date bCheckinDate, Date bCheckoutDate, int guestCount, Double totalPrice,
             Booking booking, SeasonalRoomtype seasonalRoomtype) {
         this.noOfRooms = noOfRooms;
         this.price = price;
         this.bCheckinDate = bCheckinDate;
         this.bCheckoutDate = bCheckoutDate;
         this.guestCount = guestCount;
+        this.totalPrice = totalPrice;
         this.booking = booking;
         this.seasonalRoomtype = seasonalRoomtype;
     }
     public BookingRoomtypes() {
+    }
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
     
     

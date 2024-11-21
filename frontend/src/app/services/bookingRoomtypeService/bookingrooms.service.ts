@@ -17,6 +17,7 @@ export class BookingroomsService {
   }
 
   addRoomtypeToBooking(bookingId: number, seasonalRoomtypeId: number, bookingRoomtype: BookingRoomtypes): Observable<BookingRoomtypes> {
+    console.log("Adding seasonal roomtype:", seasonalRoomtypeId); 
     return this.http.post<BookingRoomtypes>(`${this.baseUrl}/${bookingId}/seasonalRoomtype/${seasonalRoomtypeId}`, bookingRoomtype);
   }
 

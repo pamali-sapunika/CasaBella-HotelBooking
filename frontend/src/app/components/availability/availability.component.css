@@ -56,6 +56,15 @@
 .subdiscover {
   font-family: "Julius Sans One", sans-serif;
   text-align: center;
+  margin-top: 10px;
+}
+
+.tableheaders{
+  font-family: "Julius Sans One", sans-serif;
+  font-weight: lighter;
+  font-size: 15px;
+  justify-content: center;
+  vertical-align: top;
 }
 
 .line-container {
@@ -146,7 +155,7 @@ label {
 button {
   padding: 10px 15px;
   margin: 10px 0;
-  background-color: #007bff;
+  background-color: #FFBA1A;
   color: #ffffff;
   border: none;
   border-radius: 4px;
@@ -154,7 +163,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #FFBA1A;
 }
 
 button:disabled {
@@ -167,9 +176,30 @@ button:disabled {
 }
 .discountName{
   font-family: "Julius Sans One", sans-serif;
-  font-size: 17px;
+  font-size: 19px;
+  text-align: center;
 }
 .discountDes{
   font-family: "Julius Sans One", sans-serif;
   font-size: 14px;
+}
+
+.supplementrow{
+  font-weight: lighter;
+}
+
+.discountmsg {
+  background-color: #FFBA1A;
+  color: #ffffff;
+  padding: 10px;
+  font-family: "Julius Sans One", sans-serif;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.discounts{
+  text-align: center;
 }

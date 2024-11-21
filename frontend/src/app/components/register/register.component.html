@@ -1,0 +1,64 @@
+<div class="form-container">
+
+    <div>
+        <div class="line-container">
+          <div class="line"></div>
+          <img src="assets/casabellalogo.png" alt="Icon" class="icon" />
+          <div class="line"></div>
+        </div>
+        <div class="level1">CasaBella Account</div>
+        <div class="subdiscover">Create New User Account</div>
+    </div>
+    
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="userForm.get('name')?.hasError('required')">Name is required</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-error *ngIf="userForm.get('email')?.hasError('required')">Email is required</mat-error>
+        <mat-error *ngIf="userForm.get('email')?.hasError('email')">Enter a valid email</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>NIC</mat-label>
+        <input matInput formControlName="nic" />
+        <mat-error *ngIf="userForm.get('nic')?.hasError('required')">NIC is required</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Address</mat-label>
+        <input matInput formControlName="address" />
+        <mat-error *ngIf="userForm.get('address')?.hasError('required')">Address is required</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Contact Number</mat-label>
+        <input matInput formControlName="contactNo" />
+        <mat-error *ngIf="userForm.get('contactNo')?.hasError('required')">Contact number is required</mat-error>
+        <mat-error *ngIf="userForm.get('contactNo')?.hasError('pattern')">Enter a valid number</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" />
+        <mat-error *ngIf="userForm.get('username')?.hasError('required')">Username is required</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" />
+        <mat-error *ngIf="userForm.get('password')?.hasError('required')">Password is required</mat-error>
+        <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">
+          Password must be at least 6 characters long
+        </mat-error>
+      </mat-form-field>
+  
+      <button mat-raised-button class="search-button" type="submit">Register</button>
+    </form>
+  </div>
+  

@@ -16,13 +16,24 @@
       </mat-form-field>
   
       <div>
-        <button mat-raised-button color="primary" (click)="onSubmit()" >Login</button>
+        <button mat-raised-button color="primary" class="loginbtn" (click)="onSubmit()" >Login</button>
         
       </div>
     </form>
-    <div>
-      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+    
+    <div class="newregister">
+      <p>Havent Registered yet? <span><a mat-button routerLink="/register">Create an account</a></span></p>
     </div>
+
+    <div>
+      <button mat-raised-button color="warn" class="logoutbtn" (click)="logout()">Logout</button>
+    </div>
+
+    <!-- <div class="admin-container">
+      <button mat-raised-button class="adminloginbtn" (click)="()">Admin Login</button>
+      <p class="adminp">Admin login</p>
+    </div> -->
+    
   </mat-card>
 
   <!-- <div >  

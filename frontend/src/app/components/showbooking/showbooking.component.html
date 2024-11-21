@@ -16,11 +16,10 @@
       <div class="subdiscover">Confirm Reservation</div>
     </div>
 
-    <div *ngIf="loggedInUser">
-      <h2>Welcome, {{ loggedInUser.name }}!</h2>
-      <p>Email: {{ loggedInUser.email }}</p>
-      <p>Role: {{ loggedInUser.role }}</p>
-    </div>
+    <!-- <div *ngIf="loggedInUser">
+      <p>Logged in as: {{ loggedInUser.username }}</p>
+    </div> -->
+    
     
     <div *ngIf="!loading && bookingDetails" >
       <div class="booking-container">
@@ -30,12 +29,13 @@
           <p>Check-out Date: {{ bookingDetails.checkoutDate | date }}</p>
           <p>Booking Date: {{ bookingDetails.bookingDate | date }}</p><br>
           <p>Adult Count: {{ bookingDetails.adultCount }}</p><br><hr>
-          <!-- <p>Child Count: {{ bookingDetails.childCount }}</p> -->
-          <p class="level1">Total Amount: {{ bookingDetails.totalAmount | currency }}</p>
-          <p>Discount Amount: {{ bookingDetails.discountAmount | currency }}</p>
-          <p class="level2">Net Amount: {{ bookingDetails.netAmount | currency }}</p><br><hr>
+
+          <p class="level2">Grand Total: {{ grandTotal | currency }}</p>
+          <p>Discount Amount: {{ discountAmount | currency }}</p>
+          <p class="level1">Total Amount : {{ netAmount | currency }} </p><br><hr>
+
           <p>Prepayment Amount: {{ bookingDetails.prepaymentAmount | currency }}</p>
-          <p class="level2">Balanced Amount: {{ bookingDetails.balancedAmount | currency }}</p><br>
+          <p class="level2">Balanced Amount: {{ balancedAmount }}</p><br>
           <p class="level2">Status: {{ bookingDetails.status }}</p>
       </div>
     
@@ -98,9 +98,13 @@
           </div>
         </div>
       
-        <button type="submit" [disabled]="passengerForm.invalid">Submit</button>
+        <button type="submit" class="confirmbtn" [disabled]="passengerForm.invalid">Submit</button>
       </form>      
     </div>
 
-    <button (click)="onConfirmBooking()">Confirm Booking</button>
+    <div class="btncontainer">
+      <button (click)="onConfirmBooking()" class="search-button">Confirm Booking</button>
+    </div>
+    
+    <!-- <button>Confirm Booking</button> -->
 </div> 

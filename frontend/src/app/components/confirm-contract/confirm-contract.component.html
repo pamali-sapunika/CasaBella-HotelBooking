@@ -1,0 +1,31 @@
+<div class="card-container">
+    <div class="card">
+        
+        <div class="card-content">
+            <div>
+                <div class="line-container">
+                    <div class="line"></div>
+                    <img src="assets/casabellalogo.png" alt="Icon" class="icon" />
+                    <div class="line"></div>
+                </div>
+                
+            </div>
+
+            <div class="partycontainer">
+                <img src="assets/party.png"  class="partyicon" />
+            </div>
+
+            <p class="subdiscover">
+               Contract Confirmed
+            </p>
+
+            <p class="contractId">ContractId: {{contractId}}</p>
+
+            <div class="button-container">
+                <button mat-button class="search-button" (click)="onNavigateToHotelList()">Go to Bookings</button>
+                <button mat-button class="back-button" (click)="onNavigateBack()">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+

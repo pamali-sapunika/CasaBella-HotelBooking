@@ -43,28 +43,38 @@
       </div>
     </div> -->
 
+    <div>
+      <div class="line-container">
+        <div class="line"></div>
+        <img src="assets/casabellalogo.png" alt="Icon" class="icon" />
+        <div class="line"></div>
+      </div>
+      <div class="subdiscover">Availability</div>
+    </div>
+
     <!-- Available Room Types Table -->
     <div *ngIf="availabilityList.length > 0">
-      <h2>Available Room Types</h2>
       <table>
         <thead>
           <tr>
-            <th>Room Type</th>
-            <th>Available No. of Rooms and Persons</th>
-            <th>No. of Rooms</th>
-            <th>Guest Count</th>
-            <th>Supplements</th>
-            <th>Total Price for Rooms</th>
+            <th class="tableheaders">Room Type</th>
+            <th class="tableheaders">Available No. of Rooms and Persons</th>
+            <th class="tableheaders">No. of Rooms</th>
+            <th class="tableheaders">Guest Count</th>
+            <th class="tableheaders">Supplements</th>
+            <th class="tableheaders">Total Price for Rooms</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let availability of availabilityList; let i = index">
-            <td>{{ availability.roomtypeName }}</td>
             <td>
-              Total rooms: {{ availability.noofRooms }}<br>
-              Price per unit: {{ availability.price }}<br>
+              {{ availability.roomtypeName }}
+            </td>
+            <td>
+              <p>Total rooms: {{ availability.noofRooms }}</p>
+              <p><b>Price per unit: ${{ availability.price }}</b></p>
               Max Guests: {{ availability.maxAdults }}<br>
-              <p><b>Available noofROoms: {{availability.availableRooms}}</b></p>
+              <p>Available noofROoms: {{availability.availableRooms}}</p>
             </td>
             <td>
               <p>Enter number of rooms</p>
@@ -78,13 +88,12 @@
               <p>Noof nights = {{noOfNights}}</p>
               <!-- <p>Total Price: {{ (availability.price * (availability.selectedRooms || 0)) }}</p> -->
               <p>
-                Total Price: 
-                {{ 
-                  calculateRoomPrice(
+                Total Price For the rooms: 
+                ${{ 
+                  calculateRoomPriceFirst(
                     availability.price, 
                     availability.selectedRooms || 0, 
-                    noOfNights, 
-                    availability.markupPercentage
+                    noOfNights
                   ) }}
               </p>
             </td>
@@ -134,9 +143,9 @@
             <td>
               <div *ngFor="let supplement of supplementCache[availability.seasonalRoomtypeId]">
                 <label>
-                  {{ supplement.supplementName }}<br>
-                  <p>Price Per supplement: {{ supplement.pricePerUnit }}</p>
-                  Quantity:
+                  <p >{{ supplement.supplementName }}</p><br>
+                  <p class="supplementrow">Price Per supplement: {{ supplement.pricePerUnit }}</p>
+                  <p class="supplementrow">Quantity:</p>
                   <input 
                     class="supinput"
                     type="number" 
@@ -145,12 +154,13 @@
                     min="0"
                   />
                 </label>
+                <p>Service Charge: {{ availability.markupPercentage }} % of total room price</p>
               </div>
             </td>
             <td>
               <p>
-                {{ calculateSupplementPrice(availability.seasonalRoomtypeId) }} + 
-                {{ 
+                ${{ calculateSupplementPrice(availability.seasonalRoomtypeId) }} + 
+                ${{ 
                   calculateRoomPrice(
                     availability.price, 
                     availability.selectedRooms || 0, 
@@ -159,7 +169,7 @@
                 ) }} 
               </p>
                 <p>Total Price: 
-                  {{ calculateTotalPrice(availability) }}
+                  ${{ calculateTotalPrice(availability) }}
                 </p>                           
             </td>
           </tr>
@@ -177,12 +187,12 @@
       <button mat-button (click)="onSubmit()">Add to Booking</button>
     </div>
 
-    <div *ngIf="hotelDiscounts && hotelDiscounts.length > 0">
+    <div *ngIf="hotelDiscounts && hotelDiscounts.length > 0" class="discounts">
       <p class="discountTitle">Discounts</p>
       <ul>
         <li *ngFor="let discount of hotelDiscounts">
-          <p class="discountName"> {{ discount.discountType }}</p>
-          <p class="discountDes">{{ discount.description }} - {{discount.discountPercentage}} discount for bookings made {{discount.daysPriorToArrival}} days prior to arrival</p>
+          <p class="discountName">{{ discount.discountType }}</p>
+          <p class="discountDes">{{ discount.description }} - {{discount.discountPercentage}}% discount for bookings made {{discount.daysPriorToArrival}} days prior to arrival</p>
         </li>
       </ul>
     </div>    
@@ -193,9 +203,9 @@
       </button>
     </div>
 
-    <div *ngIf="eligibleForEarlyBird" class="early-bird-message">
-      <p>You are eligible for an Early Bird discount!</p>
-    </div>    
+    <div *ngIf="eligibleForDiscount" class="discountmsg">
+      You are eligible for a discount! <br>Book now to avail it.
+    </div>
 
   </div>
 </div>

@@ -24,8 +24,8 @@ export class DiscountService {
     return this.http.get<Discount[]>(`${this.baseUrl}/hotelDiscounts/${hotelId}`);
   }
 
-  getDiscountById(id: number): Observable<Discount> {
-    return this.http.get<Discount>(`${this.baseUrl}/${id}`);
+  getDiscountById(discountId: number): Observable<Discount> {
+    return this.http.get<Discount>(`${this.baseUrl}/${discountId}`);
   }
 
   updateDiscount(id: number, discount: Discount): Observable<Discount> {

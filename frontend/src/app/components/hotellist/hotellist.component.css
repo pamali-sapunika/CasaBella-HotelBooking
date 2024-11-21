@@ -1,0 +1,127 @@
+/* Sub-container styling */
+.sub-container {
+    padding: 35px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: center;
+  }
+  
+  /* Subdiscover title styling */
+  .discover {
+    font-family: "Julius Sans One", sans-serif;
+    font-size: 10px;
+    margin-top: 75px;
+    text-align: center;
+}
+  
+.subdiscover {
+    font-family: "Julius Sans One", sans-serif;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+}
+  
+.line-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+  
+.line {
+    width: 300px;
+    height: 1px;
+    background-color: #FFBA1A;
+    margin: 0 10px;
+}
+  
+.icon {
+    width: 24px;
+    height: 24px;
+}
+  
+  /* Content container for the table and buttons */
+  .content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Button container */
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  
+  /* Custom button styling */
+  .custom-button {
+    background-color: #FFBA1A;
+    color: white;
+    font-family: "Julius Sans One", sans-serif;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 14px;
+    text-transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .custom-button:hover {
+    background-color: #ff9900;
+  }
+  
+  /* Mat card styling */
+  .hotel-list-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #ffffff;
+  }
+  
+  .card-title {
+    font-family: "Julius Sans One", sans-serif;
+    font-size: 20px;
+    color: #333;
+  }
+  
+  .card-subtitle {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  /* Table container */
+  .table-container {
+    max-height: 400px; /* Keeps table at a controlled size */
+    overflow-y: auto; /* Enables scrolling */
+  }
+  
+  /* Custom Angular Material Table */
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th.mat-header-cell {
+    font-weight: bold;
+    background-color: #f5f5f5;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  td.mat-cell {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  tr.mat-header-row {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  tr.mat-row:hover {
+    background-color: #fafafa;
+  }
+  

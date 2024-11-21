@@ -50,6 +50,7 @@ export class AvailabilityComponent implements OnInit {
   noOfNights: number = 0;
   guestCounts: number[] = [1, 2, 3, 4, 5];
   eligibleForEarlyBird: boolean = false; 
+  eligibleForDiscount: boolean = false;
 
   constructor(
     private router: Router, 
@@ -119,6 +120,18 @@ export class AvailabilityComponent implements OnInit {
       next: (response) => {
         this.hotelDiscounts = response;
         console.log("Discounts fetched:", this.hotelDiscounts);
+
+        const differenceInDays = this.calculateDateDifference(new Date(), new Date(this.checkinDate));
+        console.log('differeance in fetching discount method:', differenceInDays)
+        this.eligibleForDiscount = this.hotelDiscounts.some(
+          (discount) => differenceInDays >= discount.daysPriorToArrival
+        );
+
+        if (this.eligibleForDiscount) {
+          console.log("User is eligible for a discount.");
+        } else {
+          console.log("User is not eligible for any discount.");
+        }
       },
       error: (e) => {
         console.error("Error Fetching Discounts", e);
@@ -160,6 +173,11 @@ export class AvailabilityComponent implements OnInit {
     const basePrice = unitPrice * noOfRooms * noOfNights;
     const totalPrice = basePrice * (1 + markupPercentage / 100);
     return totalPrice;
+  }
+
+  calculateRoomPriceFirst(unitPrice: number, noOfRooms: number, noOfNights: number): number {
+    let firstbasePrice = unitPrice * noOfRooms * noOfNights;
+    return firstbasePrice;
   }
 
   // calculateTotalPrice(availability: AvailabilityDTO): number {
@@ -218,19 +236,29 @@ export class AvailabilityComponent implements OnInit {
   //   return roomPrice + supplementsPrice;
   // }
   
+  // private calculateDateDifference(date1: Date, date2: Date): number {
+  //   const timeDifference = date2.getTime() - date1.getTime();
+  //   return timeDifference / (1000 * 3600 * 24); 
+  // }
+  
+  // // Check if discount is eligible
+  // private checkEarlyBirdDiscount(differenceInDays: number): boolean {
+  //   for (const discount of this.hotelDiscounts) {
+  //     if (differenceInDays >= discount.daysPriorToArrival) {
+  //       return true;  
+  //     }
+  //   }
+  //   return false;  
+  // }
+
   private calculateDateDifference(date1: Date, date2: Date): number {
     const timeDifference = date2.getTime() - date1.getTime();
-    return timeDifference / (1000 * 3600 * 24); 
+    return timeDifference / (1000 * 3600 * 24); // Convert milliseconds to days
   }
-  
-  // Check if discount is eligible
-  private checkEarlyBirdDiscount(differenceInDays: number): boolean {
-    for (const discount of this.hotelDiscounts) {
-      if (differenceInDays >= discount.daysPriorToArrival) {
-        return true;  
-      }
-    }
-    return false;  
+
+  // For checking early bird discount eligibility
+  private checkEarlyBirdDiscount(differenceInDays: number): Discount | null {
+    return this.hotelDiscounts.find(discount => differenceInDays >= discount.daysPriorToArrival) || null;
   }
 
 
@@ -277,7 +305,7 @@ export class AvailabilityComponent implements OnInit {
         netAmount: 0,
         prepaymentAmount: 0,
         balancedAmount: 0,
-        status: 'new'
+        status: 'UnConfirmed'
       };
   
       this.bookingService.addBooking(newBooking).subscribe({
@@ -298,16 +326,29 @@ export class AvailabilityComponent implements OnInit {
           // });
 
           const bookingDate = new Date(booking.bookingDate);
+          console.log('booking date', bookingDate);
+          const currentDate = new Date();
+          console.log('current date', currentDate);
           const checkinDate = new Date(this.checkinDate);
           const differenceInDays = this.calculateDateDifference(bookingDate, checkinDate);
 
           // Check if early bird discount applies
-          const eligibleForEarlyBird = this.checkEarlyBirdDiscount(differenceInDays);
+          const discount = this.checkEarlyBirdDiscount(differenceInDays);
 
-          // Pass the eligibility flag to the next page using router
-          // this.router.navigate(['/nextPage'], { queryParams: { eligibleForEarlyBird: eligibleForEarlyBird } });
+          if (discount) {
+            this.bookingService.assignDiscountToBooking(booking.bookingId, discount.discountId).subscribe({
+              next: (updatedBooking) => {
+                console.log(`Discount applied to booking ${updatedBooking.bookingId}`, updatedBooking);
+              },
+              error: (e) => {
+                console.error('Error applying discount to booking:', e);
+              }
+            });
+          }else{
+            console.log('No discounts to add');
+          }
 
-          console.log(`Early Bird Discount Eligibility: ${eligibleForEarlyBird}`);
+          console.log(`Early Bird Discount Eligibility: ${discount}`);
 
           this.addMultipleBookingRoomtypes(booking.bookingId);
           this.addSupplementsToBooking(booking.bookingId); 
@@ -372,7 +413,7 @@ export class AvailabilityComponent implements OnInit {
         const bookingRoomtype: BookingRoomtypes = {
           bookingRoomtypeId: 0,
           bookingId: bookingId,
-          seasonalRoomtypeId: availability.roomtypeId,
+          seasonalRoomtypeId: availability.seasonalRoomtypeId,
           noOfRooms: availability.selectedRooms,
           price: availability.price,
           bCheckinDate: this.checkinDate,
@@ -381,7 +422,7 @@ export class AvailabilityComponent implements OnInit {
           totalPrice: totalPrice
         };
   
-        this.bookingRoomsService.addRoomtypeToBooking(bookingId, availability.roomtypeId, bookingRoomtype).subscribe({
+        this.bookingRoomsService.addRoomtypeToBooking(bookingId, availability.seasonalRoomtypeId, bookingRoomtype).subscribe({
           next: (response) => {
             console.log(`BookingRoomtype added for seasonalRoomtypeId ${availability.roomtypeId}, bokingid - ${bookingId}:`, response);
           },
@@ -429,11 +470,9 @@ export class AvailabilityComponent implements OnInit {
   //   return requiredRooms * unitPrice;
   // }
 
-  // // Example Usage
   // const unitPrice = 150; // Price per room
   // const maxAdults = 4; // Max adults per room
 
-  // // Simulate guest count inputs
   // const guestCounts = [1, 2, 3, 4, 5];
 
   // guestCounts.forEach((guestCount) => {

@@ -17,6 +17,10 @@ export class ContractService {
     return this.http.get<Contract[]>(`${this.baseUrl}/`);
   }
 
+  getContractById(id: number): Observable<Contract> {
+    return this.http.get<Contract>(`${this.baseUrl}/${id}`);
+  }
+
   //Get Contracts of hotel
   getContractsByHotelId(hotelId: number): Observable<Contract[]> {
     return this.http.get<Contract[]>(`${this.baseUrl}/hotel/${hotelId}`);

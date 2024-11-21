@@ -4,8 +4,17 @@
         <span class="themefont">CasaBella</span>
         <span class="spacer"></span>
         <a mat-button routerLink="/home" >Home</a>
-        <a mat-button routerLink="/hotelslist">About</a>
+        <a mat-button routerLink="/adminDashboard">About</a>
         <a mat-button routerLink="/addhotel">Contact</a>
+       
+        <!-- Conditional button rendering based on isLoggedIn -->
+        <ng-container *ngIf="isLoggedIn; else loggedOut">
+            <button mat-button (click)="onLogout()">Log out</button>  <!-- Log out button -->
+        </ng-container>
+        
+        <ng-template #loggedOut>
+            <a mat-button routerLink="/login">Sign in</a>  <!-- Sign in button when logged out -->
+        </ng-template>
     </mat-toolbar>
 </div>
 <div>

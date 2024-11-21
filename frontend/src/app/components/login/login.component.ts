@@ -45,8 +45,8 @@ export class LoginComponent {
       next: (response: string) => {
         console.log('JWT Token received: ', response); 
         this.authService.saveToken(response);
-        this.router.navigateByUrl('home')  ;
-        // this.router.navigateByUrl(this.returnUrl); 
+        this.authService.loginSuccessRedirect(); 
+        
       },
       error: () => {
         console.log('Error in login process');

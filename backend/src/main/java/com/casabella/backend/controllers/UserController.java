@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.casabella.backend.model.User;
@@ -41,6 +42,7 @@ public class UserController {
     }
 
 
+
     //login
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AuthRequest authRequest) {
@@ -58,6 +60,17 @@ public class UserController {
     public ResponseEntity<List<User>> getAllTourAgents() {
         List<User> tourAgents = userService.getAllUsers();
         return ResponseEntity.ok(tourAgents);
+    }
+
+    //user bu username
+    @GetMapping("/username/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        User user = userService.findByUsername(username); // Call service method to get user by username
+        if (user != null) {
+            return ResponseEntity.ok(user); // Return user details if found
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return 404 if user is not found
+        }
     }
 
     // Get one User by ID

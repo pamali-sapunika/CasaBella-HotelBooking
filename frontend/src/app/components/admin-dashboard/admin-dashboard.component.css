@@ -1,0 +1,111 @@
+/* Row container for cards */
+.row-container {
+    display: flex;
+    justify-content: space-around; /* Space between cards */
+    flex-wrap: wrap; /* Ensures responsiveness */
+    padding: 20px;
+}
+  
+  /* Individual card container */
+.card-container {
+    flex: 1 1 calc(50% - 40px); /* Flexible width for two cards in one row */
+    max-width: 500px; /* Prevent cards from being too wide */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+    font-family: "Julius Sans One", sans-serif;
+}
+  
+  /* Align buttons horizontally inside cards */
+.btncontainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    
+}
+  
+  /* Button styling from previous example */
+.confirmbtn {
+    padding: 10px 15px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+  
+.confirmbtn:hover {
+    background-color: #0056b3;
+}
+  
+.search-button {
+    padding: 10px 15px;
+    background-color: #FFBA1A;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+  
+.search-button:hover {
+    background-color: #d89017;
+}
+  
+  /* Responsive styling */
+@media (max-width: 768px) {
+    .row-container {
+      flex-direction: column; /* Stack cards vertically on smaller screens */
+      align-items: center;
+    }
+  
+    .card-container {
+      flex: 1 1 100%; /* Full width for smaller screens */
+      max-width: 90%;
+    }
+}
+
+.subdiscover {
+    font-family: "Julius Sans One", sans-serif;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .line-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+   
+  }
+  
+  .line {
+    width: 300px;
+    height: 1px;
+    background-color: #FFBA1A;
+    margin: 0 10px;
+  }
+  
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .sub-container{
+    padding: 35px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+  }
+  
+.subtopics{
+    font-weight: 600;
+    margin-bottom: 30px;
+}

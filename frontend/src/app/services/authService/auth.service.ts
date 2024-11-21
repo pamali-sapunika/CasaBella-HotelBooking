@@ -35,6 +35,7 @@ export class AuthService {
   }
 
   setUser(user: any): void {
+    console.log('Setting user in localStorage:', user); // Debugging line
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
@@ -44,16 +45,25 @@ export class AuthService {
     return user ? JSON.parse(user) : null;
   }
 
+  getUserDetails(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/details`, {
+      headers: { 'Authorization': `Bearer ${this.getToken()}` }
+    });
+  }
+
   // Clear user data when logging out
   clearUser(): void {
     localStorage.removeItem('currentUser');
   }
 
-   // After login, handle the return URL
+  // After login return to the same url
   loginSuccessRedirect(): void {
-    const returnUrl = this.router.routerState.snapshot.url || '/';
+    //Saved return URL from localStorage
+    const returnUrl = localStorage.getItem('returnUrl') || '/home'; 
+    localStorage.removeItem('returnUrl'); 
     this.router.navigateByUrl(returnUrl);
   }
+
 
   
 }

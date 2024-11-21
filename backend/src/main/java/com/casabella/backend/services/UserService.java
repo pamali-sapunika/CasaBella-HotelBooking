@@ -28,8 +28,8 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepo.findByUsername(username);
     }
-
-    //BOTH EMAIL AND PASSWORD
+    
+    //BOTH username AND PASSWORD
     public User findByUsernameAndPassword(String username, String password) {
         User user = userRepo.findByUsername(username);
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {

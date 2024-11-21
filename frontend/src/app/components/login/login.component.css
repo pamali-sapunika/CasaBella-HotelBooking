@@ -52,4 +52,37 @@
       margin-bottom: 10px;
     }
   }
+
+.loginbtn{
+  width: 100%;
+}
+
+.logoutbtn{
+  width: 100%;
+}
+
+.admin-container {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+  justify-content: center; /* Center items horizontally */
+  gap: 10px; 
+  margin-top: 20px;
+}
+
+.adminloginbtn {
+  margin: 0; /* Reset margins for proper alignment */
+}
+
+.adminp {
+  margin: 0; 
+  
+}
+
+
+.newregister{
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
   

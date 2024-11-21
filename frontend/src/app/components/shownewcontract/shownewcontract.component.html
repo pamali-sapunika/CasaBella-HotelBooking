@@ -1,0 +1,71 @@
+<div class="container">
+    
+    <div *ngIf="contractDetails">
+      <div class="line-container">
+        <div class="line"></div>
+        <img src="assets/casabellalogo.png" alt="Icon" class="icon" />
+        <div class="line"></div>
+      </div>
+      <div class="subdiscover">Contract Details</div>
+      
+      <div class="booking-container">
+        <p class="subtopics"><b>Contract Information</b></p>
+        <p><span class="policy">Contract ID:</span> <span class="level1topic">{{ contractDetails.contractId }}</span></p>
+        <p><span class="policy">Start Date:</span> <span class="level1topic">{{ contractDetails.startDate | date }}</span></p>
+        <p><span class="policy">End Date:</span> <span class="level1topic">{{ contractDetails.endDate | date }}</span></p><br>
+
+        <p class="policy">Privacy Policy</p>
+        <p><span >Cancellation Deadline Days:</span> <span class="level1">{{ contractDetails.cancellationDeadlineDays }}</span></p>
+        <p><span >Cancellation Description:</span> <span class="level1">{{ contractDetails.cancellationDescription }}</span></p>
+        <p><span >Cancellation Fee Percentage:</span> <span class="level1">{{ contractDetails.cancellationFeePercentage }}%</span></p>
+        <p><span >Prepayment Fee Percentage:</span> <span class="level1">{{ contractDetails.prepaymentFeePercentage }}%</span></p>
+        <p><span >Balanced Payment Days:</span> <span class="level1">{{ contractDetails.balancedPaymentDays }}</span></p>
+        <p><span >Balanced Payment Percentage:</span> <span class="level1">{{ contractDetails.balancedPaymentPercentage }}%</span></p>
+      </div>
+  
+      <h4>Seasons</h4>
+      <div *ngFor="let season of contractDetails.seasons">
+        <div class="booking-container">
+          <p><span >Season Name:</span> <span class="level1">{{ season.seasonName }}</span></p><br>
+          <p><span >Season Start:</span> <span class="level2">{{ season.startDate | date }}</span></p>
+          <p><span >Season End:</span> <span >{{ season.endDate | date }}</span></p><br>
+          <p><span class="level2">Markup Percentage:</span><span class="level1">{{ season.markupPercentage }}%</span></p>
+          
+          <p class="seasonalthingtopics">Seasonal Room Types of Season <span class="seasonsub">{{ season.seasonName }}</span></p>
+          <div *ngFor="let seasonalRoom of season.seasonalRoomtype" class="booking-container">
+            <p><span >Room Type Name:</span> <span class="level1">{{ seasonalRoom.roomtype.roomtypeName }}</span></p><br>
+            <p><span >Price:</span> <span class="level2">{{ seasonalRoom.price | currency }}</span></p>
+            <p><span >Max Adults:</span> <span class="level2">{{ seasonalRoom.maxAdults }}</span></p>
+            <p><span >No. of Rooms:</span> <span class="level2">{{ seasonalRoom.noofRooms }}</span></p>
+          </div>
+  
+          <p class="seasonalthingtopics">Seasonal Supplements of Season {{ season.seasonName }}</p>
+          <div *ngFor="let supplement of season.seasonalSupplement" class="booking-container">
+            <p><span >Supplement Name:</span> <span class="level2">{{ supplement.supplement.supplementName }}</span></p>
+            <p><span >Price Per Unit:</span> <span class="level2">{{ supplement.pricePerUnit | currency }}</span></p>
+          </div>
+        </div>
+      </div>
+  
+      <h4>Discounts</h4>
+      <div *ngFor="let discount of contractDetails.discounts">
+        <div class="booking-container">
+          <p><span class="level2">Discount Type:</span> <span >{{ discount.discountType }}</span></p><br>
+          <p><span class="level2">Description:</span> <span >{{ discount.description }}</span></p>
+          <p><span class="level2">Discount Percentage:</span> <span class="level1">{{ discount.discountPercentage }}%</span></p>
+          <p><span >Days Prior to Arrival:</span> <span class="level2">{{ discount.daysPriorToArrival }}</span></p>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="!contractDetails">
+      <div class="error-container">
+        <p>No contract details found.</p>
+      </div>
+    </div>
+
+    <div class="btncontainer">
+        <button class="confirm-button" (click)="onNavigate()" >Confirm Contract</button> 
+    </div>
+  </div>
+  

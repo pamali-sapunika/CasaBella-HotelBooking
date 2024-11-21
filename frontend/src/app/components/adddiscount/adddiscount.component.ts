@@ -59,7 +59,7 @@ export class AdddiscountComponent implements OnInit{
           // After creating the discount, assign it to the contract
           this.discountService.assignContractToDiscount(response.discountId, this.contractId).subscribe(() => {
             // Navigate to another page or show success
-            this.router.navigate(['/someOtherPage']); // Replace with your next navigation
+            this.router.navigate(['/showContract', this.contractId]);
             console.log('Discount created and assigned to contract successfully.');
             alert('Discount added successfully.');
           });

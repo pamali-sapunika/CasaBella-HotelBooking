@@ -17,12 +17,18 @@ import { SeasonalitemsComponent } from './components/seasonalitems/seasonalitems
 import { AddseasonalsuppleComponent } from './components/addseasonalsupple/addseasonalsupple.component';
 import { AdddiscountComponent } from './components/adddiscount/adddiscount.component';
 import { ShowbookingComponent } from './components/showbooking/showbooking.component';
+import { ConfirmBookingComponent } from './components/confirm-booking/confirm-booking.component';
+import { MybookingsComponent } from './components/mybookings/mybookings.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ShownewcontractComponent } from './components/shownewcontract/shownewcontract.component';
+import { ConfirmContractComponent } from './components/confirm-contract/confirm-contract.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
 
     {
         path: '',
-        redirectTo: 'login',
+        redirectTo: 'home',
         pathMatch: 'full'
 
     },
@@ -37,6 +43,7 @@ export const routes: Routes = [
         children: [
             {path: 'home', component: HomeComponent},
             {path: 'aboutus',component: AboutusComponent },
+            {path: 'register', component: RegisterComponent},
             {path: 'addHotel',component: AddhotelComponent, canActivate: [authGuard]},
             {path: 'addSeasonalRooms',component: AddseasonalroomsComponent, canActivate: [authGuard]},
             {path: 'addSeasonalSupplements', component: AddseasonalsuppleComponent, canActivate: [authGuard]},
@@ -48,8 +55,12 @@ export const routes: Routes = [
             {path: 'hotel/hotelcontracts/:hotelId', component: HotelContractsComponent, canActivate: [authGuard]},
             {path: 'seasonalItems/:contractId', component: SeasonalitemsComponent, canActivate: [authGuard]},
             {path: 'addDiscounts/:contractId', component: AdddiscountComponent, canActivate: [authGuard]},
-            {path: 'showBooking/:bookingId', component: ShowbookingComponent, canActivate: [authGuard]}
-            
+            {path: 'showBooking/:bookingId', component: ShowbookingComponent, canActivate: [authGuard]},
+            {path: 'confirmBooking', component: ConfirmBookingComponent, canActivate: [authGuard]},
+            {path: 'myBookings', component: MybookingsComponent, canActivate: [authGuard]},
+            {path: 'showContract/:contractId', component: ShownewcontractComponent, canActivate: [authGuard]},
+            {path: 'confirmContract/:contractId', component: ConfirmContractComponent, canActivate: [authGuard]},
+            {path: 'adminDashboard', component: AdminDashboardComponent, canActivate: [authGuard]},
         ]
     }
 ];

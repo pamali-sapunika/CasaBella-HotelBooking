@@ -7,5 +7,6 @@ export interface User{
     contactNo: string;
     username: string;
     password: string;
+    role: string
 
 }

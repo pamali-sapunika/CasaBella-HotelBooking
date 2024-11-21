@@ -50,7 +50,7 @@
 
 .casabella {
   font-family: "Julius Sans One", sans-serif;
-  font-size: 50px;
+  font-size: 60px;
 }
 
 .subdiscover {
@@ -88,11 +88,11 @@
 
 .sub-container{
   padding: 35px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #ffffff;
   border-radius: 8px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 20px;
+  margin-bottom: 20px;
 }
 
 table {
@@ -203,3 +203,65 @@ button:disabled {
 .discounts{
   text-align: center;
 }
+
+.level1{
+  font-size: 30px;
+  font-weight: 500;
+  font-family: "Julius Sans One", sans-serif;
+}
+
+.level2{
+  font-size: 17px;
+  font-weight: 500;
+  font-family: "Julius Sans One", sans-serif;
+}
+
+.subtopics{
+  font-family: "Julius Sans One", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.normal{
+  font-family: "Julius Sans One", sans-serif;
+  font-size: 15px;
+  font-weight: lighter;
+}
+
+.main{
+  font-family: "Julius Sans One", sans-serif;
+  font-size: 15px;
+}
+
+.hotelimg{
+  width: 100px;
+  height: 100px
+}
+
+.hotel-details-row {
+  display: flex; /* Flexbox layout */
+  gap: 20px; /* Add space between columns */
+  align-items: flex-start; /* Align columns to the top */
+  margin-top: 20px;
+}
+
+.hotel-details-column {
+  flex: 1; /* Take up equal space as the other column */
+  font-family: "Julius Sans One", sans-serif;
+}
+
+.hotel-image-column {
+  flex: 0 0 600px; /* Fix the width to 600px */
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
+  align-items: center; /* Center the image vertically */
+}
+
+.hotelimg {
+  width: 500px;
+  height: 500px;
+  object-fit: cover; /* Ensure the image maintains its aspect ratio */
+  border-radius: 10px; /* Optional: Add rounded corners */
+  border: 1px solid #ccc; /* Optional: Add a border */
+}
+

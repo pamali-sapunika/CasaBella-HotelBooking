@@ -1,11 +1,11 @@
 
 <div>
   <!-- Logo and Hotel Title -->
-  <div class="logo-container">
-    <img src="assets/l9.jpg" width="auto" height="auto" />
+  <div *ngIf="hotelDetails" class="logo-container">
+    <img [src]="hotelDetails.imageUrl" width="auto" height="auto" />
     <div class="text-overlay">
-      <div class="hotelName">city</div>
-      <div class="casabella">CasaBella</div>
+      <div class="hotelName">Hotel</div>
+      <div class="casabella">{{ hotelDetails.hotelName }}</div>
     </div>
   </div>
 
@@ -16,11 +16,33 @@
     <div class="line"></div>
   </div>
 
-  <!-- Hotel Description and Search Criteria -->
+
   <div class="sub-container">
-    <p>hotel description</p>
-    <p>Hotel ID: {{ hotelId }}</p>
-    <p>Guest Count: {{ guestCount }} | Check-in Date: {{ checkinDate }} | Check-out Date: {{ checkoutDate }}</p>
+  <div *ngIf="hotelDetails" class="hotel-details">
+    
+    <!-- <div class="hotel-info"> -->
+      <div class="hotel-details-row">
+        <div class="hotel-details-column">
+          <p class="main">Hotel <span class="level1"><br>{{ hotelDetails.hotelName }}</span></p><br>
+      
+          <p class="level2">{{ hotelDetails.description }}</p><br>
+      
+          <p class="subtopics">Location: <span class="normal"> {{ hotelDetails.city }}, {{ hotelDetails.state }}, {{ hotelDetails.country }}</span></p>
+          <p class="subtopics">Address:<span class="normal"> {{ hotelDetails.location }}</span></p>
+          <p class="subtopics">Email:<span class="normal"> {{ hotelDetails.hotelEmail }}</span></p>
+          <p class="subtopics">Contact:<span class="normal"> {{ hotelDetails.hotelContact }}</span></p><br>
+          <p class="subtopics">Hotel Manager:<span class="normal"> {{ hotelDetails.hotelPerson }}</span></p><br>
+          <p class="subtopics">Star Rating:<span class="normal"> {{ hotelDetails.starRating }} Stars</span></p>
+        </div>
+      
+        <div class="hotel-image-column">
+          <img [src]="hotelDetails.imageUrl" alt="{{ hotelDetails.hotelName }}" class="hotelimg" />
+        </div>
+      </div>
+      
+      
+    <!-- </div> -->
+  </div>
 
     <!-- Search Component -->
     <div>

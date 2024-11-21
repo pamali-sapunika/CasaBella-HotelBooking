@@ -44,6 +44,7 @@ export class AddhotelComponent {
       hotelContact: ['', Validators.required],
       hotelPerson: ['', Validators.required],
       starRating: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
+      imgUrl: [''],
       description: ['']
     });
   }

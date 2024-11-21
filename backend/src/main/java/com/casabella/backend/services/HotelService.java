@@ -59,6 +59,7 @@ public class HotelService {
             existingHotel.setDescription(hotel.getDescription());
             existingHotel.setHotelPerson(hotel.getHotelPerson());
             existingHotel.setStarRating(hotel.getStarRating());
+            existingHotel.setImageUrl(hotel.getImageUrl());
 
             return hotelRepo.save(existingHotel);
         }

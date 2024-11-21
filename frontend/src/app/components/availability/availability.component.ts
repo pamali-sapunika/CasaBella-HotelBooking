@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DiscountService } from '../../services/discountService/discount.service';
 import { Discount } from '../../model/discount.model';
+import { Hotel } from '../../model/hotel.model';
 
 @Component({
   selector: 'app-availability',
@@ -40,6 +41,7 @@ export class AvailabilityComponent implements OnInit {
   supplementCache: { [seasonalRoomtypeId: number]: AvaialbilitySupplements[] } = {};
   seasonalSupplements: AvaialbilitySupplements[] = [];
   hotelDiscounts: Discount[] = []; 
+  hotelDetails: Hotel | null = null;
 
   hotelId!: number; 
   guestCount!: number; 
@@ -67,6 +69,7 @@ export class AvailabilityComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.hotelId = Number(params.get('hotelId'));
+      this.fetchHotelDetails();
     });
     this.route.queryParamMap.subscribe(params => {
       this.guestCount = Number(params.get('guestCount'));
@@ -115,6 +118,21 @@ export class AvailabilityComponent implements OnInit {
     }
   }
 
+  fetchHotelDetails(): void {
+    if (this.hotelId) {
+      this.hotelService.getHotelById(this.hotelId).subscribe({
+        next: (details) => {
+          this.hotelDetails = details;
+          console.log("Hotel details fetched:", this.hotelDetails);
+        },
+        error: (e) => {
+          console.error("Error fetching hotel details", e);
+        }
+      });
+    }
+  }
+
+  
   fetchDiscounts(): void {
     this.discountService.getDiscountsByHotelId(this.hotelId).subscribe({
       next: (response) => {
@@ -312,6 +330,7 @@ export class AvailabilityComponent implements OnInit {
         next: (booking) => {
           this.existingBookingId = booking.bookingId;
           console.log(`New booking created: ${booking.bookingId}`, booking);
+          alert("Booking details saved");
 
           // const contractId = this.getContractId();
           // this.bookingService.assignContractToBooking(booking.bookingId, contractId).subscribe({

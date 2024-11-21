@@ -1,9 +1,8 @@
-<!-- [src]="hotel.imageUrl" alt="{{ hotel.hotelName }}" -->
 <div class="search-container">
   <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
     <div class="input-group">
       <div class="input-field">
-        <label for="checkinDate">Guest Count</label>
+        <label for="guestCount">Guest Count</label>
         <mat-form-field appearance="fill">
           <mat-label>Guest Count</mat-label>
           <input matInput formControlName="guestCount" type="number" min="1" required />
@@ -37,36 +36,84 @@
   </form>
 </div>
 
-
+<!-- Display Hotels -->
 <div class="hotel-cards">
   <div *ngFor="let hotel of resultHotels" class="hotel-card">
     <mat-card>
-      <img mat-card-image  />
+      <img mat-card-image [src]="hotel.imageUrl" class="hotelimg" alt="{{ hotel.hotelName }}" />
       <mat-card-content>
         <h3 mat-card-title>{{ hotel.hotelName }}</h3>
-        <p mat-card-subtitle>{{ hotel.city}},{{hotel.state}},{{hotel.country }}</p>
+        <p mat-card-subtitle>{{ hotel.city }}, {{ hotel.state }}, {{ hotel.country }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button class="viewhotelBtn"  (click)="viewHotelDetails(hotel.hotelId)">View Details</button>
+        <button mat-button class="viewhotelBtn" (click)="viewHotelDetails(hotel.hotelId)">View Details</button>
       </mat-card-actions>
     </mat-card>
   </div>
 </div>
 
-<div class="hotel-cards">
-  <div class="hotel-card">
-    <mat-card>
-      <img mat-card-image  />
-      <mat-card-content>
-        <h3 mat-card-title>hotel name</h3>
-        <p mat-card-subtitle>hotel state, hotelcity, hotelcountry</p>
-        <p>desc</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button class="viewhotelBtn" mat-button>View Details</button>
-      </mat-card-actions>
-    </mat-card>
+<!-- About CasaBella Section -->
+<div class="restspace-container">
+  <div class="about-section">
+    <div class="about-content">
+      <div>
+        <div class="line-container">
+          <img src="assets/casabellalogo.png" alt="Icon" class="icon1" />
+        </div>
+      </div>
+      
+      <h3 class="intro">About</h3>
+      <h2 class="introsub">CasaBella</h2>
+      <p class="introdes">
+        At CasaBella, we believe in making your stay unforgettable. Whether you're traveling for business or leisure, our hotels offer unmatched comfort, top-notch services, and a touch of elegance.
+      </p>
+    </div>
+    <img src="..\assets\l2.jpg" alt="About Us" class="about-image" />
+  </div>
+
+  <div>
+    <div class="line-container">
+      <div class="line"></div>
+      <img src="assets/casabellalogo.png" alt="Icon" class="icon" />
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <!-- Featured Hotels -->
+  <div class="featured-hotels">
+    <p class="featured-hotels-topic">Featured Hotels</p >
+    <div class="hotel-cards">
+      <div class="hotel-card">
+        <img src="assets/hotel1.jpg" alt="Hotel 1" />
+        <p class="card-content">Hotel Elegance</p>
+        <p class="card-data">Located in the heart of the city with premium amenities.</p>
+      </div>
+      <div class="hotel-card">
+        <img src="assets/l9.jpg" alt="Hotel 2" />
+        <p class="card-content">Beach Paradise</p>
+        <p class="card-data">Experience the serenity of beachfront living.</p>
+      </div>
+      <div class="hotel-card">
+        <img src="assets/l7.jpg" alt="Hotel 3" />
+        <p class="card-content">Mountain Retreat</p>
+        <p class="card-data">A tranquil escape surrounded by breathtaking views.</p>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="line-container">
+      <div class="line"></div>
+      <img src="assets/casabellalogo.png" alt="Icon" class="icon" />
+      <div class="line"></div>
+    </div>
+  </div>
+
+
+  <!-- Call to Action -->
+  <div class="cta">
+    <h2>Your Journey Begins Here</h2>
+    <p>Book your dream stay now and create unforgettable memories with CasaBella.</p>
+    <button class="cta-button">Explore More</button>
   </div>
 </div>
-
-

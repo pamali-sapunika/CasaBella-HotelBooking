@@ -23,7 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent implements OnInit{
+export class RegisterComponent {
 
   userForm: FormGroup
 
@@ -44,8 +44,6 @@ export class RegisterComponent implements OnInit{
     })
   }
 
-  ngOnInit(): void {
-  }
 
   onSubmit(): void {
     if (this.userForm.valid) {

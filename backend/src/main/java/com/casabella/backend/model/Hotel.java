@@ -34,6 +34,7 @@ public class Hotel {
     private String description;
     private String hotelPerson;
     private Integer starRating;
+    private String imageUrl;
 
     //Contract - Hotel Relationship  
     @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
@@ -149,7 +150,7 @@ public class Hotel {
 
     public Hotel(@NotBlank(message = "Name is mandatory") String hotelName, String city, String state, String country,
             String location, @Email String hotelEmail, String hotelContact, String description, String hotelPerson,
-            Integer starRating, Set<Contract> contracts) {
+            Integer starRating, String imageUrl, Set<Contract> contracts) {
         this.hotelName = hotelName;
         this.city = city;
         this.state = state;
@@ -161,11 +162,12 @@ public class Hotel {
         this.hotelPerson = hotelPerson;
         this.starRating = starRating;
         this.contracts = contracts;
+        this.imageUrl = imageUrl;
     }
 
     public Hotel(@NotBlank(message = "Name is mandatory") String hotelName, String city, String state, String country,
             String location, @Email String hotelEmail, String hotelContact, String description, String hotelPerson,
-            Integer starRating) {
+            Integer starRating, String imageUrl) {
         this.hotelName = hotelName;
         this.city = city;
         this.state = state;
@@ -176,6 +178,7 @@ public class Hotel {
         this.description = description;
         this.hotelPerson = hotelPerson;
         this.starRating = starRating;
+        this.imageUrl = imageUrl;
     }
 
     public Hotel() {
@@ -183,6 +186,14 @@ public class Hotel {
 
     public Set<Contract> getContracts(){
         return contracts;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     

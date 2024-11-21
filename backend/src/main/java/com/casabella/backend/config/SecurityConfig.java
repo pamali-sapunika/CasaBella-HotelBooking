@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/v1/users/login").permitAll()
                         .requestMatchers("/v1/users/register").permitAll()
                         .requestMatchers("/v1/hotels/search").permitAll()
+                        .requestMatchers("/v1/hotels/{id}").permitAll()
                         .requestMatchers("/v1/seasonalroomtypes/availability").permitAll()
                         .requestMatchers("/v1/seasonalsupplements/setSupplementName/{seasonId}").permitAll()
                         .requestMatchers("/v1/discounts/hotelDiscounts/{hotelId}").permitAll()

@@ -1,4 +1,4 @@
-//Modified again frontend - Hotel model
+
 export interface Hotel {
     hotelId: number; 
     hotelName: string;
@@ -11,5 +11,6 @@ export interface Hotel {
     description: string;
     hotelPerson: string;
     starRating: number;
+    imageUrl: string;
   }
   

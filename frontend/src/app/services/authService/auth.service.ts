@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { jwtDecode } from "jwt-decode";
+
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +67,23 @@ export class AuthService {
     localStorage.removeItem('returnUrl'); 
     this.router.navigateByUrl(returnUrl);
   }
+
+  getUserIdFromToken(): string | null {
+    const token = this.getToken();
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);  
+        console.log('decoded token', decoded);
+        return decoded.sub || null;  
+      } catch (error) {
+        console.error('Failed to decode JWT:', error);
+        return null;
+      }
+    }
+    return null;
+  }
+  
+
 
 
   

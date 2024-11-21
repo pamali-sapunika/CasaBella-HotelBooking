@@ -7,6 +7,8 @@ import { PassengerService } from '../../services/passengerService/passenger.serv
 import { Passenger } from '../../model/passenger.model';
 import { AuthService } from '../../services/authService/auth.service';
 import { DiscountService } from '../../services/discountService/discount.service';
+import { User } from '../../model/user.model';
+import { UserService } from '../../services/userService/user.service';
 
 @Component({
   selector: 'app-showbooking',
@@ -29,6 +31,8 @@ export class ShowbookingComponent implements OnInit{
   loading: boolean = true;
 
   loggedInUser: any;
+  userId: string | null = null;
+  userDetails: User | null = null;
 
   public grandTotal: number = 0;
   public discountAmount: number = 0;
@@ -43,13 +47,18 @@ export class ShowbookingComponent implements OnInit{
     private bookingSerive: BookingService, 
     private passengerService: PassengerService,
     private authService: AuthService,
-    private discountService: DiscountService 
+    private discountService: DiscountService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
 
-    this.loggedInUser = this.authService.getUser();
-    console.log('Logged-in User:', this.loggedInUser);
+    this.userId= this.authService.getUserIdFromToken();
+    console.log('User ID from token:', this.userId);
+    if (this.userId) {
+      this.fetchUser(this.userId);
+      // console.log('Pamali', this.userDetails?.userId);
+    }
 
     this.bookingId = Number(+this.route.snapshot.paramMap.get('bookingId')!);
     console.log('booking id found!', this.bookingId);
@@ -113,12 +122,6 @@ export class ShowbookingComponent implements OnInit{
   }
 
   calculateBalancedAmount(): number {
-    // Step 1: Calculate the prepayment amount based on the specified percentage (if provided)
-    // const prepaymentAmount = (prepaymentPercentage / 100) * this.grandTotal;
-  
-    // Step 2: Calculate the balanced amount
-    
-    // Ensure balancedAmount doesn't fall below zero
     if (this.balancedAmount < 0) {
       this.balancedAmount = 0;
     }
@@ -127,13 +130,6 @@ export class ShowbookingComponent implements OnInit{
   
     return this.balancedAmount;
   }
-
-  // calculatePrepayment(): number {
-  //   // Example: 20% of the grandTotal as prepayment
-  //   const prepaymentPercentage = 20; // You can change this to any percentage or fixed value logic
-  //   const prepaymentAmount = (this.grandTotal * prepaymentPercentage) / 100;
-  //   return prepaymentAmount;
-  // }
 
   calculateTotalWithoutDiscount(): number{
 
@@ -180,14 +176,11 @@ export class ShowbookingComponent implements OnInit{
     this.discountService.getDiscountById(this.bookingDetails.discount.discountId).subscribe({
       next: (response) => {
         console.log('Discount received:', response);
-        
-        // Assuming discountPercentage is a string (e.g., "15%"), we need to parse it:
+      
         const discountPercentage = parseFloat(response.discountPercentage.replace('%', ''));
         
-        // Calculate the discount amount
         this.discountAmount = this.calculateDiscount(this.grandTotal, discountPercentage);
-  
-        // Calculate the net amount after applying discount
+
         this.netAmount = this.grandTotal - this.discountAmount;
   
         console.log('Discount applied:', this.discountAmount);
@@ -218,14 +211,47 @@ export class ShowbookingComponent implements OnInit{
     return this.noOfNights;
   }
 
+  // fetchUser(userId: string): void {
+  //   this.userService.getUserByUsername(userId).subscribe(
+  //     (user: User) => {
+  //       this.userDetails = user;  // Store the user details in the component
+  //       console.log('Fetched user details:', user);
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching user details:', error);
+  //     }
+  //   );
+  // }
+
+  fetchUser(userId: string): void {
+    this.userService.getUserByUsername(userId).subscribe(
+      (user: User) => {
+        this.userDetails = user;  // Store the user details in the component
+        console.log('Fetched user details:', user);
+        
+        // Check if userId exists in the fetched user details
+        if (this.userDetails && this.userDetails.userId) {
+          console.log('Pamali Fetched User ID:', this.userDetails.userId);
+        } else {
+          console.log('User ID not found in fetched user details');
+        }
+      },
+      (error) => {
+        console.error('Error fetching user details:', error);
+      }
+    );
+  }
+  
+
+
   onConfirmBooking(): void {
     // Ensure we have all the required fields from the existing booking details
     const updatedBooking = {
       bookingId: this.bookingId,  
-      contractId: this.bookingDetails.contractId || null,  // Set to actual contractId or leave as null
-      discountId: this.bookingDetails.discount?.discountId || null, // Discount can be null if no discount is applied
-      userId: this.loggedInUser?.userId || null,  // Assuming logged-in user is available and has a userId
-      passengerId: this.bookingDetails.passenger?.passengerId,  // Assuming passengerId is available in bookingDetails
+      contractId: this.bookingDetails.contractId || null, 
+      discountId: this.bookingDetails.discount?.discountId || null, 
+      userId: this.loggedInUser?.userId || null,  
+      passengerId: this.bookingDetails.passenger?.passengerId,  
       checkinDate: this.bookingDetails.checkinDate, 
       checkoutDate: this.bookingDetails.checkoutDate,
       bookingDate: this.bookingDetails.bookingDate,
@@ -236,23 +262,36 @@ export class ShowbookingComponent implements OnInit{
       netAmount: this.netAmount, 
       prepaymentAmount: this.prepaymentAmount, 
       balancedAmount: this.balancedAmount, 
-      status: 'Confirmed',  // Hardcoded as 'Confirmed', ensure this is okay in your case
+      status: 'Confirmed',  
     };
   
     console.log('Booking updated', updatedBooking);
   
-    // Call the updateBooking method from the service to update the booking on the backend
+    
     this.bookingSerive.updateBooking(this.bookingId, updatedBooking).subscribe({
       next: (response) => {
         console.log('Booking updated successfully:', response);
-        // Optionally navigate to a confirmation page or another part of the app
-        this.router.navigateByUrl('confirmBooking');
+        // this.router.navigateByUrl('confirmBooking');
+
+        if (this.userDetails?.userId) {
+          this.bookingSerive.assignUserToBooking(this.bookingId, this.userDetails.userId).subscribe({
+            next: (assignResponse) => {
+              console.log('User assigned to booking successfully:', assignResponse);
+              this.router.navigateByUrl('confirmBooking');
+            },
+            error: (e) => {
+              console.error('Error assigning user to booking:', e);
+            }
+          });
+        }
       },
       error: (e) => {
         console.error('Error updating booking:', e);
-        // Handle error as needed (e.g., show an error message to the user)
+        
       }
     });
+
+
   }
   
   

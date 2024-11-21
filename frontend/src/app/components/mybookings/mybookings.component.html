@@ -1,1 +1,75 @@
-<p>mybookings works!</p>
+<div class="container">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <p>Loading booking details...</p>
+    </div>
+  
+    <!-- Error State -->
+    <div *ngIf="!loading && errorMessage" class="error-container">
+      <p>{{ errorMessage }}</p>
+    </div>
+  
+    <!-- Reservation Header -->
+    <div>
+      <div class="line-container">
+        <div class="line"></div>
+        <img src="assets/casabellalogo.png" alt="Icon" class="icon" />
+        <div class="line"></div>
+      </div>
+      <div class="subdiscover">My Bookings</div>
+    </div>
+  
+    <!-- User Details -->
+    <div *ngIf="userDetails" class="user-details">
+        <h3>User Details</h3>
+        <p><strong>Full Name:</strong> {{ userDetails.name }}</p>
+        <p><strong>Address:</strong> {{ userDetails.address }}</p>
+        <p><strong>Email:</strong> {{ userDetails.email }}</p>
+        <p><strong>Contact No:</strong> {{ userDetails.contactNo }}</p>
+        <p><strong>NIC</strong> {{ userDetails.contactNo }}</p>
+    </div>
+  
+    <!-- Booking Table -->
+    <div *ngIf="!loading && bookings.length > 0">
+      <table class="booking-table">
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Booking Date</th>
+            <th>Adults</th>
+            <th>Children</th>
+            <th>Total Amount</th>
+            <th>Discount</th>
+            <th>Net Amount</th>
+            <th>Prepayment</th>
+            <th>Balance</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let booking of bookings">
+            <td>{{ booking.bookingId }}</td>
+            <td>{{ booking.checkinDate }}</td>
+            <td>{{ booking.checkoutDate }}</td>
+            <td>{{ booking.bookingDate }}</td>
+            <td>{{ booking.adultCount }}</td>
+            <td>{{ booking.childCount }}</td>
+            <td>{{ booking.totalAmount }}</td>
+            <td>{{ booking.discountAmount }}</td>
+            <td>{{ booking.netAmount }}</td>
+            <td>{{ booking.prepaymentAmount }}</td>
+            <td>{{ booking.balancedAmount }}</td>
+            <td>{{ booking.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- No Bookings Found -->
+    <div *ngIf="!loading && bookings.length === 0" class="no-bookings">
+      <p>No bookings found for the user.</p>
+    </div>
+  </div>
+  

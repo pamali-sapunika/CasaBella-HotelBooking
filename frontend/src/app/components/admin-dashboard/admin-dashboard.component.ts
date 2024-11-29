@@ -44,6 +44,7 @@ export class AdminDashboardComponent implements OnInit{
           
           this.router.navigateByUrl('home');
           alert('Login Failed. You are logged in as a user. Redirecting to home.');
+          // this.router.navigateByUrl('login');
         }
       },
       error: (error) => {

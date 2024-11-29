@@ -14,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { Hotel } from '../../model/hotel.model';
+import { HotelsService } from '../../services/hotelService/hotels.service';
 
 @Component({
   selector: 'app-addseasonalrooms',
@@ -34,14 +36,16 @@ export class AddseasonalroomsComponent implements OnInit{
   @Input() contractId!: number;
   seasons: Season[] = [];
   roomtypes: Roomtype[] = [];
+  hotels: Hotel[] = [];
   seasonalRoomForm!: FormGroup;
 
-  constructor( private seasonService: SeasonService, private roomService: RoomService, private seasonalRoomsService: SeasonalRoomsService, private fb: FormBuilder, private router: Router) {}
+  constructor(private hotelService: HotelsService,  private seasonService: SeasonService, private roomService: RoomService, private seasonalRoomsService: SeasonalRoomsService, private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
     console.log('Received contractId in AddseasonalroomsComponent:', this.contractId);
     this.fetchSeasons();
     this.fetchRoomtypes();
+    this.fetchHotels();
     this.initializeForm();
   }
 
@@ -67,6 +71,19 @@ export class AddseasonalroomsComponent implements OnInit{
       },
       error: (error) => {
         console.error('Error fetching roomtypes:', error);
+      }
+    });
+  }
+
+  fetchHotels(): void {
+    // Fetch the list of hotels
+    this.hotelService.getHotels().subscribe({
+      next: (hotels) => {
+        this.hotels = hotels;
+        console.log('Hotels fetched:', this.hotels);
+      },
+      error: (error) => {
+        console.error('Error fetching hotels:', error);
       }
     });
   }
@@ -103,6 +120,7 @@ export class AddseasonalroomsComponent implements OnInit{
           this.seasonalRoomsService.assignHotelToSeasonalRoomtype(response.seasonalRoomtypeId, hotelId).subscribe({
             next: () => {
               console.log('Hotel assigned to seasonalroom type successfully!');
+              alert(" ROomtypes for the season added!");
             },
             error: (error) => {
               console.error('Error assigning hotel to seasonal room type:', error);
@@ -131,6 +149,13 @@ export class AddseasonalroomsComponent implements OnInit{
     this.seasonalRoomForm.patchValue({
       roomtypeName: roomtype.roomtypeName,
       roomtypeId: roomtype.roomtypeId
+    });
+  }
+
+  onSelectHotelName(hotel: Hotel): void {
+    console.log('Hotel selected', hotel);
+    this.seasonalRoomForm.patchValue({
+      hotelId: hotel.hotelId // Update hotelId automatically when a hotel is selected
     });
   }
 

@@ -29,8 +29,8 @@ public class HotelService {
     }
 
     // Get All hotels which rooms are available
-    public List<Hotel> findRoomsAvailableHotels(int guestCount, Date checkinDate, Date checkoutDate){
-        return hotelRepo.findRoomsAvailableHotels(guestCount, checkinDate, checkoutDate);
+    public List<Hotel> findRoomsAvailableHotels(int guestCount, Date checkinDate, Date checkoutDate, String location){
+        return hotelRepo.findRoomsAvailableHotels(guestCount, checkinDate, checkoutDate, location);
     }
 
     //Get All Hotels

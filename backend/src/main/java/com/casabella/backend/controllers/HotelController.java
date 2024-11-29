@@ -38,8 +38,9 @@ public class HotelController {
     public List<Hotel> searchHotels(
         @RequestParam int guestCount,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkinDate,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkoutDate){
-            return hotelService.findRoomsAvailableHotels(guestCount, checkinDate, checkoutDate);
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date checkoutDate,
+        @RequestParam String location){
+            return hotelService.findRoomsAvailableHotels(guestCount, checkinDate, checkoutDate, location);
     }
 
     @PostMapping("/")

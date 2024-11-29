@@ -47,7 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/v1/seasonalsupplements/setSupplementName/{seasonId}").permitAll()
                         .requestMatchers("/v1/discounts/hotelDiscounts/{hotelId}").permitAll()
                         .requestMatchers("/v1/bookings/").permitAll()
-                        // .requestMatchers("/v1/bookings/{id}").permitAll()
+                        .requestMatchers("v1/bookings/{bookingId}/discounts/{discountId}").permitAll()
                         .requestMatchers("/v1/bookingroomtypes/{bookingId}/seasonalRoomtype/{seasonalRoomtypeId}").permitAll()
                         .requestMatchers("/v1/bookingsupplements/{bookingId}/seasonalSupplement/{seasonalSupplementId}").permitAll()
                         .anyRequest().authenticated()

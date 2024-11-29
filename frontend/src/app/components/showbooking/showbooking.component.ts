@@ -80,11 +80,13 @@ export class ShowbookingComponent implements OnInit{
           this.bookingSerive.assignPassengerToBooking(this.bookingId, response.passengerId).subscribe({
             next: (data) => {
               console.log('Passenger added to booking', this.bookingId);
+              alert('Passenger added to the current booking');
             },
             error: (e) => {
               console.error('Passenger didnt added to the booking id', e);
             }
           })
+
         },
         error: (e) => {
           console.error('Error adding passengers', e);

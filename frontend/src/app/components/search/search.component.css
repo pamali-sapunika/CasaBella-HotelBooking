@@ -1,5 +1,5 @@
 .search-container {
-  max-width: 930px;
+  max-width: 100%;
   align-self: center;
   justify-content: center;
   text-align: center;
@@ -19,6 +19,7 @@
 .input-field {
   flex: 1;
   margin-right: 20px;
+
 }
 
 .input-field:last-child {
@@ -34,6 +35,7 @@
   cursor: pointer;
   font-size: 16px;
   margin-top: 18px;
+  margin-left: 30px;
 }
 
 .hotel-cards {

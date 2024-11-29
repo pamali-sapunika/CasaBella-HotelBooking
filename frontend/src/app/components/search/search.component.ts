@@ -36,7 +36,8 @@ export class SearchComponent{
     this.searchForm = this.fb.group({
       guestCount: [''],
       checkinDate: [''],
-      checkoutDate: ['']
+      checkoutDate: [''],
+      location: ['']
     });
   }
 
@@ -48,12 +49,12 @@ export class SearchComponent{
   }
   
   onSearch() {
-    const { guestCount, checkinDate, checkoutDate } = this.searchForm.value;
+    const { guestCount, checkinDate, checkoutDate, location } = this.searchForm.value;
 
     const formattedCheckinDate = this.formatDate(checkinDate);
     const formattedCheckoutDate = this.formatDate(checkoutDate);
 
-    this.hotelService.searchHotels(guestCount, formattedCheckinDate, formattedCheckoutDate).subscribe({
+    this.hotelService.searchHotels(guestCount, formattedCheckinDate, formattedCheckoutDate, location).subscribe({
       next: (hotels) => {
         this.resultHotels = hotels;
       },
@@ -64,7 +65,7 @@ export class SearchComponent{
   }
 
   viewHotelDetails(hotelId: number): void{
-    const { guestCount, checkinDate, checkoutDate } = this.searchForm.value;
+    const { guestCount, checkinDate, checkoutDate, location } = this.searchForm.value;
 
     const formattedCheckinDate = this.formatDate(checkinDate);
     const formattedCheckoutDate = this.formatDate(checkoutDate);
@@ -73,11 +74,12 @@ export class SearchComponent{
       queryParams: {
         guestCount,
         checkinDate: formattedCheckinDate,
-        checkoutDate: formattedCheckoutDate
+        checkoutDate: formattedCheckoutDate,
+        location
       }
     });
 
-    console.log("Navigated successfully to availability page with parameters",  { hotelId, guestCount, formattedCheckinDate, formattedCheckoutDate });
+    console.log("Navigated successfully to availability page with parameters",  { hotelId, guestCount, formattedCheckinDate, formattedCheckoutDate, location });
   }
   
 

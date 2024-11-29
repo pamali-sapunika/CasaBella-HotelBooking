@@ -43,6 +43,8 @@ export class AvailabilityComponent implements OnInit {
   hotelDiscounts: Discount[] = []; 
   hotelDetails: Hotel | null = null;
 
+  totalPrice!: number;
+
   hotelId!: number; 
   guestCount!: number; 
   checkinDate!: string;
@@ -222,11 +224,12 @@ export class AvailabilityComponent implements OnInit {
       availability.markupPercentage
     );
     const supplementPrice = this.calculateSupplementPrice(availability.seasonalRoomtypeId);
-    const totalPrice = roomPrice + supplementPrice;
+    this.totalPrice = roomPrice + supplementPrice;
   
     // Return both total price and the original total price (before discount)
-    return totalPrice;
+    return this.totalPrice;
   }
+
 
   calculateSupplementPrice(seasonalRoomtypeId: number): number {
     const supplements = this.supplementCache[seasonalRoomtypeId];
@@ -330,7 +333,7 @@ export class AvailabilityComponent implements OnInit {
         next: (booking) => {
           this.existingBookingId = booking.bookingId;
           console.log(`New booking created: ${booking.bookingId}`, booking);
-          alert("Booking details saved");
+          
 
           // const contractId = this.getContractId();
           // this.bookingService.assignContractToBooking(booking.bookingId, contractId).subscribe({
@@ -371,6 +374,7 @@ export class AvailabilityComponent implements OnInit {
 
           this.addMultipleBookingRoomtypes(booking.bookingId);
           this.addSupplementsToBooking(booking.bookingId); 
+          alert("Booking details saved!");
         },
         error: (e) => {
           console.error('Error creating booking:', e);
@@ -478,6 +482,32 @@ export class AvailabilityComponent implements OnInit {
   onNavigate(bookingId: number): void{
     this.router.navigate(['/showBooking', bookingId]);
     console.log('Booking id passed', bookingId);
+  }
+
+  calculateGrandTotal(availability: AvailabilityDTO): number {
+    const roomBasePrice = this.calculateRoomPriceFirst(
+      availability.price,
+      availability.selectedRooms || 0,
+      this.noOfNights
+    );
+  
+    const supplementPrice = this.calculateSupplementPrice(availability.seasonalRoomtypeId);
+  
+    let grandTotal;
+    if (supplementPrice > 0) {
+      // Add markup to the combined total
+      grandTotal = (roomBasePrice + supplementPrice) * (1 + availability.markupPercentage / 100);
+    } else {
+      // Add markup only to room price
+      grandTotal = this.calculateRoomPrice(
+        availability.price,
+        availability.selectedRooms || 0,
+        this.noOfNights,
+        availability.markupPercentage
+      );
+    }
+  
+    return grandTotal;
   }
 
 }

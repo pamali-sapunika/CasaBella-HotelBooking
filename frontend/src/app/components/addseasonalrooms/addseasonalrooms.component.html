@@ -46,10 +46,26 @@
           <input matInput formControlName="roomtypeId" type="number" required />
         </mat-form-field>        
 
-        <mat-form-field appearance="fill">
+        <!-- <mat-form-field appearance="fill">
           <mat-label>Hotel ID</mat-label>
           <input matInput formControlName="hotelId" type="number" required />
-        </mat-form-field>
+        </mat-form-field> -->
+
+        <!-- Hotel Dropdown -->
+      <mat-form-field appearance="fill">
+        <mat-label>Select Hotel Name</mat-label>
+        <mat-select (selectionChange)="onSelectHotelName($event.value)">
+          <mat-option *ngFor="let hotel of hotels" [value]="hotel">
+            {{ hotel.hotelName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Hotel ID (Hidden or readonly) -->
+      <mat-form-field appearance="fill">
+        <mat-label>Hotel ID</mat-label>
+        <input matInput formControlName="hotelId" type="number" required readonly />
+      </mat-form-field>
       
         <mat-form-field appearance="fill">
           <mat-label>Price</mat-label>

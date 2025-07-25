@@ -12,3 +12,12 @@ Total price of the booking calculates with dicounts if applicable.<br>
 Booking confirmed!<br>
 
 ✨Admins are the ones who are responsible in managing hotels and their contracts!
+
+UI Mockups from Figma
+<img width="1440" height="2430" alt="Group 428" src="https://github.com/user-attachments/assets/ecdc68d7-a143-46a0-b405-2cd1b2205dc0" />
+<img width="1237" height="1024" alt="Group 385" src="https://github.com/user-attachments/assets/e7b701d3-f391-46d3-a9b4-dbfcf8a89b48" />
+<img width="1440" height="1242" alt="Add Hotels - Admin" src="https://github.com/user-attachments/assets/db8eea07-0c5e-43e2-b529-827edf14b826" />
+![Confirm Booking - Customer](https://github.com/user-attachments/assets/145fca9f-f590-4e0e-a260-f2bbccc594d0)
+
+
+
